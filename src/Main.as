@@ -3,6 +3,10 @@ package
 	import com.eingzone.lbb.ui.MenuState;
 	
 	import org.flixel.FlxGame;
+	import org.flixel.system.debug.Log;
+	import flash.geom.Rectangle;
+	import org.flixel.FlxEmitter;
+	import org.flixel.FlxSprite;
 
 	/**
 	 * ...
@@ -17,7 +21,7 @@ package
 		{
 			super(320,240,MenuState,2);
 		}
-		
 	}
+	
 	
 }

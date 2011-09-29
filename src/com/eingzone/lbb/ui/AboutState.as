@@ -9,14 +9,12 @@ package com.eingzone.lbb.ui
 	 */
 	public class AboutState extends BaseOtherState
 	{
-		[Embed(source="assets/textures/ui/4345441923_305fbde3a7.jpg")]
+		[Embed(source="../../../../../src/assets/textures/ui/4345441923_305fbde3a7.jpg")]
 		private var bgClass:Class;
 		
 		public function AboutState() 
 		{
 			super("I'm about~",bgClass);
 		}
-		
 	}
-
 }

@@ -3,15 +3,15 @@ package com.eingzone.lbb.ui
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
 	import org.flixel.FlxState;
+	import org.flixel.FlxEmitter;
+	import org.flixel.FlxSprite;
 	
 	/**
 	 * ...
 	 * @author GameCloudStudio
 	 */
 	public class MenuState extends FlxState 
-	{ 
-		[Embed(source="assets/audio/ui/pickup.mp3")] private var BtnSound:Class;
-		
+	{
 		private var _playBtn:FlxButton;
 		private var _optionBtn:FlxButton;
 		private var _aboutBtn:FlxButton;
@@ -23,6 +23,7 @@ package com.eingzone.lbb.ui
 			
 			var cx:int = (FlxG.width-80)/2;
 			var sy:int = 120;
+			
 			_playBtn = new FlxButton(0, 0, "play", playHandler);
 			_playBtn.x = cx;
 			_playBtn.y = sy;
@@ -48,30 +49,33 @@ package com.eingzone.lbb.ui
 			_helpBtn.x = cx;
 			_helpBtn.y = sy;
 			add(_helpBtn);
+			
+			test();
 		}
 		
 		private function playHandler():void 
 		{
-			FlxG.play(BtnSound);
 			FlxG.switchState(new GameState);
 		}
 		
 		private function helpHandler():void 
 		{
-			FlxG.play(BtnSound);
 			FlxG.switchState(new HelpState);
 		}
 		
 		private function aboutHandler():void 
 		{
-			FlxG.play(BtnSound);
 			FlxG.switchState(new AboutState);
 		}
 		
 		private function optionHandler():void 
 		{
-			FlxG.play(BtnSound);
 			FlxG.switchState(new OptionState);
+		}
+		
+		private function test():void
+		{
+			
 		}
 	}
 }

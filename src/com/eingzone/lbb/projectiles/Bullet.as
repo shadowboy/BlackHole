@@ -5,7 +5,6 @@ package com.eingzone.lbb.projectiles
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxObject;
-	import org.flixel.FlxSound;
 	import org.flixel.FlxSprite;
 	
 	/**
@@ -14,12 +13,10 @@ package com.eingzone.lbb.projectiles
 	 */
 	public class Bullet extends FlxSprite 
 	{
-		
-		[Embed(source = 'assets/textures/projectiles/bullet.png')] protected var bulImg:Class;
-		[Embed(source="assets/audio/projectiles/shoot.mp3")] private var ShootSound:Class;
-		[Embed(source="assets/audio/projectiles/hit.mp3")] private var HitSound:Class;
-		
 		private var dead:Boolean = false;
+		[Embed(source = '../../../../../src/assets/textures/projectiles/bullet.png')]
+		protected var bulImg:Class;
+		
 		private var _walls:FlxGroup;
 		
 		public function Bullet():void 
@@ -30,6 +27,8 @@ package com.eingzone.lbb.projectiles
 			//加载子弹的素材
 			loadGraphic(bulImg, true, false, 8, 8);
 			
+			//设置子弹的动画
+			//向上发射
 			addAnimation('shootUp', [0]);
 			//向下
 			addAnimation('shootDown', [1]);
@@ -39,6 +38,12 @@ package com.eingzone.lbb.projectiles
 			addAnimation('shootRight', [3]);
 			//爆炸动画，最后一个参数设置false，表示动画播不会循环播放
 			addAnimation('BulBoom', [4, 5, 6, 7], 50, false);
+			
+			//exists,是所有flxObject的一个属性，表示该object是否存在
+			//false,说明改物体不存在,flixel不会对他进行任何操作（碰撞检测等）
+			//true，则说明改物体存在
+			//当子弹没有发射出去的时候，自然不需要检测碰撞，所以设置 false
+			exists = false;
 		}
 		
 		/**
@@ -50,50 +55,61 @@ package com.eingzone.lbb.projectiles
 		 */
 		public function shoot(sPosX:Number,sPosY:Number,velX:Number,velY:Number):void 
 		{
-			exists = false;
-			dead = false;
-			
+			//reset方法，是将该object的一些属性重置
+			//重置 exist 为 true ，dead（是否死亡）为 false
+			//参数1：要将该object 重置到的 x坐标
+			//参数2：要将该object 重置到的 y坐标
 			reset(sPosX, sPosY);
 			
+			//将参数中的速度赋值给 子弹
 			velocity.x = velX;
 			velocity.y = velY;
 			
+			//根据速度判断子弹需要 播放哪个方向的动画
 			if (velY < 0) 
 			{
+				//y速度小于 0，向上发射
 				play('shootUp');
 			}
 			else if (velY > 0) 
 			{
+				//y速度大于 0，向下发射
 				play('shootDown');
 			}
 			else if (velX < 0) 
 			{
+				//x速度小于0，向左发射
 				play('shootLeft');
 			}
 			else if (velX > 0) 
 			{
+				//x速度大于0，向右发射
 				play('shootRight');
 			}
-			FlxG.play(ShootSound);
 		}
 		
+		//重写一下 hurt 方法,因为需要在 碰到障碍物的时候要设置些东东
+		//比如 子弹速度 以及 播放爆炸的动画
+		//参数：本objcet 所受到的 伤害值
 		override public function hurt(Damage:Number):void 
 		{
+			trace(this, "hurt :" + Damage);
 			if (dead) 
 			{
 				return;
 			}
 			
 			dead = true;
-			FlxG.play(HitSound);
+			
 			velocity.x = 0;
 			velocity.y = 0;
+			
+			//播放爆炸动画了
 			play('BulBoom');
 		}
 		
 		override public function update():void 
 		{
-			
 			if (dead && finished) 
 			{
 				exists = false;
@@ -108,5 +124,4 @@ package com.eingzone.lbb.projectiles
 			_walls = value;
 		}
 	}
-	
 }

@@ -1,5 +1,6 @@
 package com.eingzone.lbb.actors
 {
+	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxSprite;
@@ -17,11 +18,25 @@ package com.eingzone.lbb.actors
 		//人物跳跃时的加速度
 		protected static const JUMP_ACCELERATION:Number = 200;
 		
-		[Embed(source = 'assets/textures/actors/spaceman.png')] protected var playerImg:Class;
-		[Embed(source="assets/audio/actors/jump.mp3")] private var JumpSound:Class;
+		[Embed(source = '../../../../../src/assets/textures/actors/spaceman.png')]
+		protected var playerImg:Class;
+		
+		//飞行背包的 喷气素材
+		[Embed(source='../../../../../src/assets/textures/effects/jet.png')]
+		protected var jetImg:Class;
 		
 		private var _bullets:FlxGroup;
 		private var currentBul:uint = 0;
+		
+		//飞行背包 粒子发射器
+		private var _jumpEffect:FlxSprite;
+		private var jetPack:FlxEmitter;
+		//飞行背包的 气体 消失的时间，变量，计时用，-1为不计时
+		private var jetPackCountDown:Number = -1;
+		
+		//飞行背包的气体消失时间的初始值，设置为0.5秒
+		private const COUNT_DOWN:Number = 0.5;
+		private var _isJump:Boolean;
 		
 		public function Player(startX:Number,startY:Number) 
 		{
@@ -58,21 +73,19 @@ package com.eingzone.lbb.actors
 			//当不按按钮的时候，人物加速度为0，就那么人物会收到drag影响而停下来
 			acceleration.x = 0;
 			
-			if(FlxG.keys.LEFT)
-			{
-				facing = LEFT;
-				acceleration.x = -drag.x;
-			}
-			else if(FlxG.keys.RIGHT)
-			{
-				facing = RIGHT;
-				acceleration.x = drag.x;
-			}
+			facing = RIGHT;
+			acceleration.x = drag.x;
 			
-			if(FlxG.keys.justPressed('X'))
+			if (FlxG.mouse.justPressed())
 			{
+				_isJump = true;
+				if(velocity.y == 0)
+				{
+					var je:PlayerJumpEffect = new PlayerJumpEffect(this.x-8,this.y);
+					FlxG.state.add(je);
+				}
 				velocity.y = -JUMP_ACCELERATION;
-				FlxG.play(JumpSound);
+				
 			}
 			
 			//子弹发射设置
@@ -114,6 +127,15 @@ package com.eingzone.lbb.actors
 				//y轴速度不为0 的时候，播放跳跃的动画
 				play("jump");
 			}
+			else if(velocity.y == 0 && _isJump)
+			{
+				_isJump = false;
+				
+				var jde:PlayerDownEffect = new PlayerDownEffect(this.x,this.y);
+				FlxG.state.add(jde);
+				trace(jde);
+				
+			}
 			else if(velocity.x == 0)
 			{
 				//y轴速度为 0 了，就判断这里
@@ -126,9 +148,6 @@ package com.eingzone.lbb.actors
 				play("run");
 			}
 			
-			/*** 切记 ***/
-			//这个语句一定要加上去，只要重写了update，就一定要调用 super的update
-			//否则不会刷新动画。。也不会相应你在这里所设置的控制
 			super.update();
 		}
 		

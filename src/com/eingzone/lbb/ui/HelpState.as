@@ -9,14 +9,12 @@ package com.eingzone.lbb.ui
 	 */
 	public class HelpState extends BaseOtherState 
 	{
-		[Embed(source="assets/textures/ui/4259064206_86afd57db2.jpg")]
+		[Embed(source="../../../../../src/assets/textures/ui/4259064206_86afd57db2.jpg")]
 		private var bgClass:Class;
 		
 		public function HelpState() 
 		{
 			super("Help", bgClass);
 		}
-		
 	}
-
 }
