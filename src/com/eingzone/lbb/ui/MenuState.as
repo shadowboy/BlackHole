@@ -1,10 +1,13 @@
 package com.eingzone.lbb.ui
 {
+	import com.eingzone.lbb.actors.Leaf;
+	
 	import org.flixel.FlxButton;
-	import org.flixel.FlxG;
-	import org.flixel.FlxState;
 	import org.flixel.FlxEmitter;
+	import org.flixel.FlxG;
+	import org.flixel.FlxParticle;
 	import org.flixel.FlxSprite;
+	import org.flixel.FlxState;
 	
 	/**
 	 * ...
@@ -16,6 +19,11 @@ package com.eingzone.lbb.ui
 		private var _optionBtn:FlxButton;
 		private var _aboutBtn:FlxButton;
 		private var _helpBtn:FlxButton;
+		
+		private var theEmitter:FlxEmitter;
+		
+		//Our white pixel (This is to prevent creating 200 new pixels all to a new variable each loop)
+		private var whitePixel:FlxParticle;
 		
 		public function MenuState() 
 		{
@@ -50,7 +58,7 @@ package com.eingzone.lbb.ui
 			_helpBtn.y = sy;
 			add(_helpBtn);
 			
-			test();
+			test2();
 		}
 		
 		private function playHandler():void 
@@ -75,6 +83,48 @@ package com.eingzone.lbb.ui
 		
 		private function test():void
 		{
+			theEmitter = new FlxEmitter(10, FlxG.height / 2, 200);
+			
+			//Now by default the emitter is going to have some properties set on it and can be used immediately
+			//but we're going to change a few things.
+			
+			//First this emitter is on the side of the screen, and we want to show off the movement of the particles
+			//so lets make them launch to the right.
+			theEmitter.setXSpeed(100, 200);
+			
+			//and lets funnel it a tad
+			theEmitter.setYSpeed( -50, 50);
+			
+			//Let's also make our pixels rebound off surfaces
+			theEmitter.bounce = .8;
+			
+			theEmitter.gravity = 200;
+			//Now let's add the emitter to the state.
+			add(theEmitter);
+			
+			//Now it's almost ready to use, but first we need to give it some pixels to spit out!
+			//Lets fill the emitter with some white pixels
+			for (var i:int = 0; i < theEmitter.maxSize/2; i++) {
+				whitePixel = new FlxParticle();
+				whitePixel.makeGraphic(2, 2, 0xFFFFFFFF);
+				whitePixel.visible = false; //Make sure the particle doesn't show up at (0, 0)
+				theEmitter.add(whitePixel);
+				whitePixel = new FlxParticle();
+				whitePixel.makeGraphic(1, 1, 0xFFFFFFFF);
+				whitePixel.visible = false;
+				theEmitter.add(whitePixel);
+			}
+			
+			theEmitter.start(false, 3, .01);
+		}
+		
+		private function test2():void
+		{
+			for(var i:int=0;i<10;i++)
+			{
+				var l:Leaf = new Leaf(120+FlxG.random()*100,120+FlxG.random()*100);
+				add(l);
+			}
 			
 		}
 	}
