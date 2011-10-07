@@ -9,12 +9,12 @@ package com.eingzone.lbb.actors
 	
 	/**
 	 * ...
-	 * @author GameCloudStudio
+	 * @author Andy
 	 */
 	public class Player extends FlxSprite 
 	{
 		//人物移动的速度得值
-		protected static const PLAYER_RUN_SPEED:int = 80;
+		protected static const PLAYER_RUN_SPEED:int = 90;
 		//人物收到的重力加速度的值
 		protected static const GRAVITY_ACCELERATION:Number = 420;
 		//人物跳跃时的加速度
@@ -92,7 +92,7 @@ package com.eingzone.lbb.actors
 		public override function update():void
 		{
 			//当不按按钮的时候，人物加速度为0，就那么人物会收到drag影响而停下来
-			acceleration.x = 0;
+			acceleration.x = 2;
 			
 			facing = RIGHT;
 			acceleration.x = drag.x;

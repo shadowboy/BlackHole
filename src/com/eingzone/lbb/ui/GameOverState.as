@@ -2,6 +2,7 @@ package com.eingzone.lbb.ui
 {
 	import com.eingzone.lbb.ui.GameState;
 	
+	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
 	import org.flixel.FlxState;
 	import org.flixel.FlxText;
@@ -14,24 +15,45 @@ package com.eingzone.lbb.ui
 	{
 		//胜利画面的等待时间计数
 		private var _time:Number;
+		private var _backBtn:FlxButton;
+		private var _retryBtn:FlxButton;
+		
 		override public function create():void 
 		{
 			_time = 0;
 			FlxG.flash(0xffffffff, 1);
 			add(new FlxText(100, 50, 100, 'GAME OVER'));
+			
+			_retryBtn = new FlxButton(0, 0, "retry", retryHandler);
+			_retryBtn.x = (FlxG.width - _retryBtn.width)/2;
+			_retryBtn.y = FlxG.height*0.5;
+			add(_retryBtn);
+			
+			_backBtn = new FlxButton(0, 0, "back", backHandler);
+			_backBtn.x = (FlxG.width - _backBtn.width)/2;
+			_backBtn.y = FlxG.height*0.5+30;
+			add(_backBtn);
 		}
 		
-		override public function update():void 
+		private function retryHandler():void
 		{
-			_time += FlxG.elapsed;
-			if (_time>5) 
-			{
-				FlxG.fade(0xffffffff, 1, onPlay);
-			}
-			super.update();
+			FlxG.fade(0xffffffff, 1, goGamePlayState);
 		}
 		
-		private function onPlay():void
+		
+		private function goGamePlayState():void
+		{
+			// TODO Auto Generated method stub
+			FlxG.switchState(new GameState());
+		}
+		
+		private function backHandler():void
+		{
+			FlxG.fade(0xffffffff, 1, goMenuStatus);
+		}
+		
+		
+		private function goMenuStatus():void
 		{
 			FlxG.switchState(new MenuState());
 		}

@@ -33,6 +33,8 @@ package com.eingzone.lbb.ui
 	{
 		[Embed(source='../../../../../src/assets/textures/tiles/tech_tiles.png')]
 		protected var tileImg:Class;
+		[Embed(source='../../../../../src/assets/audio/effects/heart_bit.mp3')]
+		protected var heartBitSnd:Class;
         
 		private var _pauseBtn:FlxButton;
 		private var _jumpBtn:FlxButton;
@@ -49,6 +51,10 @@ package com.eingzone.lbb.ui
 		private var _score:int = 0;
 		private var _scoreText:FlxText;
 		private var _coinGroup:FlxGroup;
+		
+		//bullet time
+		private var _bulletTimeStart:Boolean;
+		private var _bulletTimeDurating:Number;
 		
 				
 		public function GameState() 
@@ -79,6 +85,17 @@ package com.eingzone.lbb.ui
 			addCoins();
 			addEnemies();
 			
+			
+			
+		}
+		
+		public function startBulletTime(time:int = 1):void
+		{
+			FlxG.timeScale = .2;
+			_bulletTimeStart = true;
+			_bulletTimeDurating = time;
+			FlxG.play(heartBitSnd);
+//			FlxG.music.pause();
 		}
 		
 		private function addEnemies():void
@@ -223,6 +240,26 @@ package com.eingzone.lbb.ui
 			{
 				FlxG.switchState(new GameOverState());
 			}
+			
+			if(FlxG.keys.T && false == _bulletTimeStart)
+			{
+				startBulletTime();
+			}
+			
+			//bullet time
+			if(_bulletTimeStart)
+			{
+				if(_bulletTimeDurating>0)
+				{
+					_bulletTimeDurating -= FlxG.elapsed;
+				}
+				else
+				{
+					_bulletTimeStart = false;
+					FlxG.timeScale = 1;
+				}
+				trace("_bulletTimeDurating:",_bulletTimeDurating);
+			}
 			super.update();
 		}
 		
@@ -263,6 +300,7 @@ package com.eingzone.lbb.ui
 		
 		override public function destroy():void
 		{
+			FlxG.timeScale = 1;
 			_player.destroy();
 			_walls.destroy();
 			_bullets.destroy()
