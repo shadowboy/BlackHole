@@ -9,12 +9,19 @@ package com.eingzone.lbb.actors
 		protected var tileImg:Class;
 		
 		
-		public function PlayerJumpEffect(x:int,y:int)
+		public function PlayerJumpEffect()
 		{
 			super(x,y);
 			this.loadGraphic(tileImg,true,true,8,8);
 			
 			this.addAnimation("show",[0,1,2,3,4,5,4,3,2,1,0],24);
+		}
+		
+		public function playAt(x:int,y:int):void
+		{
+			
+			this.reset(x,y);
+			this.finished = false;
 			this.play("show");
 		}
 		

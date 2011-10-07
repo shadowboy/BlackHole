@@ -1,6 +1,7 @@
 package com.eingzone.lbb.ui
 {
 	import com.eingzone.lbb.actors.BigRock;
+	import com.eingzone.lbb.actors.Enemy;
 	import com.eingzone.lbb.actors.Player;
 	import com.eingzone.lbb.decales.Coin;
 	import com.eingzone.lbb.projectiles.Bullet;
@@ -33,11 +34,13 @@ package com.eingzone.lbb.ui
 		[Embed(source='../../../../../src/assets/textures/tiles/tech_tiles.png')]
 		protected var tileImg:Class;
         
-		private var _pauseBtn:org.flixel.FlxButton
+		private var _pauseBtn:FlxButton;
+		private var _jumpBtn:FlxButton;
 		private var _player:Player;
 		private var _bigRock:BigRock;
 		private var _bullets:FlxGroup;
 		private var _walls:FlxGroup;
+		private var _enemies:FlxGroup;
 		
 		//地图块
 		protected var _background:FlxGroup;
@@ -52,7 +55,7 @@ package com.eingzone.lbb.ui
 		{
 			super();
 			
-			_player =  new Player(60, 20);
+			_player =  new Player(10, 20);
 			_bigRock = new BigRock(10,10);
 			initState();
 			
@@ -62,7 +65,7 @@ package com.eingzone.lbb.ui
 			add(_player);
 			add(_bigRock);
 			
-			FlxG.debug=true; // enable debug console
+			FlxG.debug = true; // enable debug console
 			
 			FlxG.log("test trace"); //OUTPUT: test trace
 			
@@ -74,11 +77,27 @@ package com.eingzone.lbb.ui
 			
 			//加入可以拾取的金币
 			addCoins();
+			addEnemies();
+			
+		}
+		
+		private function addEnemies():void
+		{
+			_enemies = new FlxGroup();
+			
+			for(var i:int = 0;i<10;i++){
+				//var enemy:Enemy = new Enemy(60+i*30,10);
+				//_enemies.add(enemy);
+			}
+			add(_enemies);
 		}
 		
 		private function addHUD():void
 		{
-			// TODO Auto Generated method stub
+			_jumpBtn = new FlxButton(260,220,"jump",jumpHandler);
+			_jumpBtn.scrollFactor = new FlxPoint(0,0);
+			add(_jumpBtn);
+			
 			_scoreText = new FlxText(200,10,150);
 			_scoreText.size = 12
 			_scoreText.scrollFactor = new FlxPoint(0,0);
@@ -101,7 +120,7 @@ package com.eingzone.lbb.ui
 			var coin:Coin;
 			for (var i:int = 0; i < 5; i++) 
 			{
-				coin = new Coin(160 + i * 30, 20);
+				coin = new Coin();
 				_coinGroup.add(coin);
 			}
 			add(_coinGroup);
@@ -109,11 +128,11 @@ package com.eingzone.lbb.ui
 		
 		private function initState():void
 		{
-			FlxG.camera.setBounds(0, 0, 6400, 4800);
+			//FlxG.camera.setBounds(0, 0, 6400, 4800);
 		   
 			//设置地图边界
 			//边界设置，超过边界的东东即便显示，也不会进行碰撞检测等
-			FlxG.worldBounds = new FlxRect(0, 0, 6400, 4800);
+			//FlxG.worldBounds = new FlxRect(0, 0, 6400, 4800);
 		}
 		
 		private function addBullets():void
@@ -122,8 +141,8 @@ package com.eingzone.lbb.ui
 			var bul:Bullet;
 			for (var i:int = 0; i < 10; i++)
 			{
-					bul = new Bullet();
-					_bullets.add(bul);
+				bul = new Bullet();
+				_bullets.add(bul);
 			}
 			add(_bullets);
 		   
@@ -142,7 +161,6 @@ package com.eingzone.lbb.ui
 			//
 			var mv:MediumView = new MediumView();
 			_background.add(mv);
-			
 			add(_background);
 			
 			_walls = new FlxGroup();
@@ -163,19 +181,23 @@ package com.eingzone.lbb.ui
 			//trace("player x:",_player.x," >_walls.length *500+10:",_wallCount *250+10);
 			if(_player.x>_wallCount *320)
 			{
-				
 				var g:GroundView = new GroundView();
-				g.x = _wallCount *320+10;
-				g.y = _wallCount*150;
+				g.x = _wallCount *g.width+60;
+				//g.y = _wallCount*150;
 				_walls.add(g);
 				_wallCount++;
 				if(_walls.length>3)
 				{
 					_walls.members.shift();
 				}
-				
-				_walls.update();
-				trace("walls length:",_walls.length);
+				for (var i:int = 0; i < _coinGroup.length; i++) 
+				{
+					var coin:Coin = _coinGroup.members[i] as Coin;
+					coin.showCoin(100+g.x+60*i,g.y-300);
+				}
+				var enemy:Enemy = new Enemy(_player.x+200,_player.y-200);
+				trace(_player.x+200,_player.y-200);
+				_enemies.add(enemy);
 			}
 		}
 		
@@ -183,13 +205,15 @@ package com.eingzone.lbb.ui
 		{
 			_score += FlxG.elapsed*100
 			_scoreText.text = "Score:"+String(_score);
-			FlxG.log("player y:"+_player.y);
+			//
 			createGround();
 			FlxG.worldBounds = new FlxRect((FlxG.camera.scroll.x), (FlxG.camera.scroll.y), FlxG.camera.width, FlxG.camera.height);
 			
-			FlxG.camera.follow(_player);
+			FlxG.camera.follow(_player,FlxCamera.STYLE_TOPDOWN);
 			FlxG.collide(_walls, _player);
 			FlxG.collide(_walls, _bigRock);
+			FlxG.collide(_walls,_enemies);
+			FlxG.collide(_player,_enemies,playerEnemiesCollide);
 			FlxG.collide(_bullets, _walls);
 			
 			FlxG.collide(_coinGroup, _walls);
@@ -197,10 +221,15 @@ package com.eingzone.lbb.ui
 			
 			if(_player.y>(_walls.getFirstAlive() as GroundView).y+300)
 			{
-				//FlxG.switchState(new GameOverState());
+				FlxG.switchState(new GameOverState());
 			}
-			
 			super.update();
+		}
+		
+		private function playerEnemiesCollide(obj:FlxObject,obj2:FlxObject):void
+		{
+			(obj as Player).reduceSpeed();
+			trace(obj,obj2);
 		}
 		
 		override public function draw():void
@@ -224,6 +253,21 @@ package com.eingzone.lbb.ui
 				_scoreText.text = "Score:"+String(_score);
 				coin.getCoin();
 			}
+		}
+		
+		private function jumpHandler():void
+		{
+			trace("jump");
+			_player.jump = true;
+		}
+		
+		override public function destroy():void
+		{
+			_player.destroy();
+			_walls.destroy();
+			_bullets.destroy()
+			_bigRock.destroy();
+			super.destroy();
 		}
 	}
 }

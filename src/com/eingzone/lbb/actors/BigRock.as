@@ -48,6 +48,11 @@ package com.eingzone.lbb.actors
 			acceleration.x = drag.x;
 			
 			play("run");
+			
+			if(this.velocity.y == 0)
+			{
+				FlxG.shake(0.005);
+			}
 			super.update();
 		}
 		

@@ -9,12 +9,17 @@ package com.eingzone.lbb.actors
 		protected var tileImg:Class;
 		
 		
-		public function PlayerDownEffect(x:int,y:int)
+		public function PlayerDownEffect()
 		{
 			super(x,y);
 			this.loadGraphic(tileImg,true,true,16,16);
-			
 			this.addAnimation("show",[0,1,2,3,4,5],24);
+		}
+		
+		public function playAt(x:int,y:int):void
+		{
+			this.reset(x,y);
+			this.finished = false;
 			this.play("show");
 		}
 		

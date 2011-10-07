@@ -1,10 +1,14 @@
 package com.eingzone.lbb.tiles 
 {
+	import flash.display.Sprite;
+	
 	import org.flixel.FlxCamera;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxSprite;
 	import org.flixel.FlxTileblock;
 	import org.flixel.FlxTilemap;
+
 	/**
 	 * ...
 	 * @author GameCloudStudio

@@ -2,6 +2,7 @@ package com.eingzone.lbb.decales
 {
 	import org.flixel.FlxG;
 	import org.flixel.FlxSprite;
+	import org.flixel.FlxText;
 	
 	/**
 	 * ...
@@ -15,23 +16,42 @@ package com.eingzone.lbb.decales
 		//拾取金币时的音效
 		[Embed(source = '../../../../../src/assets/audio/decales/pickup.mp3')]
 		protected var getSnd:Class;
+		protected var _score:FlxText;
 		//金币是否已经被拾取的 标识
 		public var hasGotten:Boolean = false;
-		public function Coin(px:Number,py:Number):void 
+		
+		/**
+		 * 
+		 * @param px
+		 * @param py
+		 * 
+		 */		
+		public function Coin():void 
 		{
 			loadGraphic(coinImg, true, false, 8, 8);
 			//设置coin的坐标
 			//这里 y 坐标向上移动一个 coin 的高度，
 			//主要是方便 如果将coin 直接放在平台上时不会与平台重叠
-			this.y -= (px + this.height);
-			this.x = px;
+			
 			//金币动画
 			addAnimation('roll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 12);
-			play('roll');
+			
 			//给金币一个 y 轴方向的加速度以及最大速度
 			//因为本教程是让金币从高空中落下
+			
+			_score = new FlxText(this.x,this.y,30,"+50");
+		}
+		
+		public function showCoin(px:int,py:int):void
+		{
+			this.reset(px,py);
+			
 			acceleration.y = 300;
 			maxVelocity.y = 300;
+			
+			hasGotten = false;
+			this.finished = false;
+			play('roll');
 		}
 		
 		//获取金币时的方法
@@ -39,11 +59,9 @@ package com.eingzone.lbb.decales
 		{
 			//获取金币时 设置为 true
 			hasGotten = true;
-			//同时将金币的y 速度 设置为 向上
-			//让金币获取时 有个 向上弹起的动作
 			this.velocity.y = -0.5 * this.acceleration.y;
-			//播放获取金币时的音效。
 			FlxG.play(getSnd);
+			FlxG.state.add(_score);
 		}
 		
 		//重写 update
