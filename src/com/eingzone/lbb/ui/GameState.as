@@ -47,6 +47,7 @@ package com.eingzone.lbb.ui
 		//地图块
 		protected var _background:FlxGroup;
 		private var _wallCount:Number = 0;
+		private var _playerStartX:int = 0;
 		//分数
 		private var _score:int = 0;
 		private var _scoreText:FlxText;
@@ -61,8 +62,8 @@ package com.eingzone.lbb.ui
 		{
 			super();
 			
-			_player =  new Player(10, 20);
-			_bigRock = new BigRock(10,10);
+			_player =  new Player(80, 20);
+			_bigRock = new BigRock(0,10);
 			initState();
 			
 			addWalls();
@@ -89,7 +90,7 @@ package com.eingzone.lbb.ui
 			
 		}
 		
-		public function startBulletTime(time:int = 1):void
+		public function startBulletTime(time:Number = .5):void
 		{
 			FlxG.timeScale = .2;
 			_bulletTimeStart = true;
@@ -135,7 +136,7 @@ package com.eingzone.lbb.ui
 		{
 			_coinGroup = new FlxGroup();
 			var coin:Coin;
-			for (var i:int = 0; i < 5; i++) 
+			for (var i:int = 0; i < 10; i++) 
 			{
 				coin = new Coin();
 				_coinGroup.add(coin);
@@ -196,7 +197,7 @@ package com.eingzone.lbb.ui
 		private function createGround():void
 		{
 			//trace("player x:",_player.x," >_walls.length *500+10:",_wallCount *250+10);
-			if(_player.x>_wallCount *320)
+			if(_player.x>_wallCount *1200)
 			{
 				var g:GroundView = new GroundView();
 				g.x = _wallCount *g.width+60;
@@ -210,7 +211,8 @@ package com.eingzone.lbb.ui
 				for (var i:int = 0; i < _coinGroup.length; i++) 
 				{
 					var coin:Coin = _coinGroup.members[i] as Coin;
-					coin.showCoin(100+g.x+60*i,g.y-300);
+					coin.showCoin(100+g.x+60*i,g.y-500);
+					
 				}
 				var enemy:Enemy = new Enemy(_player.x+200,_player.y-200);
 				trace(_player.x+200,_player.y-200);
@@ -220,13 +222,12 @@ package com.eingzone.lbb.ui
 		
 		override public function update():void 
 		{
-			_score += FlxG.elapsed*100
-			_scoreText.text = "Score:"+String(_score);
+			_scoreText.text = "Score:"+String(FlxG.score);
 			//
 			createGround();
 			FlxG.worldBounds = new FlxRect((FlxG.camera.scroll.x), (FlxG.camera.scroll.y), FlxG.camera.width, FlxG.camera.height);
 			
-			FlxG.camera.follow(_player,FlxCamera.STYLE_TOPDOWN);
+			
 			FlxG.collide(_walls, _player);
 			FlxG.collide(_walls, _bigRock);
 			FlxG.collide(_walls,_enemies);
@@ -236,9 +237,13 @@ package com.eingzone.lbb.ui
 			FlxG.collide(_coinGroup, _walls);
 			FlxG.overlap(_player, _coinGroup, getCoin);
 			
-			if(_player.y>(_walls.getFirstAlive() as GroundView).y+300)
+			if(_player.y>(_walls.getFirstAlive() as GroundView).y+500)
 			{
 				FlxG.switchState(new GameOverState());
+			}
+			else
+			{
+				FlxG.camera.follow(_player,FlxCamera.STYLE_TOPDOWN);
 			}
 			
 			if(FlxG.keys.T && false == _bulletTimeStart)
@@ -258,14 +263,12 @@ package com.eingzone.lbb.ui
 					_bulletTimeStart = false;
 					FlxG.timeScale = 1;
 				}
-				trace("_bulletTimeDurating:",_bulletTimeDurating);
 			}
 			super.update();
 		}
 		
 		private function playerEnemiesCollide(obj:FlxObject,obj2:FlxObject):void
 		{
-			(obj as Player).reduceSpeed();
 			trace(obj,obj2);
 		}
 		
@@ -286,8 +289,6 @@ package com.eingzone.lbb.ui
 			//当金币没有被获取时，才获取金币
 			if (!coin.hasGotten) 
 			{
-				_score += 50;
-				_scoreText.text = "Score:"+String(_score);
 				coin.getCoin();
 			}
 		}

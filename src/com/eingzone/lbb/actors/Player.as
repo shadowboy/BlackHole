@@ -14,14 +14,17 @@ package com.eingzone.lbb.actors
 	public class Player extends FlxSprite 
 	{
 		//人物移动的速度得值
-		protected static const PLAYER_RUN_SPEED:int = 90;
+		protected static const PLAYER_RUN_SPEED:int = 130;
 		//人物收到的重力加速度的值
 		protected static const GRAVITY_ACCELERATION:Number = 420;
 		//人物跳跃时的加速度
-		protected static const JUMP_ACCELERATION:Number = 200;
+		protected static const JUMP_ACCELERATION:Number = 260;
 		
 		[Embed(source = '../../../../../src/assets/textures/actors/spaceman.png')]
 		protected var playerImg:Class;
+		
+		[Embed(source = '../../../../../src/assets/textures/actors/duck.png')]
+		protected var DuckImg:Class;
 		
 		//飞行背包的 喷气素材
 		[Embed(source='../../../../../src/assets/textures/effects/jet.png')]
@@ -45,7 +48,7 @@ package com.eingzone.lbb.actors
 		public function Player(startX:Number,startY:Number) 
 		{
 			super(startX, startY);
-			loadGraphic(playerImg, true, true, 8, 8);
+			loadGraphic(DuckImg, true, true, 16, 18);
 			
 			drag.x = PLAYER_RUN_SPEED * 8;
 			acceleration.y = GRAVITY_ACCELERATION;
@@ -54,12 +57,10 @@ package com.eingzone.lbb.actors
 			maxVelocity.y = JUMP_ACCELERATION;
 			
 			addAnimation("idle", [0]);
-			addAnimation("run", [1, 2, 3, 0], 12);
-			addAnimation("jump", [4]);
-			addAnimation("idle_up", [5]);
-			addAnimation("run_up", [6, 7, 8, 5], 12);
-			addAnimation("jump_up", [9]);
-			addAnimation("jump_down", [10]);
+			addAnimation("run", [0, 1, 2], 12);
+			addAnimation("jump", [1]);
+			addAnimation("idle_up", [0]);
+
 			
 			_jumpEffect = new PlayerJumpEffect();
 			_downEffect = new PlayerDownEffect();
@@ -102,7 +103,7 @@ package com.eingzone.lbb.actors
 				_isJump = true;
 				if(velocity.y == 0)
 				{
-					_jumpEffect.playAt(this.x-8,this.y);
+					_jumpEffect.playAt(this.x-8,this.y+8);
 					FlxG.state.add(_jumpEffect);
 				}
 				velocity.y = -JUMP_ACCELERATION;
@@ -146,7 +147,7 @@ package com.eingzone.lbb.actors
 			{
 				_isJump = false;
 				
-				_downEffect.playAt(this.x,this.y);
+				_downEffect.playAt(this.x,this.y+8);
 				FlxG.state.add(_downEffect);
 			}
 			else if(velocity.x == 0)

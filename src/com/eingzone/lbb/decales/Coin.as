@@ -72,6 +72,7 @@ package com.eingzone.lbb.decales
 			if (velocity.y>=50 && hasGotten) 
 			{
 				//将金币 kill 掉
+				FlxG.score+=50;
 				this.kill();
 			}
 			//别忘了

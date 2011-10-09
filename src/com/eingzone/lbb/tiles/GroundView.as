@@ -5,6 +5,7 @@ package com.eingzone.lbb.tiles
 	import org.flixel.FlxCamera;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxObject;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxTileblock;
 	import org.flixel.FlxTilemap;
@@ -15,7 +16,7 @@ package com.eingzone.lbb.tiles
 	 */
 	public class GroundView extends FlxTilemap
 	{
-		[Embed(source='../../../../../src/assets/textures/tiles/tech_tiles.png')]
+		[Embed(source='../../../../../src/assets/textures/tiles.png')]
 		protected var tileImg:Class;
 		
 		// XML
@@ -26,7 +27,11 @@ package com.eingzone.lbb.tiles
 		{
 			super();
 
-			this.loadMap(new tileData(), tileImg, 8, 8);
+			this.loadMap(new tileData(), tileImg, 16, 16);
+			this.setTileProperties(13,FlxObject.NONE);
+			this.setTileProperties(14,FlxObject.NONE);
+			this.setTileProperties(16,FlxObject.NONE);
+			this.setTileProperties(17,FlxObject.NONE);
 		}
 		
 	}
