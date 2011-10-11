@@ -98,7 +98,7 @@ package com.eingzone.lbb.actors
 			facing = RIGHT;
 			acceleration.x = drag.x;
 			
-			if (FlxG.mouse.justPressed() && velocity.y == 0)
+			if (FlxG.mouse.justPressed() && velocity.y == 0 && hover(50,10,600,400))
 			{
 				_isJump = true;
 				if(velocity.y == 0)
@@ -162,6 +162,22 @@ package com.eingzone.lbb.actors
 				play("run");
 			}
 			super.update();
+		}
+		
+		/**
+		 * 判断鼠标所在位置 
+		 * @param x
+		 * @param y
+		 * @param width
+		 * @param height
+		 * @return 
+		 * 
+		 */		
+		public function hover(x:Number, y:Number, width:int, height:int):Boolean 
+		{
+			var mx:int = FlxG.mouse.screenX;
+			var my:int = FlxG.mouse.screenY;
+			return ( (mx > x) && (mx < x + width) ) && ( (my > y) && (my < y + height) );
 		}
 		
 		/**

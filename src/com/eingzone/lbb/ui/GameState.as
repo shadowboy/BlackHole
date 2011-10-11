@@ -111,11 +111,7 @@ package com.eingzone.lbb.ui
 		}
 		
 		private function addHUD():void
-		{
-			_jumpBtn = new FlxButton(260,220,"jump",jumpHandler);
-			_jumpBtn.scrollFactor = new FlxPoint(0,0);
-			add(_jumpBtn);
-			
+		{		
 			_scoreText = new FlxText(200,10,150);
 			_scoreText.size = 12
 			_scoreText.scrollFactor = new FlxPoint(0,0);
@@ -129,7 +125,12 @@ package com.eingzone.lbb.ui
 		
 		private function pauseHandler():void 
 		{
-			FlxG.paused = true;
+			trace(this,"pause");
+			if(FlxG.timeScale>0){
+				FlxG.timeScale = 0;
+			}else {
+				FlxG.timeScale = 1;
+			}
 		}
 		
 		private function addCoins():void
