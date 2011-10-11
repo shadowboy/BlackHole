@@ -57,8 +57,6 @@ package com.eingzone.lbb.ui
 			_helpBtn.x = cx;
 			_helpBtn.y = sy;
 			add(_helpBtn);
-			
-			test2();
 		}
 		
 		private function playHandler():void 
@@ -83,7 +81,7 @@ package com.eingzone.lbb.ui
 		
 		private function test():void
 		{
-			theEmitter = new FlxEmitter(10, FlxG.height / 2, 200);
+			theEmitter = new FlxEmitter(10, FlxG.height / 2, 10);
 			
 			//Now by default the emitter is going to have some properties set on it and can be used immediately
 			//but we're going to change a few things.
