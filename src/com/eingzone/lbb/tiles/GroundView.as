@@ -20,7 +20,7 @@ package com.eingzone.lbb.tiles
 		protected var tileImg:Class;
 		
 		// XML
-		[Embed(source = "../../../../../src/assets/levels/mapCSV_Group1_Map1.csv", mimeType = "application/octet-stream")] 
+		[Embed(source = "../../../../../src/assets/levels/mapCSV_Level1_Map.csv", mimeType = "application/octet-stream")] 
 		private var tileData:Class;
 		
 		public function GroundView() 

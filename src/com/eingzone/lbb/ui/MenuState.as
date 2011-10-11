@@ -1,6 +1,7 @@
 package com.eingzone.lbb.ui
 {
 	import com.eingzone.lbb.actors.Leaf;
+	import com.eingzone.lbb.tiles.Level1;
 	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxEmitter;
@@ -27,6 +28,9 @@ package com.eingzone.lbb.ui
 		
 		public function MenuState() 
 		{
+			var l:Level1 = new Level1();
+			add(l);
+			return;
 			FlxG.mouse.show();
 			
 			var cx:int = (FlxG.width-80)/2;
