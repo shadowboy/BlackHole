@@ -17,8 +17,6 @@ package game.projectiles
 		[Embed(source = '../../assets/textures/projectiles/bullet.png')]
 		protected var bulImg:Class;
 		
-		private var _walls:FlxGroup;
-		
 		public function Bullet():void 
 		{
 			//记得每个FlxSprite的子类构造方法这里 都顺手写一个这个哦
@@ -55,10 +53,6 @@ package game.projectiles
 		 */
 		public function shoot(sPosX:Number,sPosY:Number,velX:Number,velY:Number):void 
 		{
-			//reset方法，是将该object的一些属性重置
-			//重置 exist 为 true ，dead（是否死亡）为 false
-			//参数1：要将该object 重置到的 x坐标
-			//参数2：要将该object 重置到的 y坐标
 			reset(sPosX, sPosY);
 			
 			//将参数中的速度赋值给 子弹
@@ -117,11 +111,6 @@ package game.projectiles
 			{
 				super.update();
 			}
-		}
-		
-		public function set walls(value:FlxGroup):void 
-		{
-			_walls = value;
 		}
 	}
 }

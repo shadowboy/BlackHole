@@ -1,6 +1,7 @@
 package game.actors
 {
 	import flash.media.Video;
+	import game.Registry;
 	
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
@@ -40,6 +41,7 @@ package game.actors
 		private var _downEffect:PlayerDownEffect;
 		
 		private var _jumpStatus:int;
+		private var _pressTime:int;
 		
 		/**
 		 *  
@@ -68,14 +70,6 @@ package game.actors
 			_downEffect = new PlayerDownEffect();
 		}
 		
-		/**
-		 * 
-		 */
-		public function set bullets(value:FlxGroup):void 
-		{
-			_bullets = value;
-		}
-		
 		public function reduceSpeed():void
 		{
 			if(drag.x>100)
@@ -95,15 +89,30 @@ package game.actors
 			facing = RIGHT;
 			acceleration.x = drag.x;
 			
-			if (FlxG.mouse.justPressed() && hover(50,10,600,400))
+			if (FlxG.mouse.justPressed())
 			{
+				trace("justPressed");
+				_pressTime = 0;
+			}
+			
+			if (FlxG.mouse.pressed())
+			{
+				trace("pressed");
+				_pressTime ++;
+			}
+			
+			if (FlxG.mouse.justReleased())
+			{
+				trace("justReleased:" + _pressTime);
+				if (_pressTime > 15)_pressTime = 15;
+				var jumpSpeed:Number = (_pressTime / 15) * JUMP_ACCELERATION;
 				if(velocity.y == 0)
 				{
 					_jumpStatus = FIRST_JUMP;
 					
 					_jumpEffect.playAt(this.x-8,this.y+8);
 					FlxG.state.add(_jumpEffect);
-					velocity.y = -JUMP_ACCELERATION;
+					velocity.y = -jumpSpeed;
 				}
 				else if (_jumpStatus == FIRST_JUMP)
 				{
@@ -111,30 +120,28 @@ package game.actors
 					
 					_jumpEffect.playAt(this.x-8,this.y+8);
 					FlxG.state.add(_jumpEffect);
-					velocity.y = -JUMP_ACCELERATION;
+					velocity.y = -jumpSpeed;
 				}
+			}
+			
+			if (FlxG.mouse.justPressed() && hover(50,10,600,400))
+			{
+				
 				
 			}
 			
 			//子弹发射设置
-			if (_bullets!=null) 
+			if (FlxG.keys.justPressed('C')) 
 			{
-				if (FlxG.keys.justPressed('C')) 
+				if (Registry.bullets!=null) 
 				{
 					trace(_bulletIndex);
+
+					trace(Registry.bullets.members[_bulletIndex]);
+					Registry.bullets.members[_bulletIndex].shoot(x + 4, y, 250, 0);
 					
-					//按 上 的时候 向上 发射子弹
-					if (facing==LEFT) 
-					{
-						_bullets.members[_bulletIndex].shoot(x-4, y, -250, 0);
-					}
-					else if(facing==RIGHT)
-					{
-						_bullets.members[_bulletIndex].shoot(x+4, y, 250, 0);
-					}
 					//子弹已经发射，索引变成下一个的
 					_bulletIndex++;
-					
 					//求余数的运算，这样 索引就会 循环了
 					if (_bulletIndex >= 10)
 					{
@@ -152,10 +159,10 @@ package game.actors
 			}
 			else if(velocity.y == 0 && _jumpStatus!=0)
 			{
-				_jumpStatus = 0;
-				
 				_downEffect.playAt(this.x,this.y+8);
 				FlxG.state.add(_downEffect);
+				
+				_jumpStatus = 0;
 			}
 			else if(velocity.x == 0)
 			{
