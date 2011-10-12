@@ -50,11 +50,13 @@ package game.tiles
 			_skyMap.loadMap(new skyCSV, skyTilesPNG, 192, 336);
 			_skyMap.setTileProperties(1, FlxObject.NONE);
 			_skyMap.scrollFactor.x = 0.9;
+			_skyMap.scrollFactor.y = 0;
 			
 			_treeMap = new FlxTilemap();
 			_treeMap.loadMap(new treesCSV, treeTilesPNG, 192, 336);
 			_treeMap.setTileProperties(1, FlxObject.NONE);
 			_treeMap.scrollFactor.x = 0.6;
+			_treeMap.scrollFactor.y = 0;
 			
 			_map = new FlxTilemap();
 			_map.loadMap(new mapCVS, mapTilesPNG, 16, 16);
@@ -69,10 +71,23 @@ package game.tiles
 			add(_treeMap);
 			add(_map);
 			
-			parseEnemies();
+			parseStars();
 		}
 		
-		private function parseEnemies():void
+		public function get stars():FlxGroup 
+		{
+			return _stars;
+		}
+		
+		public function get map():FlxTilemap 
+		{
+			return _map;
+		}
+		
+		/**
+		 * parse stars
+		 */
+		private function parseStars():void
 		{
 			_starMap = new FlxTilemap();
 			_starMap.loadMap(new starsCVS, starPNG, 16, 16);
@@ -91,6 +106,7 @@ package game.tiles
 				}
 			}
 		}
+		
 		
 	}
 

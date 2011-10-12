@@ -20,6 +20,9 @@ package game.actors
 		//人物跳跃时的加速度
 		protected static const JUMP_ACCELERATION:Number = 260;
 		
+		protected static const FIRST_JUMP:int = 1;
+		protected static const SECOND_JUMP:int = 2;
+		
 		[Embed(source = '../../assets/textures/actors/spaceman.png')]
 		protected var playerImg:Class;
 		
@@ -31,13 +34,12 @@ package game.actors
 		protected var jetImg:Class;
 		
 		private var _bullets:FlxGroup;
-		private var _curBullet:uint = 0;
+		private var _bulletIndex:uint = 0;
 		
 		private var _jumpEffect:PlayerJumpEffect
 		private var _downEffect:PlayerDownEffect;
 		
-		private var _jump:Boolean;
-		private var _isJump:Boolean;
+		private var _jumpStatus:int;
 		
 		/**
 		 *  
@@ -74,11 +76,6 @@ package game.actors
 			_bullets = value;
 		}
 		
-		public function set jump(value:Boolean):void
-		{
-			_jump = value;
-		}
-		
 		public function reduceSpeed():void
 		{
 			if(drag.x>100)
@@ -98,15 +95,25 @@ package game.actors
 			facing = RIGHT;
 			acceleration.x = drag.x;
 			
-			if (FlxG.mouse.justPressed() && velocity.y == 0 && hover(50,10,600,400))
+			if (FlxG.mouse.justPressed() && hover(50,10,600,400))
 			{
-				_isJump = true;
 				if(velocity.y == 0)
 				{
+					_jumpStatus = FIRST_JUMP;
+					
 					_jumpEffect.playAt(this.x-8,this.y+8);
 					FlxG.state.add(_jumpEffect);
+					velocity.y = -JUMP_ACCELERATION;
 				}
-				velocity.y = -JUMP_ACCELERATION;
+				else if (_jumpStatus == FIRST_JUMP)
+				{
+					_jumpStatus = SECOND_JUMP;
+					
+					_jumpEffect.playAt(this.x-8,this.y+8);
+					FlxG.state.add(_jumpEffect);
+					velocity.y = -JUMP_ACCELERATION;
+				}
+				
 			}
 			
 			//子弹发射设置
@@ -114,24 +121,24 @@ package game.actors
 			{
 				if (FlxG.keys.justPressed('C')) 
 				{
-					trace(_curBullet);
+					trace(_bulletIndex);
 					
 					//按 上 的时候 向上 发射子弹
 					if (facing==LEFT) 
 					{
-						_bullets.members[_curBullet].shoot(x-4, y, -250, 0);
+						_bullets.members[_bulletIndex].shoot(x-4, y, -250, 0);
 					}
 					else if(facing==RIGHT)
 					{
-						_bullets.members[_curBullet].shoot(x+4, y, 250, 0);
+						_bullets.members[_bulletIndex].shoot(x+4, y, 250, 0);
 					}
 					//子弹已经发射，索引变成下一个的
-					_curBullet++;
+					_bulletIndex++;
 					
 					//求余数的运算，这样 索引就会 循环了
-					if (_curBullet >= 10)
+					if (_bulletIndex >= 10)
 					{
-						_curBullet = 0;
+						_bulletIndex = 0;
 					}
 					
 				}
@@ -143,9 +150,9 @@ package game.actors
 				//y轴速度不为0 的时候，播放跳跃的动画
 				play("jump");
 			}
-			else if(velocity.y == 0 && _isJump)
+			else if(velocity.y == 0 && _jumpStatus!=0)
 			{
-				_isJump = false;
+				_jumpStatus = 0;
 				
 				_downEffect.playAt(this.x,this.y+8);
 				FlxG.state.add(_downEffect);

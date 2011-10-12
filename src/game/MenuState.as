@@ -2,6 +2,7 @@ package game
 {
 	import game.actors.Leaf;
 	import game.tiles.Level1;
+	import org.flixel.FlxText;
 	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxEmitter;
@@ -57,6 +58,12 @@ package game
 			_helpBtn.x = cx;
 			_helpBtn.y = sy;
 			add(_helpBtn);
+			
+			
+			var score:FlxText = new FlxText(100, 100, 30, "+50");
+			score.x = 100;
+			score.y = 100;
+			add(score);
 		}
 		
 		private function playHandler():void 
@@ -77,32 +84,33 @@ package game
 		private function optionHandler():void 
 		{
 			//FlxG.switchState(new OptionState);
+			test();
 		}
 		
 		private function test():void
 		{
-			theEmitter = new FlxEmitter(10, FlxG.height / 2, 10);
+			theEmitter = new FlxEmitter(100, FlxG.height / 2, 30);
 			
 			//Now by default the emitter is going to have some properties set on it and can be used immediately
 			//but we're going to change a few things.
 			
 			//First this emitter is on the side of the screen, and we want to show off the movement of the particles
 			//so lets make them launch to the right.
-			theEmitter.setXSpeed(100, 200);
+			theEmitter.setXSpeed(-50, 50);
 			
 			//and lets funnel it a tad
-			theEmitter.setYSpeed( -50, 50);
+			theEmitter.setYSpeed(-50, 50);
 			
 			//Let's also make our pixels rebound off surfaces
 			theEmitter.bounce = .8;
 			
-			theEmitter.gravity = 200;
+			theEmitter.gravity = 100;
 			//Now let's add the emitter to the state.
 			add(theEmitter);
 			
 			//Now it's almost ready to use, but first we need to give it some pixels to spit out!
 			//Lets fill the emitter with some white pixels
-			for (var i:int = 0; i < theEmitter.maxSize/2; i++) {
+			for (var i:int = 0; i < theEmitter.maxSize; i++) {
 				whitePixel = new FlxParticle();
 				whitePixel.makeGraphic(2, 2, 0xFFFFFFFF);
 				whitePixel.visible = false; //Make sure the particle doesn't show up at (0, 0)
@@ -113,7 +121,7 @@ package game
 				theEmitter.add(whitePixel);
 			}
 			
-			theEmitter.start(false, 3, .01);
+			theEmitter.start(true, 1, .01);
 		}
 		
 		private function test2():void
