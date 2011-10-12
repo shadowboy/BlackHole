@@ -9,7 +9,9 @@
 .settings
 
 #Flashdevelop
+*.as3proj
 obj/*
+
 
 bin/*
 bin-debug/*
