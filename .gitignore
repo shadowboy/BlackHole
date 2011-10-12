@@ -12,7 +12,6 @@
 *.as3proj
 obj/*
 
-
 bin/*
 bin-debug/*
 bin-release/*
