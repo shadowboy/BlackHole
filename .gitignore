@@ -1,13 +1,16 @@
 #Mac
 .DS_Store
+
 #Flash Builder
 .actionScriptProperties
 .flexProperties
 .flexLibProperties
 .project
 .settings
+
 #Flashdevelop
-obj
+obj/*
+
 bin/*
 bin-debug/*
 bin-release/*
