@@ -39,7 +39,8 @@ package game.decales
 			loadGraphic(coinImg, true, false, 8, 8);
 			addAnimation('roll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 12);
 			
-			_score = new FlxText(0,0,30,"+50");
+			_score = new FlxText(0, 0, 30, "+50");
+			createEmitter();
 		}
 		
 		/**
@@ -63,7 +64,11 @@ package game.decales
 		{
 			//获取金币时 设置为 true
 			hasGotten = true;
-			firework();
+			
+			FlxG.state.add(_emitter);
+			_emitter.x = x;
+			_emitter.y = y;
+			_emitter.start(true, 1, .01);
 			
 			this.velocity.y = -100;
 			acceleration.y = 300;
@@ -84,6 +89,7 @@ package game.decales
 			{
 				FlxG.score += 50;
 				FlxG.state.remove(_score);
+				FlxG.state.remove(_emitter);
 				this.kill();
 			}
 			if (hasGotten)
@@ -98,29 +104,13 @@ package game.decales
 		/**
 		 * 吃金币的火花
 		 */
-		private function firework():void
+		private function createEmitter():void
 		{
 			_emitter = new FlxEmitter(this.x, this.y, 10);
-			
-			//Now by default the emitter is going to have some properties set on it and can be used immediately
-			//but we're going to change a few things.
-			
-			//First this emitter is on the side of the screen, and we want to show off the movement of the particles
-			//so lets make them launch to the right.
 			_emitter.setXSpeed(-50, 50);
-			
-			//and lets funnel it a tad
 			_emitter.setYSpeed(-50, 50);
-			
-			//Let's also make our pixels rebound off surfaces
 			_emitter.bounce = .8;
-			
 			_emitter.gravity = 100;
-			//Now let's add the emitter to the state.
-			FlxG.state.add(_emitter);
-			
-			//Now it's almost ready to use, but first we need to give it some pixels to spit out!
-			//Lets fill the emitter with some white pixels
 			var whitePixel:FlxParticle;
 			for (var i:int = 0; i < _emitter.maxSize; i++) {
 				whitePixel = new FlxParticle();
@@ -132,8 +122,6 @@ package game.decales
 				whitePixel.visible = false;
 				_emitter.add(whitePixel);
 			}
-			
-			_emitter.start(true, 1, .01);
 		}
 	}
 	

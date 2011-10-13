@@ -2,6 +2,7 @@ package game.actors
 {
 	import flash.media.Video;
 	import game.Registry;
+	import org.flixel.FlxParticle;
 	
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
@@ -50,6 +51,10 @@ package game.actors
 		private var _jumpStatus:int;
 		private var _jumpInSkyTime:int;
 		
+		private var _superState:Boolean;
+		private var _superStateCount:int;
+		private var _superStateMaxTime:int = 120;
+		
 		/**
 		 *  
 		 * @param startX
@@ -82,9 +87,10 @@ package game.actors
 		 */
 		public function speedUp():void
 		{
-			if(drag.x>100)
+			if (!_superState)
 			{
-				drag.x -=10;
+				_superState = true;
+				_superStateCount = 0;
 			}
 		}
 		
@@ -93,11 +99,36 @@ package game.actors
 		 */		
 		public override function update():void
 		{
-			//当不按按钮的时候，人物加速度为0，就那么人物会收到drag影响而停下来
-			acceleration.x = 2;
-			
 			facing = RIGHT;
-			acceleration.x = drag.x;
+			if (_superState)
+			{
+				// super state count time
+				_superStateCount++;
+				if (_superStateCount > _superStateMaxTime)
+				{
+					//super state is over
+					acceleration.x = drag.x;
+					acceleration.y = GRAVITY_ACCELERATION;
+					_superState = false;
+					
+					//remove firworks
+					FlxG.state.remove(Registry.emitters);
+				}
+				else
+				{
+					acceleration.x = 600;
+					acceleration.y = -650;
+					//add firworks
+					FlxG.state.add(Registry.emitters);
+					Registry.emitters.start(false, 3, .01);
+					Registry.emitters.x = x+8;
+					Registry.emitters.y = y+18;
+				}
+			}
+			else
+			{
+				acceleration.x = drag.x;
+			}
 			
 			if (FlxG.mouse.justPressed())
 			{
@@ -182,6 +213,8 @@ package game.actors
 				//y轴速度为 0 且 x轴速度不为 0，就播放跑步动画
 				play("run");
 			}
+			
+			
 			super.update();
 		}
 		
