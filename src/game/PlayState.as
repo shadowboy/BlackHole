@@ -4,6 +4,7 @@ package game
 	import game.actors.Enemy;
 	import game.actors.Player;
 	import game.decales.Coin;
+	import game.decales.RocketCoin;
 	import game.projectiles.Bullet;
 	import game.tiles.DistantView;
 	import game.tiles.GroundView;
@@ -58,6 +59,7 @@ package game
 		private var _bulletTimeDurating:Number;
 		
 		private var _level:Level1;
+		private var _level2:Level1;
 		
 		
 		
@@ -89,6 +91,8 @@ package game
 			add(_bullets);
 			add(_scoreText);
 			add(_pauseBtn);
+			
+			add(new RocketCoin(100, 60));
 		}
 		
 		private function createBullets():void 
@@ -239,11 +243,16 @@ package game
 		 */
 		private function getCoin(ob1:FlxSprite,ob2:FlxSprite):void 
 		{
-			var coin:Coin = ob2 as Coin;
+			//var coin:Coin = ob2 as Coin;
 			//当金币没有被获取时，才获取金币
-			if (!coin.hasGotten) 
+			if ((ob2 is Coin) && !(ob2 as Coin).hasGotten) 
 			{
-				coin.getCoin();
+				(ob2 as Coin).getCoin();
+			}
+			if ((ob2 is RocketCoin) && !(ob2 as RocketCoin).hasGotten) 
+			{
+				(ob2 as RocketCoin).getCoin();
+				(ob1 as Player).speedUp();
 			}
 		}
 		

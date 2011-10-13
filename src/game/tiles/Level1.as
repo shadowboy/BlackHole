@@ -1,6 +1,7 @@
 package game.tiles 
 {
 	import game.decales.Coin;
+	import game.decales.RocketCoin;
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxObject;
 	import org.flixel.FlxTilemap;
@@ -97,11 +98,17 @@ package game.tiles
 			{
 				for (var j:int = 0; j < _starMap.heightInTiles; j++)
 				{
-					if (_starMap.getTile(i, j) == 1)
+					var index:int = _starMap.getTile(i, j);
+					if (index == 1)
 					{
 						var coin:Coin = new Coin();
 						coin.showCoin(i * 16, j * 16);
 						_stars.add(coin);
+					}
+					else if (index == 2)
+					{
+						var rCoin:RocketCoin = new RocketCoin(i * 16, j * 16);
+						_stars.add(rCoin);
 					}
 				}
 			}
