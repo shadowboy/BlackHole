@@ -12,7 +12,7 @@ package
 		public function Preloader() 
 		{
 			super();
-			this.className = "UnluckRabbit";
+			this.className = "UnluckyRabbit";
 			this.myURL = "http://www.f1982.com";
 			this.minDisplayTime = 3
 		}

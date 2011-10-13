@@ -37,6 +37,9 @@ package game
 		
 		[Embed(source='../assets/audio/effects/heart_bit.mp3')]
 		protected var heartBitSnd:Class;
+		
+		[Embed(source='../assets/textures/ui/pause.png')]
+		private var pauseBtnPNG:Class;
         
 		private var _pauseBtn:FlxButton;
 		private var _player:Player;
@@ -52,6 +55,7 @@ package game
 		private var _bulletTimeDurating:Number;
 		
 		private var _level:Level1;
+		
 		
 		/**
 		 * 
@@ -76,12 +80,13 @@ package game
 			Registry.bullets = _bullets;
 			
 			//create display
-			_scoreText = new FlxText(200,10,150);
-			_scoreText.size = 12
+			_scoreText = new FlxText(180,2,100,null,true);
+			_scoreText.size = 8
 			_scoreText.scrollFactor = new FlxPoint(0,0);
 			_scoreText.text = "Score:0";
 			
-			_pauseBtn = new FlxButton(10, 10, "Pause", pauseHandler);
+			_pauseBtn = new FlxButton(2, 2, "||", pauseHandler);
+			_pauseBtn.loadGraphic(pauseBtnPNG,true,false,8,8)
 			_pauseBtn.scrollFactor = new FlxPoint(0,0);
 			
 			
@@ -89,7 +94,7 @@ package game
 			add(_level);
 			add(_level.stars);
 			add(_player);
-			add(_bigRock);
+			//add(_bigRock);
 			add(_bullets);
 			add(_scoreText);
 			add(_pauseBtn);

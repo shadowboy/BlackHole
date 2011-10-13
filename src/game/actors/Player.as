@@ -68,8 +68,8 @@ package game.actors
 			maxVelocity.y = JUMP_MAX;
 			
 			addAnimation("idle", [0]);
-			addAnimation("run", [0, 1, 2], 12);
-			addAnimation("jump", [1]);
+			addAnimation("run", [0, 1, 0,2], 12);
+			addAnimation("jump", [3]);
 			addAnimation("idle_up", [0]);
 			
 			
@@ -77,7 +77,10 @@ package game.actors
 			_downEffect = new PlayerDownEffect();
 		}
 		
-		public function reduceSpeed():void
+		/**
+		 * 
+		 */
+		public function speedUp():void
 		{
 			if(drag.x>100)
 			{

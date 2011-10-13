@@ -31,7 +31,7 @@ package game
 			FlxG.mouse.show();
 			
 			var cx:int = (FlxG.width-80)/2;
-			var sy:int = 120;
+			var sy:int = 60;
 			
 			_playBtn = new FlxButton(0, 0, "play", playHandler);
 			_playBtn.x = cx;
