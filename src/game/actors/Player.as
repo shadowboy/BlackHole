@@ -15,11 +15,12 @@ package game.actors
 	public class Player extends FlxSprite 
 	{
 		//人物移动的速度得值
-		protected static const PLAYER_RUN_SPEED:int = 130;
+		protected static const PLAYER_RUN_SPEED:int = 70;
 		//人物收到的重力加速度的值
-		protected static const GRAVITY_ACCELERATION:Number = 420;
+		protected static const GRAVITY_ACCELERATION:Number = 400;
 		//人物跳跃时的加速度
-		protected static const JUMP_ACCELERATION:Number = 260;
+		protected static const JUMP_MAX:Number = 120;
+		protected static const JUMP_MIN:Number = 60;
 		
 		protected static const FIRST_JUMP:int = 1;
 		protected static const SECOND_JUMP:int = 2;
@@ -34,6 +35,12 @@ package game.actors
 		[Embed(source='../../assets/textures/effects/jet.png')]
 		protected var jetImg:Class;
 		
+		[Embed(source='../../assets/audio/land.mp3')]
+		protected var landSnd:Class;
+		
+		[Embed(source='../../assets/audio/jump.mp3')]
+		protected var jumpSnd:Class;
+		
 		private var _bullets:FlxGroup;
 		private var _bulletIndex:uint = 0;
 		
@@ -41,7 +48,7 @@ package game.actors
 		private var _downEffect:PlayerDownEffect;
 		
 		private var _jumpStatus:int;
-		private var _pressTime:int;
+		private var _jumpInSkyTime:int;
 		
 		/**
 		 *  
@@ -58,13 +65,13 @@ package game.actors
 			acceleration.y = GRAVITY_ACCELERATION;
 			
 			maxVelocity.x = PLAYER_RUN_SPEED;
-			maxVelocity.y = JUMP_ACCELERATION;
+			maxVelocity.y = JUMP_MAX;
 			
 			addAnimation("idle", [0]);
 			addAnimation("run", [0, 1, 2], 12);
 			addAnimation("jump", [1]);
 			addAnimation("idle_up", [0]);
-
+			
 			
 			_jumpEffect = new PlayerJumpEffect();
 			_downEffect = new PlayerDownEffect();
@@ -92,42 +99,40 @@ package game.actors
 			if (FlxG.mouse.justPressed())
 			{
 				trace("justPressed");
-				_pressTime = 0;
-			}
-			
-			if (FlxG.mouse.pressed())
-			{
-				trace("pressed");
-				_pressTime ++;
-			}
-			
-			if (FlxG.mouse.justReleased())
-			{
-				trace("justReleased:" + _pressTime);
-				if (_pressTime > 15)_pressTime = 15;
-				var jumpSpeed:Number = (_pressTime / 15) * JUMP_ACCELERATION;
-				if(velocity.y == 0)
+				if(velocity.y == 0 && _jumpStatus==0)
 				{
+					_jumpInSkyTime = 0;
 					_jumpStatus = FIRST_JUMP;
 					
 					_jumpEffect.playAt(this.x-8,this.y+8);
 					FlxG.state.add(_jumpEffect);
-					velocity.y = -jumpSpeed;
+					velocity.y = -JUMP_MIN;
+					
+					FlxG.play(jumpSnd);
 				}
-				else if (_jumpStatus == FIRST_JUMP)
+				else if (velocity.y>0 && _jumpStatus == FIRST_JUMP)
 				{
+					_jumpInSkyTime = 0;
 					_jumpStatus = SECOND_JUMP;
 					
 					_jumpEffect.playAt(this.x-8,this.y+8);
 					FlxG.state.add(_jumpEffect);
-					velocity.y = -jumpSpeed;
+					velocity.y = -JUMP_MIN;
+					
+					FlxG.play(jumpSnd);
 				}
 			}
 			
-			if (FlxG.mouse.justPressed() && hover(50,10,600,400))
+			if (FlxG.mouse.pressed())
 			{
-				
-				
+				if(_jumpStatus>0)
+				{
+					_jumpInSkyTime++;
+					if(_jumpInSkyTime<20)
+					{
+						velocity.y -=10;
+					}
+				}
 			}
 			
 			//子弹发射设置
@@ -135,9 +140,6 @@ package game.actors
 			{
 				if (Registry.bullets!=null) 
 				{
-					trace(_bulletIndex);
-
-					trace(Registry.bullets.members[_bulletIndex]);
 					Registry.bullets.members[_bulletIndex].shoot(x + 4, y, 250, 0);
 					
 					//子弹已经发射，索引变成下一个的
@@ -163,6 +165,8 @@ package game.actors
 				FlxG.state.add(_downEffect);
 				
 				_jumpStatus = 0;
+				_jumpInSkyTime = 0;
+				FlxG.play(landSnd);
 			}
 			else if(velocity.x == 0)
 			{
