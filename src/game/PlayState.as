@@ -1,5 +1,8 @@
 package game
 {
+	import flash.geom.Rectangle;
+	import flash.text.TextFormat;
+	
 	import game.actors.BigRock;
 	import game.actors.Enemy;
 	import game.actors.Player;
@@ -10,16 +13,14 @@ package game
 	import game.tiles.GroundView;
 	import game.tiles.Level1;
 	import game.tiles.MediumView;
-	import org.flixel.FlxEmitter;
-	import org.flixel.FlxParticle;
-	
-	import flash.geom.Rectangle;
 	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxCamera;
+	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxObject;
+	import org.flixel.FlxParticle;
 	import org.flixel.FlxPoint;
 	import org.flixel.FlxRect;
 	import org.flixel.FlxSprite;
@@ -137,10 +138,11 @@ package game
 		
 		private function createHub():void 
 		{
-			_scoreText = new FlxText(180,2,100,null,true);
-			_scoreText.size = 8
+			_scoreText = new FlxText(0,0,80,null,true);
+			_scoreText.setFormat(null,8,0xffffff,"left");
 			_scoreText.scrollFactor = new FlxPoint(0,0);
 			_scoreText.text = "Score:0";
+			_scoreText.x = FlxG.width-_scoreText.width;
 			
 			_pauseBtn = new FlxButton(2, 2, "||", pauseHandler);
 			_pauseBtn.loadGraphic(pauseBtnPNG,true,false,8,8)
@@ -185,6 +187,7 @@ package game
 			
 			//update score
 			_scoreText.text = "Score:"+String(FlxG.score);
+			_scoreText.x = FlxG.width-_scoreText.width;
 			
 			//collide
 			FlxG.collide(_level.map, _player);

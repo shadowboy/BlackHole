@@ -130,7 +130,8 @@ package game.actors
 				acceleration.x = drag.x;
 			}
 			
-			if (FlxG.mouse.justPressed())
+//			if (FlxG.mouse.justPressed())
+			if (FlxG.keys.justPressed("SPACE"))
 			{
 				trace("justPressed");
 				if(velocity.y == 0 && _jumpStatus==0)
@@ -157,7 +158,8 @@ package game.actors
 				}
 			}
 			
-			if (FlxG.mouse.pressed())
+//			if (FlxG.mouse.pressed())
+			if (FlxG.keys.pressed("SPACE"))
 			{
 				if(_jumpStatus>0)
 				{
@@ -213,8 +215,6 @@ package game.actors
 				//y轴速度为 0 且 x轴速度不为 0，就播放跑步动画
 				play("run");
 			}
-			
-			
 			super.update();
 		}
 		

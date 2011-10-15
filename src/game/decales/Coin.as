@@ -14,7 +14,7 @@ package game.decales
 	{
 		
 		//金币素材
-		[Embed(source = '../../assets/textures/decales/coin.png')]
+		[Embed(source = '../../assets/textures/decales/star.png')]
 		protected var coinImg:Class;
 		
 		//拾取金币时的音效
@@ -36,8 +36,8 @@ package game.decales
 		{
 			super(x, y);
 			
-			loadGraphic(coinImg, true, false, 8, 8);
-			addAnimation('roll', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 12);
+			loadGraphic(coinImg, false, false, 16, 16);
+			addAnimation('roll', [0,1]);
 			
 			_score = new FlxText(0, 0, 30, "+50");
 			createEmitter();

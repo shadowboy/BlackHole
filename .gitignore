@@ -1,6 +1,9 @@
 #Mac
 .DS_Store
 
+#Windows
+Thumb.db
+
 #Flash Builder
 .actionScriptProperties
 .flexProperties
@@ -12,7 +15,9 @@
 *.as3proj
 obj/*
 
+#Output folders
 bin/*
 bin-debug/*
 bin-release/*
+bin-release-temp/*
 bin-test/*
