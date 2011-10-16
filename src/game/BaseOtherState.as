@@ -29,7 +29,6 @@ package game
 			{
 				_bg = new FlxSprite();
 				_bg.loadGraphic(bgClass, false, false, FlxG.width, FlxG.height);
-				trace(_bg);
 				add(_bg);
 			}
 			

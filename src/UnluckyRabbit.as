@@ -5,10 +5,12 @@ package
 	import flash.display.StageOrientation;
 	import flash.display.StageScaleMode;
 	import flash.geom.Rectangle;
+	import flash.system.Capabilities;
 	
 	import game.MenuState;
 	
 	import org.flixel.FlxEmitter;
+	import org.flixel.FlxG;
 	import org.flixel.FlxGame;
 	import org.flixel.FlxSprite;
 	import org.flixel.system.debug.Log;
@@ -17,7 +19,7 @@ package
 	* this is the interface of game
 	* @author Andy Cao
 	*/
-	[SWF(width="960", height="640", backgroundColor="#000000")]
+	[SWF(width="480", height="320", backgroundColor="#000000")]
 	//[Frame(factoryClass="Preloader")]
 	public class UnluckyRabbit extends FlxGame
 	{
@@ -29,10 +31,26 @@ package
 			
 			//横屏模式
 			stage.setAspectRatio(StageAspectRatio.LANDSCAPE);
-			stage.setOrientation(StageOrientation.ROTATED_LEFT );
-			stage.autoOrients = true;
+			stage.setOrientation(StageOrientation.ROTATED_LEFT);
+			stage.autoOrients = false;
 			
-			super(480,320,MenuState,2);
+			var scale:int;
+			var w:int;
+			var h:int;
+			if(Capabilities.screenDPI>300)
+			{
+				scale = 4;
+				w = 240;
+				h = 160;
+			}
+			else
+			{
+				scale = 2;
+				w = 240;
+				h = 160;
+			}
+			
+			super(w,h,MenuState,2);
 		}
 	}
 }

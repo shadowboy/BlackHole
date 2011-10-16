@@ -2,7 +2,6 @@ package game
 {
 	import game.actors.Leaf;
 	import game.tiles.Level1;
-	import org.flixel.FlxText;
 	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxEmitter;
@@ -10,6 +9,7 @@ package game
 	import org.flixel.FlxParticle;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxState;
+	import org.flixel.FlxText;
 	
 	/**
 	 * ...
@@ -17,6 +17,9 @@ package game
 	 */
 	public class MenuState extends FlxState 
 	{
+		[Embed(source="../assets/textures/ui/4345441923_305fbde3a7.jpg")]
+		private var bgClass:Class;
+		
 		private var _playBtn:FlxButton;
 		private var _optionBtn:FlxButton;
 		private var _aboutBtn:FlxButton;
@@ -27,43 +30,42 @@ package game
 		
 		public function MenuState() 
 		{
-
 			FlxG.mouse.show();
 			
+			var bg:FlxSprite = new FlxSprite();
+			bg.loadGraphic(bgClass, false, false, FlxG.width, FlxG.height);
+			add(bg);
+			
 			var cx:int = (FlxG.width-80)/2;
-			var sy:int = int(FlxG.height/5*3);
+			var sy:int = int(FlxG.height/5*2);
+			var step:int = 20;
 			
 			_playBtn = new FlxButton(0, 0, "play", playHandler);
 			_playBtn.x = cx;
 			_playBtn.y = sy;
 			add(_playBtn);
 			
-			sy+= 25;
+			sy+= step;
 			
 			_optionBtn = new FlxButton(0, 0, "option", optionHandler);
 			_optionBtn.x = cx;
 			_optionBtn.y = sy;
 			add(_optionBtn);
 			
-			sy+= 25;
+			sy+= step;
 			
 			_aboutBtn = new FlxButton(0, 0, "about", aboutHandler);
 			_aboutBtn.x = cx;
 			_aboutBtn.y = sy;
 			add(_aboutBtn);
 			
-			sy+= 25;
+			sy+= step;
 			
 			_helpBtn = new FlxButton(100, 160, "help", helpHandler);
 			_helpBtn.x = cx;
 			_helpBtn.y = sy;
 			add(_helpBtn);
 			
-			
-			var score:FlxText = new FlxText(100, 100, 30, "+50");
-			score.x = 100;
-			score.y = 100;
-			add(score);
 		}
 		
 		private function playHandler():void 

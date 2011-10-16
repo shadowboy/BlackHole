@@ -21,7 +21,12 @@ package game
 		{
 			_time = 0;
 			FlxG.flash(0xffffffff, 1);
-			add(new FlxText(100, 50, 100, 'GAME OVER'));
+			var t:FlxText = new FlxText(0, 0, 100, 'GAME OVER');
+			t.x = (FlxG.width - t.width)/2;
+			t.y = 100;
+			add(t);
+			
+			
 			
 			_retryBtn = new FlxButton(0, 0, "retry", retryHandler);
 			_retryBtn.x = (FlxG.width - _retryBtn.width)/2;

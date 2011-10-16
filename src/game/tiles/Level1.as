@@ -66,6 +66,8 @@ package game.tiles
 			_map.setTileProperties(14,FlxObject.NONE);
 			_map.setTileProperties(16,FlxObject.NONE);
 			_map.setTileProperties(17, FlxObject.NONE);
+			_map.setTileProperties(58, FlxObject.NONE);
+			_map.setTileProperties(77, FlxObject.NONE);
 
 			
 			add(_skyMap);

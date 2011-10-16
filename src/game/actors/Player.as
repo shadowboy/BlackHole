@@ -1,12 +1,13 @@
 package game.actors
 {
 	import flash.media.Video;
+	
 	import game.Registry;
-	import org.flixel.FlxParticle;
 	
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxParticle;
 	import org.flixel.FlxSprite;
 	
 	/**
@@ -16,12 +17,12 @@ package game.actors
 	public class Player extends FlxSprite 
 	{
 		//人物移动的速度得值
-		protected static const PLAYER_RUN_SPEED:int = 70;
+		protected static const RUN_SPEED:int = 50;
 		//人物收到的重力加速度的值
 		protected static const GRAVITY_ACCELERATION:Number = 400;
 		//人物跳跃时的加速度
-		protected static const JUMP_MAX:Number = 120;
-		protected static const JUMP_MIN:Number = 60;
+		protected static const JUMP_MAX:Number = 240;
+		protected static const JUMP_MIN:Number = 120;
 		
 		protected static const FIRST_JUMP:int = 1;
 		protected static const SECOND_JUMP:int = 2;
@@ -45,7 +46,8 @@ package game.actors
 		private var _bullets:FlxGroup;
 		private var _bulletIndex:uint = 0;
 		
-		private var _jumpEffect:PlayerJumpEffect
+		private var _jumpEffect:PlayerJumpEffect;
+		private var _jumpEffect2:PlayerJumpEffectSecond;
 		private var _downEffect:PlayerDownEffect;
 		
 		private var _jumpStatus:int;
@@ -66,10 +68,10 @@ package game.actors
 			super(startX, startY);
 			loadGraphic(DuckImg, true, true, 16, 18);
 			
-			drag.x = PLAYER_RUN_SPEED * 8;
+			drag.x = RUN_SPEED;
 			acceleration.y = GRAVITY_ACCELERATION;
 			
-			maxVelocity.x = PLAYER_RUN_SPEED;
+			maxVelocity.x = RUN_SPEED*3;
 			maxVelocity.y = JUMP_MAX;
 			
 			addAnimation("idle", [0]);
@@ -79,6 +81,7 @@ package game.actors
 			
 			
 			_jumpEffect = new PlayerJumpEffect();
+			_jumpEffect2 = new PlayerJumpEffectSecond();
 			_downEffect = new PlayerDownEffect();
 		}
 		
@@ -130,8 +133,33 @@ package game.actors
 				acceleration.x = drag.x;
 			}
 			
-//			if (FlxG.mouse.justPressed())
-			if (FlxG.keys.justPressed("SPACE"))
+			//control
+			var justPressed:Boolean = false;
+			var pressed:Boolean = false;
+			if(false == FlxG.mobile)
+			{
+				if (FlxG.mouse.justPressed() && hover(0,10,FlxG.width,FlxG.height-10))
+				{
+					justPressed = true;
+				}
+				if(FlxG.mouse.pressed() && hover(0,10,FlxG.width,FlxG.height-10))
+				{
+					pressed = true;
+				}
+			}
+			else
+			{
+				if (FlxG.keys.justPressed("SPACE"))
+				{
+					justPressed = true;
+				}
+				if(FlxG.keys.pressed("SPACE"))
+				{
+					pressed = true;
+				}
+			}
+			
+			if (justPressed)
 			{
 				trace("justPressed");
 				if(velocity.y == 0 && _jumpStatus==0)
@@ -139,7 +167,7 @@ package game.actors
 					_jumpInSkyTime = 0;
 					_jumpStatus = FIRST_JUMP;
 					
-					_jumpEffect.playAt(this.x-8,this.y+8);
+					_jumpEffect.playAt(this.x-12,this.y+10);
 					FlxG.state.add(_jumpEffect);
 					velocity.y = -JUMP_MIN;
 					
@@ -150,16 +178,15 @@ package game.actors
 					_jumpInSkyTime = 0;
 					_jumpStatus = SECOND_JUMP;
 					
-					_jumpEffect.playAt(this.x-8,this.y+8);
-					FlxG.state.add(_jumpEffect);
-					velocity.y = -JUMP_MIN;
+					_jumpEffect2.playAt(this.x-22,this.y-9);
+					FlxG.state.add(_jumpEffect2);
+					velocity.y = -JUMP_MIN/2;
 					
 					FlxG.play(jumpSnd);
 				}
 			}
 			
-//			if (FlxG.mouse.pressed())
-			if (FlxG.keys.pressed("SPACE"))
+			if (pressed)
 			{
 				if(_jumpStatus>0)
 				{
@@ -197,7 +224,7 @@ package game.actors
 			}
 			else if(velocity.y == 0 && _jumpStatus!=0)
 			{
-				_downEffect.playAt(this.x,this.y+8);
+				_downEffect.playAt(this.x-7,this.y+14);
 				FlxG.state.add(_downEffect);
 				
 				_jumpStatus = 0;
@@ -213,7 +240,17 @@ package game.actors
 			else
 			{
 				//y轴速度为 0 且 x轴速度不为 0，就播放跑步动画
+				trace(this.velocity.x);
 				play("run");
+				if(this.velocity.x>120)
+				{
+					if(_jumpEffect.finished==true)
+					{
+						_jumpEffect.playAt(this.x-12,this.y+10);
+						FlxG.state.add(_jumpEffect);
+					}
+					
+				}
 			}
 			super.update();
 		}

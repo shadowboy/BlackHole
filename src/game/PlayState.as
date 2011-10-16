@@ -70,20 +70,16 @@ package game
 		public function PlayState() 
 		{
 			super();
-			
+			FlxG.mouse.hide();
 			//create actors
-			_player =  new Player(80, 20);
+			_player =  new Player(120, 0);
 			_bigRock = new BigRock(0,10);
 			_level = new Level1();
-			
 			//create bullets
 			createBullets();
 			createEmitters();
-			
 			//create display
 			createHub();
-			
-			
 			//add them to stage
 			add(_level);
 			add(_level.stars);
@@ -183,7 +179,7 @@ package game
 		override public function update():void 
 		{
 			FlxG.worldBounds = new FlxRect((FlxG.camera.scroll.x), (FlxG.camera.scroll.y), FlxG.camera.width, FlxG.camera.height);
-			FlxG.camera.follow(_player, FlxCamera.STYLE_TOPDOWN);
+			FlxG.camera.follow(_player, FlxCamera.STYLE_PLATFORMER);
 			
 			//update score
 			_scoreText.text = "Score:"+String(FlxG.score);
@@ -196,7 +192,7 @@ package game
 			FlxG.overlap(_player, _level.stars, getCoin);
 			
 			//player dead
-			if(_player.y>+500)
+			if(_player.y>+430)
 			{
 				FlxG.switchState(new OverState());
 			}
@@ -265,6 +261,7 @@ package game
 		override public function destroy():void
 		{
 			FlxG.timeScale = 1;
+			FlxG.mouse.show();
 			_player.destroy();
 			_bullets.destroy()
 			_bigRock.destroy();
