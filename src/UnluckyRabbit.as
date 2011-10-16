@@ -50,7 +50,7 @@ package
 				h = 160;
 			}
 			
-			super(w,h,MenuState,2);
+			super(240,160,MenuState,2);
 		}
 	}
 }
