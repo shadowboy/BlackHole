@@ -88,8 +88,6 @@ package game
 			add(_bullets);
 			add(_scoreText);
 			add(_pauseBtn);
-			
-			add(new RocketCoin(100, 60));
 		}
 		
 		private function createBullets():void 
@@ -179,7 +177,8 @@ package game
 		override public function update():void 
 		{
 			FlxG.worldBounds = new FlxRect((FlxG.camera.scroll.x), (FlxG.camera.scroll.y), FlxG.camera.width, FlxG.camera.height);
-			FlxG.camera.follow(_player, FlxCamera.STYLE_PLATFORMER);
+			FlxG.camera.follow(_player);
+			FlxG.camera.deadzone = new FlxRect(20,50,30,60);
 			
 			//update score
 			_scoreText.text = "Score:"+String(FlxG.score);

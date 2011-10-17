@@ -17,9 +17,9 @@ package game.tiles
 		[Embed(source = "../../assets/textures/backdrop.png")] 
 		public var skyTilesPNG:Class;
 		
-		[Embed(source = "../../assets/levels/mapCSV_Level1_Sky.csv", mimeType = "application/octet-stream")] 
+		[Embed(source = "../../assets/levels/mapCSV_Level1_Tree.csv", mimeType = "application/octet-stream")] 
 		public var treesCSV:Class;
-		[Embed(source = "../../assets/textures/tiles/medium_view.png")] 
+		[Embed(source = "../../assets/textures/tiles/trees.png")] 
 		public var treeTilesPNG:Class;
 		
 		[Embed(source = "../../assets/levels/mapCSV_Level1_Map.csv", mimeType = "application/octet-stream")] 
@@ -50,14 +50,14 @@ package game.tiles
 			_skyMap = new FlxTilemap();
 			_skyMap.loadMap(new skyCSV, skyTilesPNG, 192, 336);
 			_skyMap.setTileProperties(1, FlxObject.NONE);
-			_skyMap.scrollFactor.x = 0.9;
-			_skyMap.scrollFactor.y = 0;
+			_skyMap.scrollFactor.x = 0.1;
+			_skyMap.scrollFactor.y = 0.1;
 			
 			_treeMap = new FlxTilemap();
 			_treeMap.loadMap(new treesCSV, treeTilesPNG, 192, 336);
 			_treeMap.setTileProperties(1, FlxObject.NONE);
-			_treeMap.scrollFactor.x = 0.6;
-			_treeMap.scrollFactor.y = 0;
+			_treeMap.scrollFactor.x = 0.5;
+			_treeMap.scrollFactor.y = 0.3;
 			
 			_map = new FlxTilemap();
 			_map.loadMap(new mapCVS, mapTilesPNG, 16, 16);
@@ -115,8 +115,5 @@ package game.tiles
 				}
 			}
 		}
-		
-		
 	}
-
 }

@@ -7,6 +7,7 @@ package game.actors
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxObject;
 	import org.flixel.FlxParticle;
 	import org.flixel.FlxSprite;
 	
@@ -103,6 +104,7 @@ package game.actors
 		public override function update():void
 		{
 			facing = RIGHT;
+			//超级火箭跳跃
 			if (_superState)
 			{
 				// super state count time
@@ -133,7 +135,7 @@ package game.actors
 				acceleration.x = drag.x;
 			}
 			
-			//control
+			//控制器
 			var justPressed:Boolean = false;
 			var pressed:Boolean = false;
 			if(false == FlxG.mobile)
@@ -161,7 +163,6 @@ package game.actors
 			
 			if (justPressed)
 			{
-				trace("justPressed");
 				if(velocity.y == 0 && _jumpStatus==0)
 				{
 					_jumpInSkyTime = 0;
@@ -178,8 +179,8 @@ package game.actors
 					_jumpInSkyTime = 0;
 					_jumpStatus = SECOND_JUMP;
 					
-					_jumpEffect2.playAt(this.x-22,this.y-9);
-					FlxG.state.add(_jumpEffect2);
+					_downEffect.playAt(this.x-7,this.y+14);
+					FlxG.state.add(_downEffect);
 					velocity.y = -JUMP_MIN/2;
 					
 					FlxG.play(jumpSnd);
@@ -204,7 +205,6 @@ package game.actors
 				if (Registry.bullets!=null) 
 				{
 					Registry.bullets.members[_bulletIndex].shoot(x + 4, y, 250, 0);
-					
 					//子弹已经发射，索引变成下一个的
 					_bulletIndex++;
 					//求余数的运算，这样 索引就会 循环了
@@ -212,35 +212,32 @@ package game.actors
 					{
 						_bulletIndex = 0;
 					}
-					
 				}
 			}
 			
 			//以下是判断人物的一些速度状态来进行各种动画播放
 			if(velocity.y != 0)
 			{
-				//y轴速度不为0 的时候，播放跳跃的动画
 				play("jump");
 			}
 			else if(velocity.y == 0 && _jumpStatus!=0)
 			{
-				_downEffect.playAt(this.x-7,this.y+14);
-				FlxG.state.add(_downEffect);
-				
-				_jumpStatus = 0;
-				_jumpInSkyTime = 0;
-				FlxG.play(landSnd);
+				if(this.touching == FlxObject.FLOOR)
+				{
+					_downEffect.playAt(this.x-7,this.y+14);
+					FlxG.state.add(_downEffect);
+					
+					_jumpStatus = 0;
+					_jumpInSkyTime = 0;
+					FlxG.play(landSnd);
+				}
 			}
 			else if(velocity.x == 0)
 			{
-				//y轴速度为 0 了，就判断这里
-				//x轴速度为0 的时候，播放闲暇的动画
 				play("idle");
 			}
 			else
 			{
-				//y轴速度为 0 且 x轴速度不为 0，就播放跑步动画
-				trace(this.velocity.x);
 				play("run");
 				if(this.velocity.x>120)
 				{
@@ -249,7 +246,6 @@ package game.actors
 						_jumpEffect.playAt(this.x-12,this.y+10);
 						FlxG.state.add(_jumpEffect);
 					}
-					
 				}
 			}
 			super.update();
