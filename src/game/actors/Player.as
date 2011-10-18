@@ -140,11 +140,11 @@ package game.actors
 			var pressed:Boolean = false;
 			if(false == FlxG.mobile)
 			{
-				if (FlxG.mouse.justPressed() && hover(0,10,FlxG.width,FlxG.height-10))
+				if (FlxG.mouse.justPressed() && hover(0,20,FlxG.width,FlxG.height-20))
 				{
 					justPressed = true;
 				}
-				if(FlxG.mouse.pressed() && hover(0,10,FlxG.width,FlxG.height-10))
+				if(FlxG.mouse.pressed() && hover(0,20,FlxG.width,FlxG.height-20))
 				{
 					pressed = true;
 				}
