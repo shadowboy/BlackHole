@@ -1,8 +1,8 @@
 package game.actors
 {
 	import flash.media.Video;
-	import game.OverState;
 	
+	import game.OverState;
 	import game.Registry;
 	
 	import org.flixel.FlxEmitter;
@@ -88,6 +88,8 @@ package game.actors
 			_jumpEffect = new PlayerJumpEffect();
 			_jumpEffect2 = new PlayerJumpEffectSecond();
 			_downEffect = new PlayerDownEffect();
+            
+            Registry.paused = false;
 		}
 		
 		/**
@@ -119,7 +121,6 @@ package game.actors
 					acceleration.x = drag.x;
 					acceleration.y = GRAVITY_ACCELERATION;
 					_superState = false;
-					
 					//remove firworks
 					FlxG.state.remove(Registry.emitters);
 				}
@@ -263,7 +264,7 @@ package game.actors
 				kill();
 				FlxG.switchState(new OverState());
 			}
-			trace(this, "health:"+health+" finished:"+finished);
+			//trace(this, "health:"+health+" finished:"+finished);
 			super.update();
 		}
 		
