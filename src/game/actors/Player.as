@@ -1,6 +1,7 @@
 package game.actors
 {
 	import flash.media.Video;
+	import game.OverState;
 	
 	import game.Registry;
 	
@@ -76,11 +77,13 @@ package game.actors
 			maxVelocity.x = RUN_SPEED*3;
 			maxVelocity.y = JUMP_MAX;
 			
+			this.health = 1;
+			
 			addAnimation("idle", [0]);
 			addAnimation("run", [0, 1, 0,2], 12);
 			addAnimation("jump", [3]);
 			addAnimation("idle_up", [0]);
-			
+			addAnimation("dead", [0,1,2,3],12,true);
 			
 			_jumpEffect = new PlayerJumpEffect();
 			_jumpEffect2 = new PlayerJumpEffectSecond();
@@ -141,11 +144,11 @@ package game.actors
 			var pressed:Boolean = false;
 			if(false == FlxG.mobile)
 			{
-				if (FlxG.mouse.justPressed() && hover(0,20,FlxG.width,FlxG.height-20))
+				if (FlxG.mouse.justPressed() && hover(0,20,FlxG.width,FlxG.height-20) && !Registry.paused)
 				{
 					justPressed = true;
 				}
-				if(FlxG.mouse.pressed() && hover(0,20,FlxG.width,FlxG.height-20))
+				if(FlxG.mouse.pressed() && hover(0,20,FlxG.width,FlxG.height-20) && !Registry.paused)
 				{
 					pressed = true;
 				}
@@ -217,7 +220,11 @@ package game.actors
 			}
 			
 			//以下是判断人物的一些速度状态来进行各种动画播放
-			if(velocity.y != 0)
+			if (health <= 0)
+			{
+				play("dead");
+			}
+			else if(velocity.y != 0)
 			{
 				play("jump");
 			}
@@ -249,6 +256,14 @@ package game.actors
 					}
 				}
 			}
+			
+			
+			if (health <= 0 && finished)
+			{
+				kill();
+				FlxG.switchState(new OverState());
+			}
+			trace(this, "health:"+health+" finished:"+finished);
 			super.update();
 		}
 		
@@ -266,6 +281,11 @@ package game.actors
 			var mx:int = FlxG.mouse.screenX;
 			var my:int = FlxG.mouse.screenY;
 			return ( (mx > x) && (mx < x + width) ) && ( (my > y) && (my < y + height) );
+		}
+		
+		override public function hurt(Damage:Number):void 
+		{
+			health = health - Damage;
 		}
 		
 		/**

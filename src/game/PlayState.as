@@ -60,7 +60,6 @@ package game
 		private var _level2:Level1;
 		private var _gamePaused:Boolean;
 		private var pauseLayer:PauseState;
-		private var _pauseGroup:FlxGroup;
 		
 		/**
 		 * 
@@ -88,7 +87,9 @@ package game
 			add(_pauseBtn);
 			
 			pauseLayer = new PauseState();
-
+			pauseLayer.resumeCallback = resume;
+			pauseLayer.visible = false;
+			add(pauseLayer);
 		}
 		
 		private function createBullets():void 
@@ -162,18 +163,19 @@ package game
 		 */
 		private function pauseHandler():void 
 		{
-			_gamePaused = !_gamePaused;
+			Registry.paused = true;
 			
-			if (_gamePaused)
-			{
-				FlxG.timeScale = 0;
-				add(pauseLayer);
-			}
-			else
-			{
-				FlxG.timeScale = 1;
-				remove(pauseLayer);
-			}
+			FlxG.timeScale = 0;
+			pauseLayer.visible = true;
+			
+		}
+		
+		private function resume():void
+		{
+			trace(this, "resume");
+			Registry.paused = false;
+			FlxG.timeScale = 1
+			pauseLayer.visible = false;
 		}
 		
 		/**
@@ -197,9 +199,9 @@ package game
 			FlxG.overlap(_player, _level.stars, getCoin);
 			
 			//player dead
-			if(_player.y>+430)
+			if(_player.y > 430 && _player.health>0)
 			{
-				FlxG.switchState(new OverState());
+				_player.hurt(1);
 			}
 			
 			//test bullet time
