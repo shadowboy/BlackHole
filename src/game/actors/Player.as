@@ -44,6 +44,7 @@ package game.actors
 		[Embed(source='../../assets/audio/jump.mp3')]
 		protected var jumpSnd:Class;
 		
+		
 		private var _bullets:FlxGroup;
 		private var _bulletIndex:uint = 0;
 		
@@ -140,11 +141,11 @@ package game.actors
 			var pressed:Boolean = false;
 			if(false == FlxG.mobile)
 			{
-				if (FlxG.mouse.justPressed() && hover(0,10,FlxG.width,FlxG.height-10))
+				if (FlxG.mouse.justPressed() && hover(0,20,FlxG.width,FlxG.height-20))
 				{
 					justPressed = true;
 				}
-				if(FlxG.mouse.pressed() && hover(0,10,FlxG.width,FlxG.height-10))
+				if(FlxG.mouse.pressed() && hover(0,20,FlxG.width,FlxG.height-20))
 				{
 					pressed = true;
 				}

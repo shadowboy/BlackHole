@@ -4,10 +4,8 @@ package game.actors
 
 	public class PlayerDownEffect extends FlxSprite
 	{
-		//飞行背包的 喷气素材
 		[Embed(source='../../assets/textures/effects/down_dusty.png')]
 		protected var tileImg:Class;
-		
 		
 		public function PlayerDownEffect()
 		{

@@ -6,6 +6,7 @@ package
 	import flash.display.StageScaleMode;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
+	import game.test.Test;
 	
 	import game.MenuState;
 	
@@ -30,9 +31,9 @@ package
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
 			//横屏模式
-			stage.setAspectRatio(StageAspectRatio.LANDSCAPE);
-			stage.setOrientation(StageOrientation.ROTATED_LEFT);
-			stage.autoOrients = false;
+			//stage.setAspectRatio(StageAspectRatio.LANDSCAPE);
+			//stage.setOrientation(StageOrientation.ROTATED_LEFT);
+			//stage.autoOrients = false;
 			
 			var scale:int;
 			var w:int;
@@ -49,7 +50,6 @@ package
 				w = 240;
 				h = 160;
 			}
-			
 			super(240,160,MenuState,2);
 		}
 	}

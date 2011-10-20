@@ -30,19 +30,27 @@ package game
 		{
 			super();
 
-
 			_bg = new FlxSprite();
-			_bg.loadGraphic(bgClass, false, false, FlxG.width, FlxG.height);
+			//trace(FlxG.width, FlxG.height);
+			_bg.makeGraphic(FlxG.width, FlxG.height, 0xffcc0000);
 			add(_bg);
 			
 			_titleField = new FlxText(0, 0, 100, "Pause");
-			add(_titleField);
+			_titleField.x = (FlxG.width - _titleField.width) / 2;
+			_titleField.y = 30;
+			//add(_titleField);
 			
-			_resumeBtn = new FlxButton(FlxG.width-200, 40, "Resume", backHandler);
-			add(_resumeBtn);
+			var sy:int = FlxG.height / 2;
+			_resumeBtn = new FlxButton(0, 0, "Resume", backHandler);
+			_resumeBtn.x = int((FlxG.width - _resumeBtn.width) / 2);
+			_resumeBtn.y = sy;
+			//add(_resumeBtn);
 			
-			_backBtn = new FlxButton(FlxG.width-200, 80, "back", backHandler);
-			add(_backBtn);
+			sy += _resumeBtn.height+10;
+			_backBtn = new FlxButton(0, 0, "back", backHandler);
+			_backBtn.x = int((FlxG.width - _backBtn.width) / 2);
+			_backBtn.y = sy
+			//add(_backBtn);
 		}
 		
 		private function backHandler():void 
