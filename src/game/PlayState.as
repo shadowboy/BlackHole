@@ -51,18 +51,15 @@ package game
 		
 		private var _bullets:FlxGroup;
 		private var _emitter:FlxEmitter;
-		
 		//分数
 		private var _scoreText:FlxText;
-		
 		//子弹时间
 		private var _bulletTimeStart:Boolean;
 		private var _bulletTimeDurating:Number;
-		
 		private var _level:Level1;
 		private var _level2:Level1;
-		
-		
+		private var _gamePaused:Boolean;
+		private var pauseLayer:PauseState;
 		
 		/**
 		 * 
@@ -70,7 +67,7 @@ package game
 		public function PlayState() 
 		{
 			super();
-			FlxG.mouse.hide();
+			//FlxG.mouse.hide();
 			//create actors
 			_player =  new Player(120, 0);
 			_bigRock = new BigRock(0,10);
@@ -88,6 +85,11 @@ package game
 			add(_bullets);
 			add(_scoreText);
 			add(_pauseBtn);
+			
+			pauseLayer = new PauseState();
+			pauseLayer.resumeCallback = resume;
+			pauseLayer.visible = false;
+			add(pauseLayer);
 		}
 		
 		private function createBullets():void 
@@ -138,7 +140,7 @@ package game
 			_scoreText.text = "Score:0";
 			_scoreText.x = FlxG.width-_scoreText.width;
 			
-			_pauseBtn = new FlxButton(2, 2, "||", pauseHandler);
+			_pauseBtn = new FlxButton(2, 2, "", pauseHandler);
 			_pauseBtn.loadGraphic(pauseBtnPNG,true,false,8,8)
 			_pauseBtn.scrollFactor = new FlxPoint(0,0);
 		}
@@ -161,14 +163,19 @@ package game
 		 */
 		private function pauseHandler():void 
 		{
-			if (FlxG.timeScale > 0)
-			{
-				FlxG.timeScale = 0;
-			}
-			else 
-			{
-				FlxG.timeScale = 1;
-			}
+			Registry.paused = true;
+			
+			FlxG.timeScale = 0;
+			pauseLayer.visible = true;
+			
+		}
+		
+		private function resume():void
+		{
+			trace(this, "resume");
+			Registry.paused = false;
+			FlxG.timeScale = 1
+			pauseLayer.visible = false;
 		}
 		
 		/**
@@ -176,6 +183,7 @@ package game
 		 */
 		override public function update():void 
 		{
+			
 			FlxG.worldBounds = new FlxRect((FlxG.camera.scroll.x), (FlxG.camera.scroll.y), FlxG.camera.width, FlxG.camera.height);
 			FlxG.camera.follow(_player);
 			FlxG.camera.deadzone = new FlxRect(20,50,30,60);
@@ -191,9 +199,9 @@ package game
 			FlxG.overlap(_player, _level.stars, getCoin);
 			
 			//player dead
-			if(_player.y>+430)
+			if(_player.y > 430 && _player.health>0)
 			{
-				FlxG.switchState(new OverState());
+				_player.hurt(1);
 			}
 			
 			//test bullet time
@@ -223,6 +231,11 @@ package game
 			super.update();
 		}
 		
+		override public function draw():void 
+		{
+			
+			super.draw();
+		}
 		/**
 		 * player collide with enemies
 		 * 

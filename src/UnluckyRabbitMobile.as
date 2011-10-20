@@ -18,14 +18,11 @@ package
 	{
 		public function UnluckyRabbitMobile()
 		{
-			
 			// support autoOrients
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
-			
 			//横屏模式
-			
 			stage.setAspectRatio(StageAspectRatio.LANDSCAPE);
 			stage.setOrientation(StageOrientation.ROTATED_LEFT );
 			stage.autoOrients = false;

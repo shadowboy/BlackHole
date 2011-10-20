@@ -23,10 +23,8 @@ package game
 			FlxG.flash(0xffffffff, 1);
 			var t:FlxText = new FlxText(0, 0, 100, 'GAME OVER');
 			t.x = (FlxG.width - t.width)/2;
-			t.y = 100;
+			t.y = int(FlxG.height/5*2);
 			add(t);
-			
-			
 			
 			_retryBtn = new FlxButton(0, 0, "retry", retryHandler);
 			_retryBtn.x = (FlxG.width - _retryBtn.width)/2;
@@ -44,7 +42,6 @@ package game
 			FlxG.fade(0xffffffff, 1, goGamePlayState);
 		}
 		
-		
 		private function goGamePlayState():void
 		{
 			// TODO Auto Generated method stub
@@ -55,7 +52,6 @@ package game
 		{
 			FlxG.fade(0xffffffff, 1, goMenuStatus);
 		}
-		
 		
 		private function goMenuStatus():void
 		{

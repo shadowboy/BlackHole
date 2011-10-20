@@ -2,6 +2,7 @@ package game
 {
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
+	import org.flixel.FlxPoint;
 	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
@@ -25,30 +26,62 @@ package game
 		protected var _introField:FlxText;
 		protected var _resumeBtn:FlxButton;
 		protected var _backBtn:FlxButton;
+		protected var _resumeCallback:Function;
 		
 		public function PauseState() 
 		{
 			super();
 
-
 			_bg = new FlxSprite();
-			_bg.loadGraphic(bgClass, false, false, FlxG.width, FlxG.height);
+			_bg.makeGraphic(FlxG.width, FlxG.height, 0xffcc0000);
+			_bg.scrollFactor = new FlxPoint(0, 0);
 			add(_bg);
 			
 			_titleField = new FlxText(0, 0, 100, "Pause");
+			_titleField.x = (FlxG.width - _titleField.width) / 2;
+			_titleField.scrollFactor = new FlxPoint(0, 0);
+			_titleField.y = 30;
 			add(_titleField);
 			
-			_resumeBtn = new FlxButton(FlxG.width-200, 40, "Resume", backHandler);
+			var sy:int = FlxG.height / 2;
+			_resumeBtn = new FlxButton(0, 0, "Resume", resumeHandler);
+			_resumeBtn.scrollFactor = new FlxPoint(0, 0);
+			_resumeBtn.x = int((FlxG.width - _resumeBtn.width) / 2);
+			_resumeBtn.y = sy;
 			add(_resumeBtn);
 			
-			_backBtn = new FlxButton(FlxG.width-200, 80, "back", backHandler);
+			sy += _resumeBtn.height+10;
+			_backBtn = new FlxButton(0, 0, "back", backHandler);
+			_backBtn.scrollFactor = new FlxPoint(0, 0);
+			_backBtn.x = int((FlxG.width - _backBtn.width) / 2);
+			_backBtn.y = sy
 			add(_backBtn);
+		}
+		
+		public function set enabled(value:Boolean):void 
+		{
+			_backBtn.visible = value;
+			_resumeBtn.visible = value;
+		}
+		
+		private function resumeHandler():void 
+		{
+			if (_resumeCallback != null)
+			{
+				_resumeCallback();
+			}
 		}
 		
 		private function backHandler():void 
 		{
 			FlxG.switchState(new MenuState());
 		}
+		
+		public function set resumeCallback(value:Function):void 
+		{
+			_resumeCallback = value;
+		}
+		
 		
 	}
 

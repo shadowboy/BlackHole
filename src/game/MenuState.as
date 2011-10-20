@@ -34,7 +34,7 @@ package game
 			
 			var bg:FlxSprite = new FlxSprite();
 			bg.loadGraphic(bgClass, false, false, FlxG.width, FlxG.height);
-			add(bg);
+			//add(bg);
 			
 			var cx:int = (FlxG.width-80)/2;
 			var sy:int = int(FlxG.height/5*2);
