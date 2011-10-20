@@ -88,7 +88,7 @@ package game
 			
 			pauseLayer = new PauseState();
 			pauseLayer.resumeCallback = resume;
-			pauseLayer.visible = false;
+			pauseLayer.enabled = false;
 			add(pauseLayer);
 		}
 		
@@ -166,7 +166,7 @@ package game
 			Registry.paused = true;
 			
 			FlxG.timeScale = 0;
-			pauseLayer.visible = true;
+			pauseLayer.enabled = true;
 			
 		}
 		
@@ -175,7 +175,7 @@ package game
 			trace(this, "resume");
 			Registry.paused = false;
 			FlxG.timeScale = 1
-			pauseLayer.visible = false;
+			pauseLayer.enabled = false;
 		}
 		
 		/**

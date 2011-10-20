@@ -2,11 +2,11 @@ package game
 {
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
-	import org.flixel.FlxPoint;
 	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxState;
 	import org.flixel.FlxText;
@@ -58,10 +58,12 @@ package game
 			add(_backBtn);
 		}
 		
+		
 		public function set enabled(value:Boolean):void 
 		{
 			_backBtn.visible = value;
 			_resumeBtn.visible = value;
+			this.visible = value;
 		}
 		
 		private function resumeHandler():void 

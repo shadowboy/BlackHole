@@ -1,25 +1,36 @@
 package 
 {
-	import flash.display.Sprite;
+	import flash.desktop.NativeApplication;
 	import flash.events.Event;
+	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
+	import flash.ui.Multitouch;
+	import flash.ui.MultitouchInputMode;
 	
 	/**
 	 * ...
-	 * @author GameCloudStudio
+	 * @author Andy Cao
 	 */
 	public class Main extends Sprite 
 	{
 		
 		public function Main():void 
 		{
-			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
+			stage.addEventListener(Event.DEACTIVATE, deactivate);
+			
+			// touch or gesture?
+			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
+			
+			// entry point
 		}
 		
-		private function init(e:Event = null):void 
+		private function deactivate(e:Event):void 
 		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-			// entry point
+			// auto-close
+			NativeApplication.nativeApplication.exit();
 		}
 		
 	}
