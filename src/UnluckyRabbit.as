@@ -32,7 +32,7 @@ package
 			//横屏模式
 			stage.setAspectRatio(StageAspectRatio.LANDSCAPE);
 			stage.setOrientation(StageOrientation.ROTATED_RIGHT);
-			stage.autoOrients = true;
+			stage.autoOrients = false;
 			
 			var scale:int;
 			var w:int;
