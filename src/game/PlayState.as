@@ -36,7 +36,7 @@ package game
 		[Embed(source='../assets/audio/effects/heart_bit.mp3')]
 		protected var heartBitSnd:Class;
 		
-		[Embed(source='../assets/textures/ui/pause.png')]
+		[Embed(source='../assets/textures/ui/btn_pause.png')]
 		private var pauseBtnPNG:Class;
         
 		private var _pauseBtn:FlxButton;
@@ -135,7 +135,7 @@ package game
 			_scoreText.x = FlxG.width-_scoreText.width;
 			
 			_pauseBtn = new FlxButton(2, 2, "", pauseHandler);
-			_pauseBtn.loadGraphic(pauseBtnPNG,true,false,8,8)
+			_pauseBtn.loadGraphic(pauseBtnPNG,false,false,16,16)
 			_pauseBtn.scrollFactor = new FlxPoint(0,0);
 		}
 		

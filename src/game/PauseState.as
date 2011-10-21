@@ -20,6 +20,9 @@ package game
 		[Embed(source="../assets/textures/ui/4345441923_305fbde3a7.jpg")]
 		private var bgClass:Class;
 		
+        [Embed(source="../assets/textures/ui/btn_resume.png")]
+        private var btnResumeClass:Class;
+        
 		protected var _bg:FlxSprite;
 		
 		protected var _titleField:FlxText;
@@ -33,21 +36,24 @@ package game
 			super();
 
 			_bg = new FlxSprite();
-			_bg.makeGraphic(FlxG.width, FlxG.height, 0xffcc0000);
+			_bg.makeGraphic(FlxG.width, FlxG.height, 0x0);
+            _bg.alpha = 0.3;
 			_bg.scrollFactor = new FlxPoint(0, 0);
 			add(_bg);
 			
-			_titleField = new FlxText(0, 0, 100, "Pause");
+			_titleField = new FlxText(0, 0, 100, "Paused");
 			_titleField.x = (FlxG.width - _titleField.width) / 2;
 			_titleField.scrollFactor = new FlxPoint(0, 0);
 			_titleField.y = 30;
 			add(_titleField);
 			
 			var sy:int = FlxG.height / 2;
-			_resumeBtn = new FlxButton(0, 0, "Resume", resumeHandler);
+			_resumeBtn = new FlxButton();
+            _resumeBtn.loadGraphic(btnResumeClass,false,false,50,80);
 			_resumeBtn.scrollFactor = new FlxPoint(0, 0);
-			_resumeBtn.x = int((FlxG.width - _resumeBtn.width) / 2);
-			_resumeBtn.y = sy;
+			_resumeBtn.x = int(FlxG.width/3*2);
+			_resumeBtn.y = FlxG.height - _resumeBtn.height;
+            _resumeBtn.onDown = resumeHandler;
 			add(_resumeBtn);
 			
 			sy += _resumeBtn.height+10;
