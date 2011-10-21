@@ -9,10 +9,7 @@ package game
 	import game.decales.Coin;
 	import game.decales.RocketCoin;
 	import game.projectiles.Bullet;
-	import game.tiles.DistantView;
-	import game.tiles.GroundView;
 	import game.tiles.Level1;
-	import game.tiles.MediumView;
 	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxCamera;
