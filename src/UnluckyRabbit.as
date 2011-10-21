@@ -7,6 +7,7 @@ package
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 	import game.test.Test;
+	import game.test.TestAutoBuildMap;
 	
 	import game.MenuState;
 	
@@ -50,7 +51,7 @@ package
 				w = 240;
 				h = 160;
 			}
-			super(240,160,MenuState,2);
+			super(240,160,TestAutoBuildMap,2);
 		}
 	}
 }

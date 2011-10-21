@@ -33,9 +33,6 @@ package game
 	 */
 	public class PlayState extends FlxState 
 	{
-		[Embed(source='../assets/textures/tiles/tech_tiles.png')]
-		protected var tileImg:Class;
-		
 		[Embed(source='../assets/audio/effects/heart_bit.mp3')]
 		protected var heartBitSnd:Class;
 		

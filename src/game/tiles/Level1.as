@@ -14,7 +14,7 @@ package game.tiles
 	{
 		[Embed(source = "../../assets/levels/mapCSV_Level1_Sky.csv", mimeType = "application/octet-stream")] 
 		public var skyCSV:Class;
-		[Embed(source = "../../assets/textures/backdrop.png")] 
+		[Embed(source = "../../assets/textures/tiles/backdrop.png")] 
 		public var skyTilesPNG:Class;
 		
 		[Embed(source = "../../assets/levels/mapCSV_Level1_Tree.csv", mimeType = "application/octet-stream")] 
@@ -24,7 +24,7 @@ package game.tiles
 		
 		[Embed(source = "../../assets/levels/mapCSV_Level1_Map.csv", mimeType = "application/octet-stream")] 
 		public var mapCVS:Class;
-		[Embed(source = "../../assets/textures/tiles.png")] 
+		[Embed(source = "../../assets/textures/tiles/tiles.png")] 
 		public var mapTilesPNG:Class;
 		
 		[Embed(source = "../../assets/levels/mapCSV_Level1_Star.csv", mimeType = "application/octet-stream")] 
