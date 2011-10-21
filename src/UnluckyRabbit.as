@@ -6,10 +6,10 @@ package
 	import flash.display.StageScaleMode;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
-	import game.test.Test;
-	import game.test.TestAutoBuildMap;
 	
 	import game.MenuState;
+	import game.test.Test;
+	import game.test.TestAutoBuildMap;
 	
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
@@ -51,7 +51,7 @@ package
 				w = 240;
 				h = 160;
 			}
-			super(240,160,TestAutoBuildMap,2);
+			super(240,160,MenuState,2);
 		}
 	}
 }

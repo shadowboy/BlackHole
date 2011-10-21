@@ -104,9 +104,10 @@ package game.actors
 			}
 		}
 		
-		/**
-		 * 重写update 方法，用于控制 
-		 */		
+        /**
+         * 重写update 方法，用于控制  
+         * 
+         */				
 		public override function update():void
 		{
 			facing = RIGHT;
@@ -284,6 +285,11 @@ package game.actors
 			return ( (mx > x) && (mx < x + width) ) && ( (my > y) && (my < y + height) );
 		}
 		
+        /**
+         * hurt 
+         * @param Damage
+         * 
+         */        
 		override public function hurt(Damage:Number):void 
 		{
 			health = health - Damage;
