@@ -2,6 +2,7 @@ package game
 {
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
+	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
 	import org.flixel.FlxSprite;
@@ -14,6 +15,9 @@ package game
 	 */
 	public class BaseOtherState extends FlxState 
 	{
+        [Embed(source="../assets/textures/ui/btn_return.png")]
+        public var returnBtnPNG:Class;
+        
 		protected var _bg:FlxSprite;
 		protected var _bgFlx:FlxSprite;
 		
@@ -35,7 +39,11 @@ package game
 			_titleField = new FlxText(0, 0, 100, title);
 			add(_titleField);
 			
-			_backBtn = new FlxButton(FlxG.width-100, FlxG.height-20, "back", backHandler);
+			_backBtn = new FlxButton();
+            _backBtn.loadGraphic(returnBtnPNG,false,false,32,24);
+            _backBtn.x = FlxG.width-_backBtn.width-2;
+            _backBtn.y = FlxG.height-_backBtn.height - 2;
+            _backBtn.onDown = backHandler;
 			add(_backBtn);
 		}
 		

@@ -3,6 +3,7 @@ package game
 	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
+	import org.flixel.FlxSprite;
 	import org.flixel.FlxState;
 	import org.flixel.FlxText;
 	
@@ -12,6 +13,15 @@ package game
 	 */
 	public class OverState extends FlxState 
 	{
+        [Embed(source="../assets/textures/ui/bg_faile.png")]
+        private var bgPNG:Class;
+        
+        [Embed(source="../assets/textures/ui/btn_retry.png")]
+        private var retryBtnPNG:Class;
+        
+        [Embed(source="../assets/textures/ui/btn_back.png")]
+        private var backBtnPNG:Class;
+        
 		//胜利画面的等待时间计数
 		private var _time:Number;
 		private var _backBtn:FlxButton;
@@ -25,15 +35,23 @@ package game
 			t.x = (FlxG.width - t.width)/2;
 			t.y = int(FlxG.height/5*2);
 			add(t);
+            
+            var bg:FlxSprite = new FlxSprite();
+            bg.loadGraphic(bgPNG);
+            add(bg);
 			
-			_retryBtn = new FlxButton(0, 0, "retry", retryHandler);
+			_retryBtn = new FlxButton();
+            _retryBtn.loadGraphic(retryBtnPNG,false,false,70,40);
+            _retryBtn.onDown = retryHandler;
 			_retryBtn.x = (FlxG.width - _retryBtn.width)/2;
-			_retryBtn.y = FlxG.height*0.5;
+			_retryBtn.y = FlxG.height*0.5-20;
 			add(_retryBtn);
 			
-			_backBtn = new FlxButton(0, 0, "back", backHandler);
+			_backBtn = new FlxButton();
+            _backBtn.loadGraphic(backBtnPNG,false,false,70,40);
+            _backBtn.onDown = backHandler;
 			_backBtn.x = (FlxG.width - _backBtn.width)/2;
-			_backBtn.y = FlxG.height*0.5+30;
+			_backBtn.y = FlxG.height*0.5+20;
 			add(_backBtn);
 		}
 		

@@ -7,12 +7,12 @@ package game
 	 * ...
 	 * @author GameCloudStudio
 	 */
-	public class HelpState extends BaseOtherState 
+	public class LeaderboardState extends BaseOtherState 
 	{
-		[Embed(source="../assets/textures/ui/bg_help.png")]
+		[Embed(source="../assets/textures/ui/bg_leaderboard.png")]
 		private var bgClass:Class;
 		
-		public function HelpState() 
+		public function LeaderboardState() 
 		{
 			super("Help", bgClass);
 		}

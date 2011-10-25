@@ -62,6 +62,7 @@ package game
             var padding:int = 10;
 			_lbBtn = new FlxButton();
             _lbBtn.loadGraphic(btnLeaderBoardClass,false,false,32,32);
+            _lbBtn.onDown = leaderboardHandler;
 			_lbBtn.x = padding;
 			_lbBtn.y = FlxG.height-padding-_lbBtn.height;
 			add(_lbBtn);
@@ -89,7 +90,12 @@ package game
 			
             
 		}
-		
+        
+        private function leaderboardHandler():void
+        {
+            FlxG.switchState(new LeaderboardState);
+        }
+        
 		private function playHandler():void 
 		{
 			FlxG.switchState(new PlayState);
