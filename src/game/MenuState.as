@@ -7,6 +7,7 @@ package game
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
 	import org.flixel.FlxParticle;
+	import org.flixel.FlxSound;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxState;
 	import org.flixel.FlxText;
@@ -34,6 +35,12 @@ package game
         
         [Embed(source="../assets/textures/ui/btn_play.png")]
         private var btnPlayClass:Class;
+        
+        [Embed(source="../assets/audio/button.mp3")]
+        private var btnSound:Class;
+        
+        [Embed(source="../assets/audio/start.mp3")]
+        private var startSound:Class;
 		
 		private var _playBtn:FlxButton;
 		private var _lbBtn:FlxButton;
@@ -43,17 +50,22 @@ package game
 		
 		private var theEmitter:FlxEmitter;
 		private var whitePixel:FlxParticle;
+		private var _btnSound:FlxSound;
 		
 		public function MenuState() 
 		{
 			FlxG.mouse.show();
 			
+            _btnSound = new FlxSound();
+            _btnSound.loadEmbedded(btnSound);
+            
 			var bg:FlxSprite = new FlxSprite();
 			bg.loadGraphic(bgClass, false, false, FlxG.width, FlxG.height);
 			add(bg);
 			
 			_playBtn = new FlxButton();
             _playBtn.loadGraphic(btnPlayClass,false,false,69,41);
+            _playBtn.soundDown = getBtnSound();
 			_playBtn.x = (FlxG.width - _playBtn.width)/2;
 			_playBtn.y = FlxG.height/3;
             _playBtn.onDown = playHandler;
@@ -62,6 +74,7 @@ package game
             var padding:int = 10;
 			_lbBtn = new FlxButton();
             _lbBtn.loadGraphic(btnLeaderBoardClass,false,false,32,32);
+            _lbBtn.soundDown = getBtnSound();
             _lbBtn.onDown = leaderboardHandler;
 			_lbBtn.x = padding;
 			_lbBtn.y = FlxG.height-padding-_lbBtn.height;
@@ -69,6 +82,7 @@ package game
 			
             _muteBtn = new FlxButton();
             _muteBtn.loadGraphic(btnMuteClass,false,false,32,32);
+            _muteBtn.soundDown = getBtnSound();
             _muteBtn.onDown = optionHandler;
             _muteBtn.x = (FlxG.width - _muteBtn.width)/2;
             _muteBtn.y = FlxG.height-_muteBtn.height-padding;
@@ -76,6 +90,7 @@ package game
             
 			_aboutBtn = new FlxButton();
             _aboutBtn.loadGraphic(btnProfileClass,false,false,32,32);
+            _aboutBtn.soundDown = getBtnSound();
 			_aboutBtn.x = FlxG.width - padding - _aboutBtn.width;
 			_aboutBtn.y = FlxG.height - padding - _aboutBtn.height;
             _aboutBtn.onDown = aboutHandler;
@@ -83,39 +98,72 @@ package game
 			
 			_helpBtn = new FlxButton();
             _helpBtn.loadGraphic(btnHelpClass,false,false,32,32);
+            _helpBtn.soundDown = getBtnSound();
 			_helpBtn.x = FlxG.width - _helpBtn.width-padding;
 			_helpBtn.y = padding;
             _helpBtn.onDown = helpHandler;
 			add(_helpBtn);
-			
             
+            FlxG.play(startSound);
 		}
         
+        private function getBtnSound():FlxSound
+        {
+            var snd:FlxSound = new FlxSound();
+            snd.loadEmbedded(btnSound);
+            return snd;
+        }
+        
+        //go leader board
         private function leaderboardHandler():void
+        {
+            FlxG.fade(0xffffff, 0.5, goLeaderBoardHandler); 
+        }
+        
+        private function goLeaderBoardHandler():void
         {
             FlxG.switchState(new LeaderboardState);
         }
         
+        //play
 		private function playHandler():void 
 		{
-			FlxG.switchState(new PlayState);
+            FlxG.fade(0x000000, 1, goPlayHandler);
 		}
-		
+        
+        private function goPlayHandler():void
+        {
+            FlxG.switchState(new PlayState());
+        }
+        
+        //help
 		private function helpHandler():void 
 		{
-			FlxG.switchState(new HelpState);
+            FlxG.fade(0xffffff, 0.5, goHelpHandler);
 		}
-		
+        
+        private function goHelpHandler():void
+        {
+            FlxG.switchState(new HelpState);
+        }
+        
+        //about
 		private function aboutHandler():void 
 		{
-			FlxG.switchState(new AboutState);
+            FlxG.fade(0xffffff, 0.5, goAboutHandler);
 		}
-		
+        
+        private function goAboutHandler():void
+        {
+            FlxG.switchState(new AboutState); 
+        }
+        
 		private function optionHandler():void 
 		{
-			//FlxG.switchState(new OptionState);
 			test();
 		}
+        
+         
 		
 		private function test():void
 		{

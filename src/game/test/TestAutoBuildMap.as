@@ -36,10 +36,10 @@ package game.test
 		protected var _backBtn:FlxButton;
 		
 		protected var _tileList:FlxGroup;
-		protected var _curInx:int = 0;
-		private var _curItem:FlxTilemap;
+		protected var _curTileIndex:int = 0;
+		private var _curTile:FlxTilemap;
 		
-		protected var _preItem:FlxTilemap;
+		protected var _preTile:FlxTilemap;
 		
 		public function TestAutoBuildMap() 
 		{
@@ -68,22 +68,23 @@ package game.test
 			_tileList.add(tm2);
 			_tileList.add(tm3);
 			
-			_curItem = _tileList.members[_curInx]
-			add(_curItem);
+			_curTile = _tileList.members[_curTileIndex]
+            _preTile = _curTile;
+			add(_curTile);
 		}
 		
 		private function getTile():FlxTilemap
 		{
-			trace(_curInx);
-			if (_curInx >= _tileList.length-1)
+			trace(_curTileIndex);
+			if (_curTileIndex >= _tileList.length-1)
 			{
-				_curInx = 0;
+				_curTileIndex = 0;
 			}
 			else
 			{
-				_curInx++;
+				_curTileIndex++;
 			}
-			return _tileList.members[_curInx] as FlxTilemap;
+			return _tileList.members[_curTileIndex] as FlxTilemap;
 		}
 		
 		override public function update():void 
@@ -91,27 +92,26 @@ package game.test
 			FlxG.camera.follow(_player);
 			_player.velocity.x = 60;
 			//trace(_player.x);
-			//
 			//trace("camera x:" + FlxG.camera.x);
 			//trace("tilemap x:" + _tilemap.x);
 			
-			if (_curItem.x + _curItem.width - _player.x<FlxG.width) {
+			if (_curTile.x + _curTile.width - _player.x<FlxG.width) 
+            {
 				//trace("add new item to screen");
-				_preItem = _curItem;
+				_preTile = _curTile;
 				
-				_curItem = getTile();
-				_curItem.x = _preItem.x + _preItem.width;
-				add(_curItem);
+				_curTile = getTile();
+				_curTile.x = _preTile.x + _preTile.width;
+				add(_curTile);
 			}
 			
-			
-			if (_preItem)
+			if (_preTile)
 			{
-				//trace("play and tile:"+(_player.x - _preItem.x)+" pre width:"+_preItem.width);
-				if (_player.x - _preItem.x > _preItem.width)
+				//trace("play and tile:"+(_player.x - _preTile.x)+" pre width:"+_preTile.width);
+				if ((_player.x - _preTile.x) > (_preTile.width+180))
 				{
-					remove(_preItem);
-					_preItem = null;
+					remove(_preTile);
+					_preTile = null;
 					trace("remove current item screen");
 				}
 				

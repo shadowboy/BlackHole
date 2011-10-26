@@ -22,6 +22,9 @@ package game
         [Embed(source="../assets/textures/ui/btn_back.png")]
         private var backBtnPNG:Class;
         
+        [Embed(source="../assets/audio/faile.mp3")]
+        private var faileSound:Class;
+        
 		//胜利画面的等待时间计数
 		private var _time:Number;
 		private var _backBtn:FlxButton;
@@ -53,6 +56,8 @@ package game
 			_backBtn.x = (FlxG.width - _backBtn.width)/2;
 			_backBtn.y = FlxG.height*0.5+20;
 			add(_backBtn);
+            
+            FlxG.play(faileSound,1,false,false);
 		}
 		
 		private function retryHandler():void

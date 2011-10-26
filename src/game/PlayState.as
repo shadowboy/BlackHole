@@ -9,7 +9,7 @@ package game
 	import game.decales.Coin;
 	import game.decales.RocketCoin;
 	import game.projectiles.Bullet;
-	import game.tiles.Level1;
+	import game.tiles.TileManager;
 	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxCamera;
@@ -24,6 +24,7 @@ package game
 	import org.flixel.FlxState;
 	import org.flixel.FlxText;
 	import org.flixel.FlxTileblock;
+	import org.flixel.FlxTilemap;
 	import org.flixel.FlxU;
 	import org.flixel.system.debug.Log;
 	
@@ -39,6 +40,9 @@ package game
 		[Embed(source='../assets/textures/ui/btn_pause.png')]
 		private var pauseBtnPNG:Class;
         
+        [Embed(source='../assets/audio/bg.mp3')]
+        protected var bgMusic:Class;
+        
 		private var _pauseBtn:FlxButton;
 		private var _player:Player;
 		private var _bigRock:BigRock;
@@ -50,11 +54,13 @@ package game
 		//子弹时间
 		private var _bulletTimeStart:Boolean;
 		private var _bulletTimeDurating:Number;
-		private var _level:Level1;
-		private var _level2:Level1;
-		private var _gamePaused:Boolean;
-		private var pauseLayer:PauseState;
+		private var _pauseLayer:PauseState;
+        
+        private var _tileMgr:TileManager;
+        private var _curTile:FlxTilemap
 		
+        private var _preTile:FlxTilemap;
+        private var _tiles:FlxGroup = new FlxGroup();
 		/**
 		 * 
 		 */
@@ -65,26 +71,40 @@ package game
 			//create actors
 			_player =  new Player(120, 0);
 			_bigRock = new BigRock(0,10);
-			_level = new Level1();
 			//create bullets
 			createBullets();
 			createEmitters();
 			//create display
 			createHub();
 			//add them to stage
-			add(_level);
-			add(_level.stars);
+            _tileMgr = new TileManager();
+            
+            add(_tileMgr.sky);
+            add(_tileMgr.tree);
+            
+            _curTile = _tileMgr.getTile()
+            _tiles.add(_curTile);
+            
+            add(_tiles);
 			add(_player);
 			//add(_bigRock);
 			add(_bullets);
 			add(_scoreText);
 			add(_pauseBtn);
 			
-			pauseLayer = new PauseState();
-			pauseLayer.resumeCallback = resume;
-			pauseLayer.enabled = false;
-			add(pauseLayer);
+			_pauseLayer = new PauseState();
+			_pauseLayer.resumeCallback = resumeHandler;
+			_pauseLayer.enabled = false;
+			add(_pauseLayer);
+            
+            playMusic();
+            
 		}
+        
+        private function playMusic():void
+        {
+            FlxG.playMusic(bgMusic);
+        }
 		
 		private function createBullets():void 
 		{
@@ -149,27 +169,32 @@ package game
 			_bulletTimeStart = true;
 			_bulletTimeDurating = time;
 			FlxG.play(heartBitSnd);
-//			FlxG.music.pause();
 		}
 		
 		/**
-		 * pause game
+		 * pause game handler
+         * 
 		 */
 		private function pauseHandler():void 
 		{
 			Registry.paused = true;
 			
 			FlxG.timeScale = 0;
-			pauseLayer.enabled = true;
-			
+			_pauseLayer.enabled = true;
+            FlxG.music.pause();
 		}
 		
-		private function resume():void
+        /**
+         * resume 
+         * 
+         */        
+		private function resumeHandler():void
 		{
-			trace(this, "resume");
 			Registry.paused = false;
+            
 			FlxG.timeScale = 1
-			pauseLayer.enabled = false;
+			_pauseLayer.enabled = false;
+            FlxG.music.resume();
 		}
 		
 		/**
@@ -185,12 +210,35 @@ package game
 			//update score
 			_scoreText.text = "Score:"+String(FlxG.score);
 			_scoreText.x = FlxG.width-_scoreText.width;
+            
+            //draw tile maps
+            if (_curTile.x + _curTile.width - _player.x<FlxG.width) 
+            {
+                //trace("add new item to screen");
+                _preTile = _curTile;
+                
+                _curTile = _tileMgr.getTile();
+                _curTile.x = _preTile.x + _preTile.width;
+                _tiles.add(_curTile);
+            }
+            
+            if (_preTile)
+            {
+                //trace("play and tile:"+(_player.x - _preTile.x)+" pre width:"+_preTile.width);
+                if ((_player.x - _preTile.x) > (_preTile.width+180))
+                {
+                    _tiles.remove(_preTile);
+                    _preTile = null;
+                    trace("remove current item screen");
+                }
+                
+            }
 			
 			//collide
-			FlxG.collide(_level.map, _player);
-			FlxG.collide(_level.map, _bigRock);
-			FlxG.collide(_level.map, _bullets);
-			FlxG.overlap(_player, _level.stars, getCoin);
+			FlxG.collide(_tiles, _player);
+			FlxG.collide(_tiles, _bigRock);
+			FlxG.collide(_tiles, _bullets);
+			//FlxG.overlap(_player, _level.stars, getCoin);
 			
 			//player dead
 			if(_player.y > 430 && _player.health>0)
@@ -225,11 +273,6 @@ package game
 			super.update();
 		}
 		
-		override public function draw():void 
-		{
-			
-			super.draw();
-		}
 		/**
 		 * player collide with enemies
 		 * 
@@ -248,8 +291,6 @@ package game
 		 */
 		private function getCoin(ob1:FlxSprite,ob2:FlxSprite):void 
 		{
-			//var coin:Coin = ob2 as Coin;
-			//当金币没有被获取时，才获取金币
 			if ((ob2 is Coin) && !(ob2 as Coin).hasGotten) 
 			{
 				(ob2 as Coin).getCoin();
@@ -262,12 +303,14 @@ package game
 		}
 		
 		/**
-		 * 
+		 * destroy
 		 */
 		override public function destroy():void
 		{
+            FlxG.music.stop();
 			FlxG.timeScale = 1;
 			FlxG.mouse.show();
+            
 			_player.destroy();
 			_bullets.destroy()
 			_bigRock.destroy();

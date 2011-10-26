@@ -47,34 +47,34 @@ package game.tiles
 		 */
 		public function Level1() 
 		{
-			_skyMap = new FlxTilemap();
-			_skyMap.loadMap(new skyCSV, skyTilesPNG, 192, 336);
-			_skyMap.setTileProperties(1, FlxObject.NONE);
-			_skyMap.scrollFactor.x = 0.1;
-			_skyMap.scrollFactor.y = 0.1;
-			
-			_treeMap = new FlxTilemap();
-			_treeMap.loadMap(new treesCSV, treeTilesPNG, 192, 336);
-			_treeMap.setTileProperties(1, FlxObject.NONE);
-			_treeMap.scrollFactor.x = 0.5;
-			_treeMap.scrollFactor.y = 0.3;
-			
-			_map = new FlxTilemap();
-			_map.loadMap(new mapCVS, mapTilesPNG, 16, 16);
-			//设置不需要碰撞的Tile
-			_map.setTileProperties(13,FlxObject.NONE);
-			_map.setTileProperties(14,FlxObject.NONE);
-			_map.setTileProperties(16,FlxObject.NONE);
-			_map.setTileProperties(17, FlxObject.NONE);
-			_map.setTileProperties(58, FlxObject.NONE);
-			_map.setTileProperties(77, FlxObject.NONE);
-
-			
-			add(_skyMap);
-			add(_treeMap);
-			add(_map);
-			
-			parseStars();
+//			_skyMap = new FlxTilemap();
+//			_skyMap.loadMap(new skyCSV, skyTilesPNG, 192, 336);
+//			_skyMap.setTileProperties(1, FlxObject.NONE);
+//			_skyMap.scrollFactor.x = 0.1;
+//			_skyMap.scrollFactor.y = 0.1;
+//			
+//			_treeMap = new FlxTilemap();
+//			_treeMap.loadMap(new treesCSV, treeTilesPNG, 192, 336);
+//			_treeMap.setTileProperties(1, FlxObject.NONE);
+//			_treeMap.scrollFactor.x = 0.5;
+//			_treeMap.scrollFactor.y = 0.3;
+//			
+//			_map = new FlxTilemap();
+//			_map.loadMap(new mapCVS, mapTilesPNG, 16, 16);
+//			//设置不需要碰撞的Tile
+//			_map.setTileProperties(13,FlxObject.NONE);
+//			_map.setTileProperties(14,FlxObject.NONE);
+//			_map.setTileProperties(16,FlxObject.NONE);
+//			_map.setTileProperties(17, FlxObject.NONE);
+//			_map.setTileProperties(58, FlxObject.NONE);
+//			_map.setTileProperties(77, FlxObject.NONE);
+//
+//			
+//			add(_skyMap);
+//			add(_treeMap);
+//			add(_map);
+//			
+//			parseStars();
 		}
 		
 		public function get stars():FlxGroup 
@@ -86,7 +86,7 @@ package game.tiles
 		{
 			return _map;
 		}
-		
+        
 		/**
 		 * parse stars
 		 */
