@@ -89,7 +89,7 @@ package game.test
 		override public function update():void 
 		{
 			FlxG.camera.follow(_player);
-			_player.velocity.x = 60;
+			_player.velocity.x = 200;
 			//trace(_player.x);
 			//
 			//trace("camera x:" + FlxG.camera.x);
@@ -108,7 +108,7 @@ package game.test
 			if (_preItem)
 			{
 				//trace("play and tile:"+(_player.x - _preItem.x)+" pre width:"+_preItem.width);
-				if (_player.x - _preItem.x > _preItem.width)
+				if (_player.x - _preItem.x > _preItem.width+120)
 				{
 					remove(_preItem);
 					_preItem = null;
