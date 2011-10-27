@@ -90,7 +90,7 @@ package game.test
 		override public function update():void 
 		{
 			FlxG.camera.follow(_player);
-			_player.velocity.x = 60;
+			_player.velocity.x = 200;
 			//trace(_player.x);
 			//trace("camera x:" + FlxG.camera.x);
 			//trace("tilemap x:" + _tilemap.x);

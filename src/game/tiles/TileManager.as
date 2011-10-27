@@ -69,10 +69,14 @@ package game.tiles
             
             _tileList = new FlxGroup();
             
+            
+            
+            var bt:LevelBase = new LevelBase();
+            
+            //_tileList.add(bt);
+            
             addTile(mapCVS);
             addTile(map2CVS);
-			
-			parseStars();
 		}
         
         public function get sky():FlxTilemap 
@@ -110,7 +114,7 @@ package game.tiles
          * @return 
          * 
          */        
-        public function getTile():FlxTilemap
+        public function getTile():*
         {
             if (_curIndex >= _tileList.length-1)
             {
@@ -121,63 +125,9 @@ package game.tiles
                 _curIndex++;
             }
             
-            return _tileList.members[_curIndex] as FlxTilemap;
+            return _tileList.members[_curIndex];
         }
         
-        public function getStars():FlxGroup
-        {
-            _starMap = new FlxTilemap();
-            _starMap.loadMap(new starsCVS, starPNG, 16, 16);
-            
-            _stars = new FlxGroup();
-            for (var i:int = 0; i < _starMap.widthInTiles; i++)
-            {
-                for (var j:int = 0; j < _starMap.heightInTiles; j++)
-                {
-                    var index:int = _starMap.getTile(i, j);
-                    if (index == 1)
-                    {
-                        var coin:Coin = new Coin();
-                        coin.showCoin(i * 16, j * 16);
-                        _stars.add(coin);
-                    }
-                    else if (index == 2)
-                    {
-                        var rCoin:RocketCoin = new RocketCoin(i * 16, j * 16);
-                        _stars.add(rCoin);
-                    }
-                }
-            }
-            return _stars;
-        }
-        
-		/**
-		 * parse stars
-		 */
-		private function parseStars():void
-		{
-			_starMap = new FlxTilemap();
-			_starMap.loadMap(new starsCVS, starPNG, 16, 16);
-			
-			_stars = new FlxGroup();
-			for (var i:int = 0; i < _starMap.widthInTiles; i++)
-			{
-				for (var j:int = 0; j < _starMap.heightInTiles; j++)
-				{
-					var index:int = _starMap.getTile(i, j);
-					if (index == 1)
-					{
-						var coin:Coin = new Coin();
-						coin.showCoin(i * 16, j * 16);
-						_stars.add(coin);
-					}
-					else if (index == 2)
-					{
-						var rCoin:RocketCoin = new RocketCoin(i * 16, j * 16);
-						_stars.add(rCoin);
-					}
-				}
-			}
-		}
+
 	}
 }

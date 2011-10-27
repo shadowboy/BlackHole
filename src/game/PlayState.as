@@ -49,6 +49,7 @@ package game
 		
 		private var _bullets:FlxGroup;
 		private var _emitter:FlxEmitter;
+        private var _stars:FlxGroup;
 		//分数
 		private var _scoreText:FlxText;
 		//子弹时间
@@ -57,9 +58,9 @@ package game
 		private var _pauseLayer:PauseState;
         
         private var _tileMgr:TileManager;
-        private var _curTile:FlxTilemap
+        private var _curTile:*
 		
-        private var _preTile:FlxTilemap;
+        private var _preTile:*;
         private var _tiles:FlxGroup = new FlxGroup();
 		/**
 		 * 
@@ -116,6 +117,16 @@ package game
 				_bullets.add(bul);
 			}
 			Registry.bullets = _bullets;
+            
+            
+            _stars = new FlxGroup();
+            var coin:Coin;
+            for (var i:int = 0; i < 50; i++)
+            {
+                coin = new Coin();
+                _stars.add(coin);
+            }
+            Registry.stars = _stars;
 		}
 		
 		private function createEmitters():void 
@@ -238,7 +249,7 @@ package game
 			FlxG.collide(_tiles, _player);
 			FlxG.collide(_tiles, _bigRock);
 			FlxG.collide(_tiles, _bullets);
-			//FlxG.overlap(_player, _level.stars, getCoin);
+			FlxG.overlap(_player, Registry.stars, getCoin);
 			
 			//player dead
 			if(_player.y > 430 && _player.health>0)

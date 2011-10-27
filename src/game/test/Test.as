@@ -3,6 +3,7 @@ package game.test
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import game.PauseState;
+	import game.tiles.LevelBase;
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
 	import org.flixel.FlxSprite;
@@ -36,6 +37,10 @@ package game.test
 			
 			var pause:PauseState = new PauseState();
 			add(pause);
+			
+			var t:LevelBase = new LevelBase();
+            t.y = -80
+			add(t);
 		}
 		
 		override public function update():void 
