@@ -54,7 +54,6 @@ package game.tiles
 		 */
 		public function TileManager() 
 		{
-            
 			_skyMap = new FlxTilemap();
 			_skyMap.loadMap(new skyCSV, skyTilesPNG, 192, 336);
 			_skyMap.setTileProperties(1, FlxObject.NONE);
@@ -72,8 +71,6 @@ package game.tiles
             
             
             var bt:LevelBase = new LevelBase();
-            
-            //_tileList.add(bt);
             
             addTile(mapCVS);
             addTile(map2CVS);
@@ -124,10 +121,7 @@ package game.tiles
             {
                 _curIndex++;
             }
-            
             return _tileList.members[_curIndex];
         }
-        
-
 	}
 }

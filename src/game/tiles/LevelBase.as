@@ -1,8 +1,10 @@
 package game.tiles 
 {
+	import game.actors.Enemy;
 	import game.Registry;
 	import game.decales.Coin;
 	import game.decales.RocketCoin;
+	import game.Resource;
 	
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxObject;
@@ -31,6 +33,8 @@ package game.tiles
 		protected var _stars:FlxGroup;
 		protected var _tilemap:FlxTilemap;
 		
+		protected var _enemy:Enemy;
+		
 		//properties
 		private var _width:int;
 		private var _height:int;
@@ -52,13 +56,6 @@ package game.tiles
 			_map.setTileProperties(58, FlxObject.NONE);
 			_map.setTileProperties(77, FlxObject.NONE);
 			add(_map);
-			
-			//conins
-            _stars = new FlxGroup();
-            
-			parseStars();
-            add(_stars);
-            
 		}
 		
 		public function get width():int 
@@ -79,15 +76,7 @@ package game.tiles
 		public function set x(value:int):void 
 		{
 			_x = value;
-            var old:int = _map.x;
 			_map.x = _x;
-            for (var i:int = 0; i < _stars.members.length; i++) 
-            {
-                if(_stars.members[i]){
-                    (_stars.members[i] as FlxSprite).x -= old-_map.x;
-                }
-                
-            }
 		}
 		
 		public function get y():int 
@@ -98,17 +87,21 @@ package game.tiles
 		public function set y(value:int):void 
 		{
 			_y = value;
-            var old:int = _map.y;
 			_map.y = value;
-            for (var i:int = 0; i < _stars.members.length; i++) 
-            {
-                if(_stars.members[i]){
-                    (_stars.members[i] as FlxSprite).y-=(old-_map.y);
-                }
-                
-            }
 		}
 		
+		public function get stars():FlxGroup 
+		{
+			return _stars;
+		}
+		
+		public function init():void
+		{
+			parseStars();
+			
+			_enemy = new Enemy(_map.x + 100, _map.y + 60);
+			add(_enemy);
+		}
 		
 		/**
 		 * parse stars
@@ -127,15 +120,10 @@ package game.tiles
 					
 					if (index == 1)
 					{
-                        trace(this + "star:" + index+" x:"+i*16+" y:"+j*16);
-						var coin:Coin = Registry.getCoin();
-						coin.showCoin(i * 16, j * 16);
-						_stars.add(coin);
-					}
-					else if (index == 2)
-					{
-						var rCoin:RocketCoin = new RocketCoin(i * 16, j * 16);
-						//_stars.add(rCoin);
+                        trace(this + " star:" + index+" x:"+_map.x+i*16+" y:"+_map.y+j*16);
+						var coin:Coin = Resource.getCoin() as Coin;
+						coin.showCoin(_map.x + i * 16, _map.y + j * 16);
+						add(coin);
 					}
 				}
 			}

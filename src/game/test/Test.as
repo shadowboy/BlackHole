@@ -2,10 +2,13 @@ package game.test
 {
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
+	import game.decales.Coin;
 	import game.PauseState;
+	import game.Registry;
 	import game.tiles.LevelBase;
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
+	import org.flixel.FlxGroup;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxState;
 	import org.flixel.FlxText;
@@ -16,6 +19,7 @@ package game.test
 	 */
 	public class Test extends FlxState 
 	{
+		private var _stars:FlxGroup;
 		protected var _bg:FlxSprite;
 		protected var _bgFlx:FlxSprite;
 		
@@ -31,15 +35,16 @@ package game.test
 			_bg.makeGraphic(100, 100, 0x66554400);
 			add(_bg);
 			
-			
-			_titleField = new FlxText(0, 0, 100, "test");
-			add(_titleField);
-			
-			var pause:PauseState = new PauseState();
-			add(pause);
+			_stars = new FlxGroup();
+            var coin:Coin;
+            for (var i:int = 0; i < 50; i++)
+            {
+                coin = new Coin();
+                _stars.add(coin);
+            }
+            Registry.stars = _stars;
 			
 			var t:LevelBase = new LevelBase();
-            t.y = -80
 			add(t);
 		}
 		

@@ -3,6 +3,8 @@ package game.test
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import game.PauseState;
+	import game.Resource;
+	import game.tiles.LevelBase;
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
@@ -37,14 +39,14 @@ package game.test
 		
 		protected var _tileList:FlxGroup;
 		protected var _curTileIndex:int = 0;
-		private var _curTile:FlxTilemap;
+		private var _curTile:*;
 		
-		protected var _preTile:FlxTilemap;
+		protected var _preTile:*;
 		
 		public function TestAutoBuildMap() 
 		{
 			super();
-			
+			Resource.init();
 			_player = new FlxSprite();
 			_player.x = 0;
 			_player.alpha = 0.2;
@@ -63,17 +65,24 @@ package game.test
 			tm3.loadMap(new mapCSV, mapTilesPNG, 16, 16);
 			//tm3.setTile(2, 2, 4);
 			
+			var tm4:LevelBase = new LevelBase();
+			
+			
 			_tileList = new FlxGroup();
+			
 			_tileList.add(_tilemap);
 			_tileList.add(tm2);
+			_tileList.add(tm4);
 			_tileList.add(tm3);
 			
+			
+
 			_curTile = _tileList.members[_curTileIndex]
             _preTile = _curTile;
 			add(_curTile);
 		}
 		
-		private function getTile():FlxTilemap
+		private function getTile():*
 		{
 			trace(_curTileIndex);
 			if (_curTileIndex >= _tileList.length-1)
@@ -84,7 +93,7 @@ package game.test
 			{
 				_curTileIndex++;
 			}
-			return _tileList.members[_curTileIndex] as FlxTilemap;
+			return _tileList.members[_curTileIndex];
 		}
 		
 		override public function update():void 
@@ -102,6 +111,16 @@ package game.test
 				
 				_curTile = getTile();
 				_curTile.x = _preTile.x + _preTile.width;
+				try
+				{
+					_curTile.init();
+				}
+				catch (e:Error) 
+				{
+					trace("no init function");
+				}
+				trace("_curTile:"+_curTile)
+				
 				add(_curTile);
 			}
 			

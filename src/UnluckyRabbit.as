@@ -51,7 +51,7 @@ package
 				w = 240;
 				h = 160;
 			}
-			super(480,320,MenuState,1);
+			super(480,320,TestAutoBuildMap,1);
 		}
 	}
 }

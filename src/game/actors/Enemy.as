@@ -14,7 +14,7 @@ package game.actors
 		//人物移动的速度得值
 		protected static const PLAYER_RUN_SPEED:int = 80;
 		//人物收到的重力加速度的值
-		protected static const GRAVITY_ACCELERATION:Number = 420;
+		protected static const GRAVITY_ACCELERATION:Number = 0;
 		//人物跳跃时的加速度
 		protected static const JUMP_ACCELERATION:Number = 200;
 		
