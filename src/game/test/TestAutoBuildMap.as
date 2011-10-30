@@ -114,6 +114,8 @@ package game.test
 				try
 				{
 					_curTile.init();
+                    add(_curTile.stars);
+                    add(_curTile.enemies);
 				}
 				catch (e:Error) 
 				{

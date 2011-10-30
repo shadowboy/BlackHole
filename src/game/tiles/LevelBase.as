@@ -1,10 +1,11 @@
 package game.tiles 
 {
-	import game.actors.Enemy;
 	import game.Registry;
+	import game.Resource;
+	import game.actors.Enemy;
+	import game.actors.Player;
 	import game.decales.Coin;
 	import game.decales.RocketCoin;
-	import game.Resource;
 	
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxObject;
@@ -29,11 +30,8 @@ package game.tiles
 		
 		private var _map:FlxTilemap;
 		private var _starMap:FlxTilemap;
-        
-		protected var _stars:FlxGroup;
-		protected var _tilemap:FlxTilemap;
-		
-		protected var _enemy:Enemy;
+        private var _stars:FlxGroup;
+        private var _enemies:FlxGroup;
 		
 		//properties
 		private var _width:int;
@@ -57,7 +55,7 @@ package game.tiles
 			_map.setTileProperties(77, FlxObject.NONE);
 			add(_map);
 		}
-		
+
 		public function get width():int 
 		{
 			return _map.width;
@@ -90,17 +88,37 @@ package game.tiles
 			_map.y = value;
 		}
 		
+        public function get map():FlxTilemap
+        {
+            return _map;
+        }
+        
 		public function get stars():FlxGroup 
 		{
 			return _stars;
 		}
-		
+        
+        public function get enemies():FlxGroup
+        {
+            return _enemies;
+        }
+        
+        /**
+         * init 
+         * 
+         */        
 		public function init():void
 		{
 			parseStars();
 			
-			_enemy = new Enemy(_map.x + 100, _map.y + 60);
-			add(_enemy);
+            _enemies = new FlxGroup();
+			//var emi:Enemy = new Enemy(_map.x + 160, _map.y + 290);
+			var emi:Enemy = Resource.getEnemy();
+            emi.x = _map.x + 160
+            emi.y = _map.y + 290
+           
+            emi.map = _map;
+            _enemies.add(emi);
 		}
 		
 		/**
@@ -108,9 +126,9 @@ package game.tiles
 		 */
 		private function parseStars():void
 		{
+            _stars = new FlxGroup();
 			_starMap = new FlxTilemap();
 			_starMap.loadMap(new starsCVS, starPNG, 16, 16);
-			
 			
 			for (var i:int = 0; i < _starMap.widthInTiles; i++)
 			{
@@ -120,11 +138,14 @@ package game.tiles
 					
 					if (index == 1)
 					{
-                        trace(this + " star:" + index+" x:"+_map.x+i*16+" y:"+_map.y+j*16);
 						var coin:Coin = Resource.getCoin() as Coin;
 						coin.showCoin(_map.x + i * 16, _map.y + j * 16);
-						add(coin);
+                        _stars.add(coin);
 					}
+                    else if(index == 2)
+                    {
+                        
+                    }
 				}
 			}
 		}

@@ -32,16 +32,25 @@ package game
 		
 		override public function create():void 
 		{
+            var bg:FlxSprite = new FlxSprite();
+            bg.loadGraphic(bgPNG);
+            Layout.center(bg);
+            add(bg);
+            
 			_time = 0;
 			FlxG.flash(0xffffffff, 1);
 			var t:FlxText = new FlxText(0, 0, 100, 'GAME OVER');
+            t.setFormat(null,12,0x00000000,"center",0xcccccc);
 			t.x = (FlxG.width - t.width)/2;
-			t.y = int(FlxG.height/5*2);
+			t.y = int(FlxG.height/5);
 			add(t);
             
-            var bg:FlxSprite = new FlxSprite();
-            bg.loadGraphic(bgPNG);
-            add(bg);
+            var score:FlxText = new FlxText(0, 0, 200, 'SCORE:0');
+            score.setFormat(null,12,0x00000000,"center",0xcccccc);
+            score.x = (FlxG.width - score.width)/2;
+            score.y = int(FlxG.height/5)+t.height;
+            score.text = "The Score:"+FlxG.score;
+            add(score);
 			
 			_retryBtn = new FlxButton();
             _retryBtn.loadGraphic(retryBtnPNG,false,false,70,40);

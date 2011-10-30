@@ -71,9 +71,14 @@ package game.tiles
             
             
             var bt:LevelBase = new LevelBase();
+            var bt2:LevelBase = new LevelBase();
+            var bt3:LevelBase = new LevelBase();
             
-            addTile(mapCVS);
-            addTile(map2CVS);
+//            addTile(mapCVS);
+//            addTile(map2CVS);
+            _tileList.add(bt);
+            _tileList.add(bt2);
+            _tileList.add(bt3);
 		}
         
         public function get sky():FlxTilemap 
@@ -111,7 +116,7 @@ package game.tiles
          * @return 
          * 
          */        
-        public function getTile():*
+        public function getTile():LevelBase
         {
             if (_curIndex >= _tileList.length-1)
             {
@@ -121,7 +126,7 @@ package game.tiles
             {
                 _curIndex++;
             }
-            return _tileList.members[_curIndex];
+            return _tileList.members[_curIndex] as LevelBase;
         }
 	}
 }

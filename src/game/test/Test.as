@@ -2,10 +2,13 @@ package game.test
 {
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
-	import game.decales.Coin;
+	
 	import game.PauseState;
 	import game.Registry;
+	import game.Resource;
+	import game.decales.Coin;
 	import game.tiles.LevelBase;
+	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
@@ -34,6 +37,8 @@ package game.test
 			_bg = new FlxSprite();
 			_bg.makeGraphic(100, 100, 0x66554400);
 			add(_bg);
+            
+            Resource.init();
 			
 			_stars = new FlxGroup();
             var coin:Coin;
@@ -45,7 +50,13 @@ package game.test
             Registry.stars = _stars;
 			
 			var t:LevelBase = new LevelBase();
-			add(t);
+            t.x = 100;
+            t.y = 80;
+            t.init()
+           
+            this.add(t.map);
+            this.add(t.stars);
+            this.add(t.enemies);
 		}
 		
 		override public function update():void 

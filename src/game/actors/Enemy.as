@@ -1,9 +1,9 @@
 package game.actors
 {
-	import org.flixel.FlxEmitter;
-	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxObject;
 	import org.flixel.FlxSprite;
+	import org.flixel.FlxTilemap;
 	
 	/**
 	 * ...
@@ -14,11 +14,11 @@ package game.actors
 		//人物移动的速度得值
 		protected static const PLAYER_RUN_SPEED:int = 80;
 		//人物收到的重力加速度的值
-		protected static const GRAVITY_ACCELERATION:Number = 0;
+		protected static const GRAVITY_ACCELERATION:Number = 400;
 		//人物跳跃时的加速度
 		protected static const JUMP_ACCELERATION:Number = 200;
 		
-		[Embed(source = '../../assets/textures/actors/spaceman.png')]
+		[Embed(source = '../../assets/textures/actors/enemy.png')]
 		protected var playerImg:Class;
 		
 		private var _bullets:FlxGroup;
@@ -26,6 +26,8 @@ package game.actors
 		
 		private var _jump:Boolean;
 		private var _isJump:Boolean;
+		private var isDying:Boolean;
+		public var map:FlxTilemap;
 		
 		/**
 		 *  
@@ -36,7 +38,7 @@ package game.actors
 		public function Enemy(startX:Number,startY:Number) 
 		{
 			super(startX, startY);
-			loadGraphic(playerImg, true, true, 8, 8);
+			loadGraphic(playerImg, true, true, 12, 20);
 			
 			//drag.x = PLAYER_RUN_SPEED * 8;
 			acceleration.y = GRAVITY_ACCELERATION;
@@ -44,13 +46,9 @@ package game.actors
 			maxVelocity.x = PLAYER_RUN_SPEED;
 			maxVelocity.y = JUMP_ACCELERATION;
 			
-			addAnimation("idle", [0]);
-			addAnimation("run", [1, 2, 3, 0], 12);
-			addAnimation("jump", [4]);
-			addAnimation("idle_up", [5]);
-			addAnimation("run_up", [6, 7, 8, 5], 12);
-			addAnimation("jump_up", [9]);
-			addAnimation("jump_down", [10]);
+			addAnimation("idle", [2]);
+			addAnimation("run", [0, 1, 2, 3], 12,true);
+			addAnimation("jump", [2]);
 		}
 		
 		/**
@@ -71,43 +69,59 @@ package game.actors
 		 */		
 		public override function update():void
 		{
-			//当不按按钮的时候，人物加速度为0，就那么人物会收到drag影响而停下来
-			acceleration.x = 0;
+            super.update();
+            var tx:int = int(x / 16);
+            var ty:int = int(y / 16);
+            
+            if (facing == FlxObject.LEFT)
+            {
+                
+                //	31 is the Collide Index of our Tilemap (which sadly isn't exposed in Flixel 2.5, so is hard-coded here. Not ideal I appreciate)
+                if (map && map.getTile(tx - 2, ty) == 0)
+                {
+                    turnAround();
+                    return;
+                }
+            }
+            else
+            {
+                //	31 is the Collide Index of our Tilemap (which sadly isn't exposed in Flixel 2.5, so is hard-coded here. Not ideal I appreciate)
+                if (map && map.getTile(tx + 2, ty) ==0)
+                {
+                    turnAround();
+                    return;
+                }
+            }
+            
+            //	Check the tiles below it
+            
+            if (isTouching(FlxObject.FLOOR) == false && isDying == false)
+            {
+                turnAround();
+            }
+            
+            if(this.velocity.x>0)
+            {
+                play("run");
+            }
 			
-			facing = LEFT;
-			acceleration.x = drag.x;
-			
-			if (int(FlxG.random()*10)==1 && velocity.y == 0)
-			{
-				_isJump = true;
-				velocity.y = -JUMP_ACCELERATION;
-			}
-			
-			//以下是判断人物的一些速度状态来进行各种动画播放
-			if(velocity.y != 0)
-			{
-				//y轴速度不为0 的时候，播放跳跃的动画
-				play("jump");
-			}
-			else if(velocity.x == 0)
-			{
-				play("idle");
-			}
-			else
-			{
-				play("run");
-			}
-			
-			super.update();
 		}
 		
-		/**
-		 * destroy
-		 * 
-		 */		
-		override public function destroy():void
-		{
-			super.destroy();
-		}
+        private function turnAround():void
+        {
+            if (facing == FlxObject.RIGHT)
+            {
+                facing = FlxObject.LEFT;
+                
+                velocity.x = -30;
+            }
+            else
+            {
+                facing = FlxObject.RIGHT;
+                
+                velocity.x = 30;
+            }
+        }
+        
 	}
 }

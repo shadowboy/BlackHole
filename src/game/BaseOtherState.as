@@ -1,8 +1,5 @@
 package game
 {
-	import flash.display.Bitmap;
-	import flash.display.Sprite;
-	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
 	import org.flixel.FlxSprite;
@@ -32,7 +29,8 @@ package game
 			if (bgClass)
 			{
 				_bg = new FlxSprite();
-				_bg.loadGraphic(bgClass, false, false, FlxG.width, FlxG.height);
+				_bg.loadGraphic(bgClass, false, false);
+                Layout.center(_bg);
 				add(_bg);
 			}
 			

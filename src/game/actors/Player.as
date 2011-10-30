@@ -23,8 +23,8 @@ package game.actors
 		//人物收到的重力加速度的值
 		protected static const GRAVITY_ACCELERATION:Number = 400;
 		//人物跳跃时的加速度
-		protected static const JUMP_MAX:Number = 240;
-		protected static const JUMP_MIN:Number = 120;
+		protected static const JUMP_MAX:Number = 160;
+		protected static const JUMP_MIN:Number = 80;
 		
 		protected static const FIRST_JUMP:int = 1;
 		protected static const SECOND_JUMP:int = 2;
@@ -82,6 +82,7 @@ package game.actors
 			addAnimation("idle", [0]);
 			addAnimation("run", [0, 1, 0,2], 12);
 			addAnimation("jump", [3]);
+            addAnimation("jump2", [4,5,6,7,8],12,true);
 			addAnimation("idle_up", [0]);
 			addAnimation("dead", [0,1,2,3],12,true);
 			
@@ -103,6 +104,11 @@ package game.actors
 				_superStateCount = 0;
 			}
 		}
+        
+        public function say():void
+        {
+            
+        }
 		
         /**
          * 重写update 方法，用于控制  
@@ -130,10 +136,10 @@ package game.actors
 					acceleration.x = 600;
 					acceleration.y = -650;
 					//add firworks
-					FlxG.state.add(Registry.emitters);
-					Registry.emitters.start(false, 3, .01);
-					Registry.emitters.x = x+8;
-					Registry.emitters.y = y+18;
+//					FlxG.state.add(Registry.emitters);
+//					Registry.emitters.start(false, 3, .01);
+//					Registry.emitters.x = x+8;
+//					Registry.emitters.y = y+18;
 				}
 			}
 			else
@@ -226,10 +232,14 @@ package game.actors
 			{
 				play("dead");
 			}
-			else if(velocity.y != 0)
+			else if(velocity.y != 0 && _jumpStatus==1)
 			{
 				play("jump");
 			}
+            else if(velocity.y != 0 && _jumpStatus==2)
+            {
+                play("jump2");
+            }
 			else if(velocity.y == 0 && _jumpStatus!=0)
 			{
 				if(this.touching == FlxObject.FLOOR)

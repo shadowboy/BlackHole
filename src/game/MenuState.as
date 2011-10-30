@@ -60,7 +60,8 @@ package game
             _btnSound.loadEmbedded(btnSound);
             
 			var bg:FlxSprite = new FlxSprite();
-			bg.loadGraphic(bgClass, false, false, FlxG.width, FlxG.height);
+			bg.loadGraphic(bgClass, false, false);
+            Layout.center(bg);
 			add(bg);
 			
 			_playBtn = new FlxButton();

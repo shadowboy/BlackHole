@@ -21,7 +21,7 @@ package
 	* this is the interface of game
 	* @author Andy Cao
 	*/
-	[SWF(width="480", height="320", backgroundColor="#000000")]
+	[SWF(width="960", height="640", backgroundColor="#000000")]
 	//[Frame(factoryClass="Preloader")]
 	public class UnluckyRabbit extends FlxGame
 	{
@@ -51,7 +51,10 @@ package
 				w = 240;
 				h = 160;
 			}
-			super(480,320,TestAutoBuildMap,1);
+            //for ipad
+			//super(256,192,MenuState,4);
+			super(240,160,MenuState,2);
+//            super(960,640,TestAutoBuildMap,1);
 		}
 	}
 }

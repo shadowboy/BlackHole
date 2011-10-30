@@ -1,5 +1,7 @@
 package game.decales
 {
+	import game.Resource;
+	
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
 	import org.flixel.FlxParticle;
@@ -40,7 +42,6 @@ package game.decales
 			addAnimation('roll', [0,1]);
 			
 			_score = new FlxText(0, 0, 30, "+50");
-			createEmitter();
 		}
 		
 		/**
@@ -65,10 +66,15 @@ package game.decales
 			//获取金币时 设置为 true
 			hasGotten = true;
 			
-			FlxG.state.add(_emitter);
-			_emitter.x = x;
-			_emitter.y = y;
-			_emitter.start(true, 1, .01);
+            var emitter:FlxEmitter = Resource.getEmitter();
+            emitter.setXSpeed(-50, 50);
+            emitter.setYSpeed(-50, 50);
+            emitter.bounce = .8;
+            emitter.gravity = 100;
+			FlxG.state.add(emitter);
+            emitter.x = x;
+            emitter.y = y;
+            emitter.start(true, 1, .01);
 			
 			this.velocity.y = -100;
 			acceleration.y = 300;
@@ -99,29 +105,6 @@ package game.decales
 			}
 			
 			super.update();
-		}
-		
-		/**
-		 * 吃金币的火花
-		 */
-		private function createEmitter():void
-		{
-			_emitter = new FlxEmitter(this.x, this.y, 10);
-			_emitter.setXSpeed(-50, 50);
-			_emitter.setYSpeed(-50, 50);
-			_emitter.bounce = .8;
-			_emitter.gravity = 100;
-			var whitePixel:FlxParticle;
-			for (var i:int = 0; i < _emitter.maxSize; i++) {
-				whitePixel = new FlxParticle();
-				whitePixel.makeGraphic(4, 4, 0xFFFFFFFF);
-				whitePixel.visible = false; //Make sure the particle doesn't show up at (0, 0)
-				_emitter.add(whitePixel);
-				whitePixel = new FlxParticle();
-				whitePixel.makeGraphic(2, 2, 0xFFFFFFFF);
-				whitePixel.visible = false;
-				_emitter.add(whitePixel);
-			}
 		}
 	}
 	
