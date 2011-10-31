@@ -234,26 +234,6 @@ package game.actors
             {
                 play("jump2");
             }
-			else if(velocity.y == 0 && _jumpStatus!=0)
-			{
-				if(this.touching == FlxObject.FLOOR)
-				{
-					_downEffect.playAt(this.x-7,this.y+14);
-					FlxG.state.add(_downEffect);
-					
-					_jumpStatus = 0;
-					_jumpInSkyTime = 0;
-					FlxG.play(landSnd);
-				}
-			}
-			else if(this.velocity.x>120)
-			{
-				if(_jumpEffect.finished == true)
-				{
-					_jumpEffect.playAt(this.x-12,this.y+10);
-					FlxG.state.add(_jumpEffect);
-				}
-			}
 			else if(velocity.x > 0)
 			{
 				play("run");
@@ -263,6 +243,26 @@ package game.actors
 				play("idle");
 			}
 			
+			//show run dusty effect
+			if(this.velocity.x>120 && this.touching == FlxObject.FLOOR)
+			{
+				if(_jumpEffect.finished == true)
+				{
+					_jumpEffect.playAt(this.x-12,this.y+10);
+					FlxG.state.add(_jumpEffect);
+				}
+			}
+			
+			//show land to ground effect
+			if(velocity.y == 0 && _jumpStatus!=0 && touching == FlxObject.FLOOR)
+			{
+				_downEffect.playAt(this.x-7,this.y+14);
+				FlxG.state.add(_downEffect);
+				
+				_jumpStatus = 0;
+				_jumpInSkyTime = 0;
+				FlxG.play(landSnd);
+			}
 			
 			if (health <= 0 && finished)
 			{

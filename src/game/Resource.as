@@ -31,7 +31,6 @@ package game
 		 */
 		public function Resource() 
 		{
-			
 		}
 		
 		/**
