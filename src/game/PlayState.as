@@ -48,10 +48,9 @@ package game
 		private var _pauseBtn:FlxButton;
 		private var _player:Player;
 		private var _bigRock:BigRock;
-		
-		//分数
 		private var _scoreText:FlxText;
-		//子弹时间
+		
+		//bullet times stuff
 		private var _bulletTimeStart:Boolean;
 		private var _bulletTimeDurating:Number;
 		private var _pauseLayer:PauseState;
@@ -189,7 +188,6 @@ package game
                     _curTile = lb.map;
                     _curTile.x = _preTile.x + _preTile.width;
                     lb.init();
-                    
                     _coins.add(lb.stars);
                     _eminies.add(lb.enemies);
                     _tiles.add(_curTile);

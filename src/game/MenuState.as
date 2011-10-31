@@ -2,6 +2,7 @@ package game
 {
 	import game.actors.Leaf;
 	import game.tiles.Level1;
+	import game.utils.Layout;
 	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxEmitter;

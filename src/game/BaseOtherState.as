@@ -1,5 +1,6 @@
 package game
 {
+	import game.utils.Layout;
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
 	import org.flixel.FlxSprite;

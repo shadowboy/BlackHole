@@ -54,7 +54,7 @@ package game.projectiles
 		public function shoot(sPosX:Number,sPosY:Number,velX:Number,velY:Number):void 
 		{
 			reset(sPosX, sPosY);
-			
+			trace(this, " shoot x:" + sPosX + " y:" + sPosY);
 			//将参数中的速度赋值给 子弹
 			velocity.x = velX;
 			velocity.y = velY;

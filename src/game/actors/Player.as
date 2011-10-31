@@ -1,6 +1,8 @@
 package game.actors
 {
 	import flash.media.Video;
+	import game.projectiles.Bullet;
+	import game.Resource;
 	
 	import game.OverState;
 	import game.Registry;
@@ -214,17 +216,9 @@ package game.actors
 			//子弹发射设置
 			if (FlxG.keys.justPressed('C')) 
 			{
-				if (Registry.bullets!=null) 
-				{
-					Registry.bullets.members[_bulletIndex].shoot(x + 4, y, 250, 0);
-					//子弹已经发射，索引变成下一个的
-					_bulletIndex++;
-					//求余数的运算，这样 索引就会 循环了
-					if (_bulletIndex >= 10)
-					{
-						_bulletIndex = 0;
-					}
-				}
+				var bul:Bullet = Resource.getBullet();
+				bul.shoot(x + 4, y, 250, 0);
+				FlxG.state.add(bul);
 			}
 			
 			//以下是判断人物的一些速度状态来进行各种动画播放
@@ -252,21 +246,21 @@ package game.actors
 					FlxG.play(landSnd);
 				}
 			}
-			else if(velocity.x == 0)
+			else if(this.velocity.x>120)
 			{
-				play("idle");
+				if(_jumpEffect.finished == true)
+				{
+					_jumpEffect.playAt(this.x-12,this.y+10);
+					FlxG.state.add(_jumpEffect);
+				}
+			}
+			else if(velocity.x > 0)
+			{
+				play("run");
 			}
 			else
 			{
-				play("run");
-				if(this.velocity.x>120)
-				{
-					if(_jumpEffect.finished==true)
-					{
-						_jumpEffect.playAt(this.x-12,this.y+10);
-						FlxG.state.add(_jumpEffect);
-					}
-				}
+				play("idle");
 			}
 			
 			
@@ -275,7 +269,6 @@ package game.actors
 				kill();
 				FlxG.switchState(new OverState());
 			}
-			//trace(this, "health:"+health+" finished:"+finished);
 			super.update();
 		}
 		

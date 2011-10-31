@@ -120,7 +120,7 @@ package game
 		{
 			_bullets = new FlxGroup();
 			var bul:Bullet;
-			for (var i:int = 0; i < 2; i++)
+			for (var i:int = 0; i < 5; i++)
 			{
 				bul = new Bullet();
 				_bullets.add(bul);

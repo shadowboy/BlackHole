@@ -14,9 +14,9 @@ package game.actors
 		//人物移动的速度得值
 		protected static const PLAYER_RUN_SPEED:int = 80;
 		//人物收到的重力加速度的值
-		protected static const GRAVITY_ACCELERATION:Number = 400;
+		protected static const GRAVITY_ACCELERATION:Number = 200;
 		//人物跳跃时的加速度
-		protected static const JUMP_ACCELERATION:Number = 200;
+		protected static const JUMP_ACCELERATION:Number = -200;
 		
 		[Embed(source = '../../assets/textures/actors/enemy.png')]
 		protected var playerImg:Class;
@@ -75,8 +75,6 @@ package game.actors
             
             if (facing == FlxObject.LEFT)
             {
-                
-                //	31 is the Collide Index of our Tilemap (which sadly isn't exposed in Flixel 2.5, so is hard-coded here. Not ideal I appreciate)
                 if (map && map.getTile(tx - 2, ty) == 0)
                 {
                     turnAround();
@@ -85,7 +83,6 @@ package game.actors
             }
             else
             {
-                //	31 is the Collide Index of our Tilemap (which sadly isn't exposed in Flixel 2.5, so is hard-coded here. Not ideal I appreciate)
                 if (map && map.getTile(tx + 2, ty) ==0)
                 {
                     turnAround();
@@ -93,18 +90,24 @@ package game.actors
                 }
             }
             
-            //	Check the tiles below it
-            
             if (isTouching(FlxObject.FLOOR) == false && isDying == false)
             {
                 turnAround();
             }
             
-            if(this.velocity.x>0)
+            if (int(Math.random() * 5) == 2)
+			{
+				this.velocity.y = JUMP_ACCELERATION;
+			}
+			
+			if (this.velocity.y > 0)
+			{
+				play("jump");
+			}
+			else if(this.velocity.x>0)
             {
                 play("run");
             }
-			
 		}
 		
         private function turnAround():void
