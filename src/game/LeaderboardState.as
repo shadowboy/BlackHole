@@ -19,7 +19,7 @@ package game
 		{
 			super("Help", bgClass);
 			
-			
+			data = [{name:"Andy",score:100},{name:"Andy",score:100},{name:"Andy",score:100},{name:"Andy",score:100},{name:"Andy",score:100}];
 		}
 		
 		public function set data(value:Array):void 

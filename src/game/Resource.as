@@ -85,6 +85,23 @@ package game
 		}
         
         /**
+         * get coin emitter
+         * @return
+         */
+        public static function getCoinEmitter():FlxEmitter
+        {
+            if (_curCoinEmitterIdx >= _coinEmitters.length-1)
+            {
+                _curCoinEmitterIdx = 0;
+            }
+            else
+            {
+                _curCoinEmitterIdx++;
+            }
+            return _coinEmitters.members[_curCoinEmitterIdx] as FlxEmitter;
+        }
+        
+        /**
          * get emitter
          * @return
          */

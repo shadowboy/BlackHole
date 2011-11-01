@@ -6,11 +6,11 @@ package
 	import flash.display.StageScaleMode;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
-	import game.test.TestLeaderBoard;
 	
 	import game.MenuState;
 	import game.test.Test;
 	import game.test.TestAutoBuildMap;
+	import game.test.TestLeaderBoard;
 	
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
@@ -54,7 +54,7 @@ package
 			}
             //for ipad
 			//super(256,192,MenuState,4);
-			super(240,160,TestLeaderBoard,2);
+			super(240,160,MenuState,2);
 //            super(960,640,TestAutoBuildMap,1);
 		}
 	}

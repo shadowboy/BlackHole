@@ -65,16 +65,8 @@ package game.decales
 		{
 			//获取金币时 设置为 true
 			hasGotten = true;
-			
-            var emitter:FlxEmitter = Resource.getEmitter();
-            emitter.setXSpeed(-50, 50);
-            emitter.setYSpeed(-50, 50);
-            emitter.bounce = .8;
-            emitter.gravity = 100;
-			FlxG.state.add(emitter);
-            emitter.x = x;
-            emitter.y = y;
-            emitter.start(true, 1, .01);
+            
+            Resource.getEmitter().start(true,1,.01);
 			
 			this.velocity.y = -100;
 			acceleration.y = 300;
