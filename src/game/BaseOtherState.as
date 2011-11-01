@@ -1,6 +1,7 @@
 package game
 {
 	import game.utils.Layout;
+	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
 	import org.flixel.FlxSprite;
@@ -26,12 +27,11 @@ package game
 		public function BaseOtherState(title:String,bgClass:Class=null) 
 		{
 			super();
-			trace(bgClass);
 			if (bgClass)
 			{
 				_bg = new FlxSprite();
 				_bg.loadGraphic(bgClass, false, false);
-                Layout.center(_bg);
+                game.utils.Layout.center(_bg);
 				add(_bg);
 			}
 			
