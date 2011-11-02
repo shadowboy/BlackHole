@@ -72,6 +72,8 @@ package game.utils
 						_device = IPAD;
 					}
 				}
+				
+				//Android decive
 			}
 		}
 		
