@@ -95,7 +95,7 @@ package game.actors
                 turnAround();
             }
             
-            if (int(Math.random() * 20) == 2)
+            if (int(Math.random() * 5) == 2)
 			{
 				this.velocity.y = JUMP_ACCELERATION;
 			}
