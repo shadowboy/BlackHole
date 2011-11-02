@@ -6,6 +6,7 @@ package
 	import flash.display.StageScaleMode;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
+	import game.utils.Environment;
 	
 	import game.MenuState;
 	import game.test.Test;
@@ -36,26 +37,43 @@ package
 			//stage.setAspectRatio(StageAspectRatio.LANDSCAPE);
 			//stage.setOrientation(StageOrientation.ROTATED_RIGHT);
 			//stage.autoOrients = false;
-
-			var scale:int;
-			var w:int;
-			var h:int;
-			if(Capabilities.screenDPI>300)
+			
+			var w:int = 240;
+			var h:int = 160;
+			var scale:int = 2
+			var env:Environment = Environment.getInstance();
+			if (env.showType == Environment.WINDOW_TYPE)
 			{
-				scale = 4;
 				w = 240;
 				h = 160;
+				scale = 2;
 			}
 			else
 			{
-				scale = 2;
-				w = 240;
-				h = 160;
+				if (env.device == Environment.IPHONE)
+				{
+					w = 240;
+					h = 160;
+					scale = 2;
+				}
+				else if (env.device == Environment.IPHONE_RETINA)
+				{
+					w = 240;
+					h = 160;
+					scale = 4;
+				}
+				else if (env.device == Environment.IPAD)
+				{
+					w = 256;
+					h = 192;
+					scale = 4;
+				}
+				//flash.system.Capabilities.version.indexOf(“IOS”) == 0 
+				//(Android returns “AND” and 
+				//BlackBerry Tablet OS returns “QNX”).
 			}
-            //for ipad
-			//super(256,192,MenuState,4);
-			super(240,160,MenuState,2);
-//            super(960,640,TestAutoBuildMap,1);
+			
+			super(w, h, MenuState, scale);
 		}
 	}
 }
