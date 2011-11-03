@@ -41,6 +41,7 @@ package game.utils
 		public function Environment() 
 		{
 			_os = Capabilities.os;
+            trace("os:"+_os);
 			_screenWidth = Capabilities.screenResolutionX;
 			_screenHeight = Capabilities.screenResolutionY;
 			_dpi = Capabilities.screenDPI;
