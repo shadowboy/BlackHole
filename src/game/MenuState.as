@@ -1,7 +1,10 @@
 package game
 {
+	import flash.system.Capabilities;
+	
 	import game.actors.Leaf;
 	import game.tiles.Level1;
+	import game.utils.Environment;
 	import game.utils.Layout;
 	
 	import org.flixel.FlxButton;
@@ -52,6 +55,7 @@ package game
 		private var theEmitter:FlxEmitter;
 		private var whitePixel:FlxParticle;
 		private var _btnSound:FlxSound;
+		private var _info:FlxText;
 		
 		public function MenuState() 
 		{
@@ -105,6 +109,11 @@ package game
 			_helpBtn.y = padding;
             _helpBtn.onDown = helpHandler;
 			add(_helpBtn);
+            
+            _info = new FlxText(0,10,200,"debug message");
+            _info.setFormat(null,8,0x000000);
+            _info.text = "os:"+flash.system.Capabilities.os+" w:"+Capabilities.screenResolutionX+" h:"+Capabilities.screenResolutionY+" d:"+Environment.getInstance().device;
+            add(_info);
             
             FlxG.play(startSound);
 		}

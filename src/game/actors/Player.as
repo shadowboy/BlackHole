@@ -21,7 +21,7 @@ package game.actors
 	public class Player extends FlxSprite 
 	{
 		//人物移动的速度得值
-		protected static const RUN_SPEED:int = 50;
+		protected static const RUN_SPEED:int = 30;
 		//人物收到的重力加速度的值
 		protected static const GRAVITY_ACCELERATION:Number = 400;
 		//人物跳跃时的加速度
@@ -46,7 +46,6 @@ package game.actors
 		
 		[Embed(source='../../assets/audio/jump.mp3')]
 		protected var jumpSnd:Class;
-		
 		
 		private var _bullets:FlxGroup;
 		private var _bulletIndex:uint = 0;
@@ -76,7 +75,7 @@ package game.actors
 			drag.x = RUN_SPEED;
 			acceleration.y = GRAVITY_ACCELERATION;
 			
-			maxVelocity.x = RUN_SPEED*3;
+			maxVelocity.x = RUN_SPEED*5;
 			maxVelocity.y = JUMP_MAX;
 			
 			this.health = 1;
