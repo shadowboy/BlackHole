@@ -6,6 +6,9 @@ package
 	import flash.display.StageScaleMode;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
+	import game.PlayState;
+	import game.test.TestEmitter;
+	import game.test.TestEmitter2;
 	import game.utils.Environment;
 	
 	import game.MenuState;

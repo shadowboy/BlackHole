@@ -105,6 +105,7 @@ package game
             var en:Enemy = new Enemy(120,300);
             _eminies.add(en);
             
+			initWindEmitter();
 		}
         
         private function playMusic():void
@@ -290,6 +291,32 @@ package game
 			_player.destroy();
 			_bigRock.destroy();
 			super.destroy();
+		}
+		
+		/**
+		 * 
+		 */
+		private function initWindEmitter():void
+		{
+			var emitter:FlxEmitter = new FlxEmitter(160, 30, 100);
+			emitter.setXSpeed(-100, -50);
+			emitter.setYSpeed(0, 100);
+			emitter.bounce = .8;
+			
+			emitter.gravity = 20;
+			var whitePixel:FlxParticle;
+			for (var i:int = 0; i < emitter.maxSize; i++) 
+			{
+				whitePixel = new FlxParticle();
+				whitePixel.makeGraphic(2, 2, 0xFFFFFFFF);
+				whitePixel.visible = false; //Make sure the particle doesn't show up at (0, 0)
+				emitter.add(whitePixel);
+				whitePixel = new FlxParticle();
+				whitePixel.makeGraphic(1, 1, 0xFFFFFFFF);
+				whitePixel.visible = false;
+				emitter.add(whitePixel);
+			}
+			emitter.start(false, 1.6, 0.2);
 		}
 	}
 }

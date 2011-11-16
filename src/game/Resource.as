@@ -179,9 +179,9 @@ package game
 		 */
 		private static function initEmitter():FlxEmitter
 		{
-			var emitter:FlxEmitter = new FlxEmitter(0, 0, 6);
-			emitter.setXSpeed(-100, 0);
-			emitter.setYSpeed(0, 100);
+			var emitter:FlxEmitter = new FlxEmitter(50, 20, 200);
+			emitter.setXSpeed(-100, 200);
+			emitter.setYSpeed(-50, 50);
 			//emitter.bounce = .8;
 			
 			emitter.gravity = 100;
