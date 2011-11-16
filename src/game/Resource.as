@@ -124,9 +124,9 @@ package game
 		public static function init():void
 		{
 			initBullets();
-			initCoins();
-			initEmitters();
-            initEnemies();
+			//initCoins();
+			//initEmitters();
+            //initEnemies();
 		}
         
 		/**

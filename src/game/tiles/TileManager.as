@@ -74,8 +74,8 @@ package game.tiles
             var bt2:LevelBase = new LevelBase();
             var bt3:LevelBase = new LevelBase();
             
-//            addTile(mapCVS);
-//            addTile(map2CVS);
+            //addTile(mapCVS);
+            //addTile(map2CVS);
             _tileList.add(bt);
             _tileList.add(bt2);
             _tileList.add(bt3);

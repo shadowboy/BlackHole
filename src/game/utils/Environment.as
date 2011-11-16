@@ -55,7 +55,7 @@ package game.utils
 			{
 				_showType = FULLSCREEN_TYPE;
 				//phones pocket pc ipad or 
-				if (_os.indexOf("IOS") != -1)
+				if (_os.indexOf("iPhone") != -1 || _os.indexOf("iPad") != -1)
 				{
 					if (_screenWidth == 320)
 					{

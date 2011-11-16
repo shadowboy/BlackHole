@@ -15,6 +15,7 @@ package
 	import game.test.Test;
 	import game.test.TestAutoBuildMap;
 	import game.test.TestLeaderBoard;
+	import game.utils.Environment;
 	
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
@@ -26,7 +27,7 @@ package
 	* this is the interface of game
 	* @author Andy Cao
 	*/
-	[SWF(width="960", height="640", backgroundColor="#000000")]
+	[SWF(width="960", height="640", backgroundColor="#000000" , frameRate="60")]
 	//[Frame(factoryClass="Preloader")]
 	public class UnluckyRabbit extends FlxGame
 	{
@@ -37,9 +38,9 @@ package
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
 			//横屏模式
-			//stage.setAspectRatio(StageAspectRatio.LANDSCAPE);
-			//stage.setOrientation(StageOrientation.ROTATED_RIGHT);
-			//stage.autoOrients = false;
+			stage.setAspectRatio(StageAspectRatio.LANDSCAPE);
+			stage.setOrientation(StageOrientation.ROTATED_RIGHT);
+			stage.autoOrients = false;
 			
 			var w:int = 240;
 			var h:int = 160;
@@ -49,7 +50,7 @@ package
 			{
 				w = 240;
 				h = 160;
-				scale = 2;
+				scale = 4;
 			}
 			else
 			{
@@ -75,8 +76,11 @@ package
 				//(Android returns “AND” and 
 				//BlackBerry Tablet OS returns “QNX”).
 			}
-			
+            
 			super(w, h, MenuState, scale);
+            
+            FlxG.debug = true;
+            FlxG.framerate = 60;
 		}
 	}
 }

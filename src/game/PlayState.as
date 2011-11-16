@@ -62,6 +62,7 @@ package game
         private var _tiles:FlxGroup = new FlxGroup();
         private var _coins:FlxGroup = new FlxGroup();
         private var _eminies:FlxGroup = new FlxGroup();
+        
 		/**
 		 * 
 		 */
@@ -83,7 +84,7 @@ package game
             add(_tileMgr.tree);
             
             _curTile = _tileMgr.getTile().map;
-//            _curTile.y = (FlxG.height - _curTile.height)/2;
+            _curTile.y = (FlxG.height - _curTile.height)/2;
             _tiles.add(_curTile);
             
             add(_tiles);
@@ -180,6 +181,7 @@ package game
 			_scoreText.x = FlxG.width-_scoreText.width;
             
             //draw tile maps
+            trace(this,(_curTile.x + _curTile.width - _player.x),FlxG.width);
             if (_curTile.x + _curTile.width - _player.x<FlxG.width) 
             {
                 _preTile = _curTile;
@@ -188,6 +190,7 @@ package game
                     var lb:LevelBase = (_tileMgr.getTile() as LevelBase);
                     _curTile = lb.map;
                     _curTile.x = _preTile.x + _preTile.width;
+                    
                     lb.init();
                     _coins.add(lb.stars);
                     _eminies.add(lb.enemies);
