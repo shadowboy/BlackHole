@@ -7,8 +7,8 @@ package
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 	import game.PlayState;
-	import game.test.TestEmitter;
 	import game.test.TestEmitter2;
+	import game.test.TestEmitterLikeBlood;
 	import game.utils.Environment;
 	
 	import game.MenuState;
@@ -38,9 +38,9 @@ package
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
 			//横屏模式
-			stage.setAspectRatio(StageAspectRatio.LANDSCAPE);
-			stage.setOrientation(StageOrientation.ROTATED_RIGHT);
-			stage.autoOrients = false;
+			//stage.setAspectRatio(StageAspectRatio.LANDSCAPE);
+			//stage.setOrientation(StageOrientation.ROTATED_RIGHT);
+			//stage.autoOrients = false;
 			
 			var w:int = 240;
 			var h:int = 160;
@@ -77,7 +77,7 @@ package
 				//BlackBerry Tablet OS returns “QNX”).
 			}
             
-			super(w, h, MenuState, scale);
+			super(w, h, TestEmitterLikeBlood, scale);
             
             FlxG.debug = true;
             FlxG.framerate = 60;

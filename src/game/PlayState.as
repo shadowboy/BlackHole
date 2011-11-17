@@ -62,6 +62,7 @@ package game
         private var _tiles:FlxGroup = new FlxGroup();
         private var _coins:FlxGroup = new FlxGroup();
         private var _eminies:FlxGroup = new FlxGroup();
+		private var _wind:FlxEmitter;
         
 		/**
 		 * 
@@ -69,51 +70,40 @@ package game
 		public function PlayState() 
 		{
 			super();
-			//FlxG.mouse.hide();
-			//create actors
+			Resource.init();
+			FlxG.score = 0;
+			
 			_player =  new Player(120, 60);
 			_bigRock = new BigRock(0,10);
-			//create bullets
-            Resource.init();
-			//create display
+
 			createHub();
-			//add them to stage
             _tileMgr = new TileManager();
-            
-            add(_tileMgr.sky);
-            add(_tileMgr.tree);
-            
             _curTile = _tileMgr.getTile().map;
             _curTile.y = (FlxG.height - _curTile.height)/2;
             _tiles.add(_curTile);
             
+			_wind = initWindEmitter();
+			_wind.y = 50
+			
+			add(_tileMgr.sky);
+            add(_tileMgr.tree);
             add(_tiles);
             add(_coins);
             add(_eminies);
 			add(_player);
 			//add(_bigRock);
-			add(_scoreText);
-			add(_pauseBtn);
+			add(_wind);
 			
-            FlxG.score = 0;
 			_pauseLayer = new PauseState();
 			_pauseLayer.resumeCallback = resumeHandler;
 			_pauseLayer.enabled = false;
 			add(_pauseLayer);
             
-            playMusic();
+            FlxG.playMusic(bgMusic);
             
             var en:Enemy = new Enemy(120,300);
             _eminies.add(en);
-            
-			initWindEmitter();
 		}
-        
-        private function playMusic():void
-        {
-            FlxG.playMusic(bgMusic);
-        }
-		
 		
 		private function createHub():void 
 		{
@@ -125,7 +115,10 @@ package game
 			
 			_pauseBtn = new FlxButton(2, 2, "", pauseHandler);
 			_pauseBtn.loadGraphic(pauseBtnPNG,false,false,16,16)
-			_pauseBtn.scrollFactor = new FlxPoint(0,0);
+			_pauseBtn.scrollFactor = new FlxPoint(0, 0);
+			
+			add(_scoreText);
+			add(_pauseBtn);
 		}
 		
 		/**
@@ -171,7 +164,7 @@ package game
 		 */
 		override public function update():void 
 		{
-			
+			_wind.x = _player.x + FlxG.width - 50;;
 			FlxG.worldBounds = new FlxRect((FlxG.camera.scroll.x), (FlxG.camera.scroll.y), FlxG.camera.width*2, FlxG.camera.height);
 			FlxG.camera.follow(_player);
 			FlxG.camera.deadzone = new FlxRect(20,50,30,60);
@@ -299,7 +292,7 @@ package game
 		/**
 		 * 
 		 */
-		private function initWindEmitter():void
+		private function initWindEmitter():FlxEmitter
 		{
 			var emitter:FlxEmitter = new FlxEmitter(160, 30, 100);
 			emitter.setXSpeed(-100, -50);
@@ -320,6 +313,7 @@ package game
 				emitter.add(whitePixel);
 			}
 			emitter.start(false, 1.6, 0.2);
+			return emitter;
 		}
 	}
 }
