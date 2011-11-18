@@ -27,7 +27,7 @@ package
 	* this is the interface of game
 	* @author Andy Cao
 	*/
-	[SWF(width="960", height="640", backgroundColor="#000000" , frameRate="60")]
+	[SWF(width="480", height="320", backgroundColor="#000000" , frameRate="60")]
 	//[Frame(factoryClass="Preloader")]
 	public class UnluckyRabbit extends FlxGame
 	{
@@ -48,9 +48,9 @@ package
 			var env:Environment = Environment.getInstance();
 			if (env.showType == Environment.WINDOW_TYPE)
 			{
-				w = 240;
-				h = 160;
-				scale = 4;
+				w = this.stage.stageWidth / 2;
+				h = this.stage.stageHeight / 2;
+				scale = 2;
 			}
 			else
 			{
