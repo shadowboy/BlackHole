@@ -6,14 +6,13 @@ package
 	import flash.display.StageScaleMode;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
-	import game.PlayState;
-	import game.test.TestEmitter2;
-	import game.test.TestEmitterLikeBlood;
-	import game.utils.Environment;
 	
 	import game.MenuState;
+	import game.PlayState;
 	import game.test.Test;
 	import game.test.TestAutoBuildMap;
+	import game.test.TestEmitter2;
+	import game.test.TestEmitterLikeBlood;
 	import game.test.TestLeaderBoard;
 	import game.utils.Environment;
 	
@@ -24,8 +23,9 @@ package
 	import org.flixel.system.debug.Log;
 
 	/**
-	* this is the interface of game
-	* @author Andy Cao
+	* This is the interface of game
+    * 
+	* @Author Andy Cao
 	*/
 	[SWF(width="480", height="320", backgroundColor="#000000" , frameRate="60")]
 	//[Frame(factoryClass="Preloader")]
@@ -77,7 +77,7 @@ package
 				//BlackBerry Tablet OS returns “QNX”).
 			}
             
-			super(w, h, TestEmitterLikeBlood, scale);
+			super(w, h, MenuState, scale);
             
             FlxG.debug = true;
             FlxG.framerate = 60;

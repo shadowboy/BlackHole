@@ -1,8 +1,6 @@
 package game.actors
 {
-	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
-	import org.flixel.FlxGroup;
 	import org.flixel.FlxSprite;
 	
 	/**
@@ -20,8 +18,6 @@ package game.actors
 		
 		[Embed(source = '../../assets/textures/actors/big_rock.png')]
 		protected var playerImg:Class;
-		
-		
 
 		
 		public function BigRock(startX:Number,startY:Number) 
