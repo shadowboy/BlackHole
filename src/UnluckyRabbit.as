@@ -1,34 +1,22 @@
 package
 {
 	import flash.display.StageAlign;
-	import flash.display.StageAspectRatio;
-	import flash.display.StageOrientation;
 	import flash.display.StageScaleMode;
-	import flash.geom.Rectangle;
-	import flash.system.Capabilities;
-	import game.PlayState;
-	import game.test.TestEmitter2;
+	import game.MenuState;
 	import game.test.TestEmitterLikeBlood;
 	import game.utils.Environment;
-	
-	import game.MenuState;
-	import game.test.Test;
-	import game.test.TestAutoBuildMap;
-	import game.test.TestLeaderBoard;
-	import game.utils.Environment;
-	
-	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGame;
-	import org.flixel.FlxSprite;
-	import org.flixel.system.debug.Log;
-
-	/**
-	* this is the interface of game
-	* @author Andy Cao
-	*/
-	[SWF(width="480", height="320", backgroundColor="#000000" , frameRate="60")]
+	
+	[SWF(width="960",height="640",backgroundColor="#000000",frameRate="60")]
+	
 	//[Frame(factoryClass="Preloader")]
+	
+	/**
+	 * This is the interface of game
+	 *
+	 * @author Andy Cao
+	 */
 	public class UnluckyRabbit extends FlxGame
 	{
 		public function UnluckyRabbit()
@@ -37,7 +25,6 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
-			//横屏模式
 			//stage.setAspectRatio(StageAspectRatio.LANDSCAPE);
 			//stage.setOrientation(StageOrientation.ROTATED_RIGHT);
 			//stage.autoOrients = false;
@@ -48,9 +35,9 @@ package
 			var env:Environment = Environment.getInstance();
 			if (env.showType == Environment.WINDOW_TYPE)
 			{
-				w = this.stage.stageWidth / 2;
-				h = this.stage.stageHeight / 2;
-				scale = 2;
+				w = 960;
+				h = 640;
+				scale = 1;
 			}
 			else
 			{
@@ -72,15 +59,10 @@ package
 					h = 192;
 					scale = 4;
 				}
-				//flash.system.Capabilities.version.indexOf(“IOS”) == 0 
-				//(Android returns “AND” and 
-				//BlackBerry Tablet OS returns “QNX”).
 			}
-            
-			super(w, h, TestEmitterLikeBlood, scale);
-            
-            FlxG.debug = true;
-            FlxG.framerate = 60;
+			super(w, h, MenuState, scale);
+			FlxG.debug = true;
+			FlxG.framerate = 30;
 		}
 	}
 }

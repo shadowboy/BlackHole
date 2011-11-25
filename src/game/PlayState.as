@@ -58,7 +58,7 @@ package game
         private var _tileMgr:TileManager;
         private var _curTile:FlxTilemap;
 		
-        private var _preTile:*;
+        private var _preTile:FlxTilemap;
         private var _tiles:FlxGroup = new FlxGroup();
         private var _coins:FlxGroup = new FlxGroup();
         private var _eminies:FlxGroup = new FlxGroup();
@@ -73,13 +73,12 @@ package game
 			Resource.init();
 			FlxG.score = 0;
 			
-			_player =  new Player(120, 60);
+			_player =  new Player(60, 60);
 			_bigRock = new BigRock(0,10);
 
 			createHub();
             _tileMgr = new TileManager();
             _curTile = _tileMgr.getTile().map;
-            _curTile.y = (FlxG.height - _curTile.height)/2;
             _tiles.add(_curTile);
             
 			_wind = initWindEmitter();
@@ -91,7 +90,6 @@ package game
             add(_coins);
             add(_eminies);
 			add(_player);
-			//add(_bigRock);
 			add(_wind);
 			
 			_pauseLayer = new PauseState();
@@ -101,8 +99,8 @@ package game
             
             FlxG.playMusic(bgMusic);
             
-            var en:Enemy = new Enemy(120,300);
-            _eminies.add(en);
+            //var en:Enemy = new Enemy(120,300);
+            //_eminies.add(en);
 		}
 		
 		private function createHub():void 
@@ -174,24 +172,18 @@ package game
 			_scoreText.x = FlxG.width-_scoreText.width;
             
             //draw tile maps
-            trace(this,(_curTile.x + _curTile.width - _player.x),FlxG.width);
             if (_curTile.x + _curTile.width - _player.x<FlxG.width) 
             {
                 _preTile = _curTile;
-                try
-                {
-                    var lb:LevelBase = (_tileMgr.getTile() as LevelBase);
-                    _curTile = lb.map;
-                    _curTile.x = _preTile.x + _preTile.width;
-                    
-                    lb.init();
-                    _coins.add(lb.stars);
-                    _eminies.add(lb.enemies);
-                    _tiles.add(_curTile);
-                }
-                catch (e:Error) 
-                {
-                }
+                var lb:LevelBase = _tileMgr.getTile();
+				_curTile = lb.map;
+				_curTile.x = _preTile.x + _preTile.width;
+				_curTile.y = _preTile.y;
+				
+				lb.init();
+				_coins.add(lb.stars);
+				_eminies.add(lb.enemies);
+				_tiles.add(_curTile);
             }
             
             if (_preTile)
@@ -199,8 +191,8 @@ package game
                 //trace("play and tile:"+(_player.x - _preTile.x)+" pre width:"+_preTile.width);
                 if ((_player.x - _preTile.x) > (_preTile.width+180))
                 {
-                    _tiles.remove(_preTile);
-                    _preTile = null;
+                    //_tiles.remove(_preTile);
+                    //_preTile = null;
                 }
                 
             }
@@ -214,7 +206,7 @@ package game
 			FlxG.overlap(_player, _coins, getCoin);
 			
 			//player dead
-			if(_player.y > 320 && _player.health>0)
+			if(_player.y > 420 && _player.health>0)
 			{
 				_player.hurt(1);
 			}

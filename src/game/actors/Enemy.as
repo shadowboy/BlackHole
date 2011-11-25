@@ -44,7 +44,7 @@ package game.actors
 			acceleration.y = GRAVITY_ACCELERATION;
 			
 			maxVelocity.x = PLAYER_RUN_SPEED;
-			maxVelocity.y = JUMP_ACCELERATION;
+			//maxVelocity.y = JUMP_ACCELERATION;
 			
 			addAnimation("idle", [2]);
 			addAnimation("run", [0, 1, 2, 3], 12,true);
@@ -72,6 +72,7 @@ package game.actors
             super.update();
             var tx:int = int(x / 16);
             var ty:int = int(y / 16);
+			trace(tx);
             
             if (facing == FlxObject.LEFT)
             {
@@ -95,7 +96,7 @@ package game.actors
                 turnAround();
             }
             
-            if (int(Math.random() * 5) == 2)
+            if (int(Math.random() * 10) == 2 && this.velocity.y == 0 )
 			{
 				this.velocity.y = JUMP_ACCELERATION;
 			}

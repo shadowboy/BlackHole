@@ -77,8 +77,11 @@ package game.tiles
             //addTile(mapCVS);
             //addTile(map2CVS);
             _tileList.add(bt);
+			_tileList.add(bt3);
             _tileList.add(bt2);
-            _tileList.add(bt3);
+            _tileList.add(bt2);
+            _tileList.add(bt2);
+            
 		}
         
         public function get sky():FlxTilemap 
