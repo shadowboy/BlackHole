@@ -1,20 +1,15 @@
 package game
 {
-	import flash.geom.Rectangle;
-	import flash.text.TextFormat;
-	
 	import game.actors.BigRock;
 	import game.actors.Enemy;
 	import game.actors.Player;
 	import game.decales.Coin;
 	import game.decales.RocketCoin;
 	import game.projectiles.Bullet;
-	import game.tiles.LevelBase;
+	import game.tiles.LandAbstract;
 	import game.tiles.TileManager;
 	
-	import org.flixel.FlxBasic;
 	import org.flixel.FlxButton;
-	import org.flixel.FlxCamera;
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
@@ -25,14 +20,11 @@ package game
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxState;
 	import org.flixel.FlxText;
-	import org.flixel.FlxTileblock;
 	import org.flixel.FlxTilemap;
-	import org.flixel.FlxU;
-	import org.flixel.system.debug.Log;
 	
 	/**
 	 * ...
-	 * @author GameCloudStudio
+	 * @author Andy
 	 */
 	public class PlayState extends FlxState 
 	{
@@ -58,14 +50,14 @@ package game
         private var _tileMgr:TileManager;
         private var _curTile:FlxTilemap;
 		
-        private var _preTile:*;
+        private var _preTile:FlxTilemap;
         private var _tiles:FlxGroup = new FlxGroup();
         private var _coins:FlxGroup = new FlxGroup();
         private var _eminies:FlxGroup = new FlxGroup();
 		private var _wind:FlxEmitter;
         
 		/**
-		 * 
+		 * Contruction
 		 */
 		public function PlayState() 
 		{
@@ -73,17 +65,16 @@ package game
 			Resource.init();
 			FlxG.score = 0;
 			
-			_player =  new Player(120, 60);
+			_player =  new Player(90, 10);
 			_bigRock = new BigRock(0,10);
 
-			createHub();
             _tileMgr = new TileManager();
             _curTile = _tileMgr.getTile().map;
-            _curTile.y = (FlxG.height - _curTile.height)/2;
+            _curTile.y = FlxG.height - _curTile.height;
             _tiles.add(_curTile);
             
 			_wind = initWindEmitter();
-			_wind.y = 50
+			_wind.y = -20;
 			
 			add(_tileMgr.sky);
             add(_tileMgr.tree);
@@ -91,8 +82,8 @@ package game
             add(_coins);
             add(_eminies);
 			add(_player);
-			//add(_bigRock);
 			add(_wind);
+            createHub();
 			
 			_pauseLayer = new PauseState();
 			_pauseLayer.resumeCallback = resumeHandler;
@@ -100,11 +91,12 @@ package game
 			add(_pauseLayer);
             
             FlxG.playMusic(bgMusic);
-            
-            var en:Enemy = new Enemy(120,300);
-            _eminies.add(en);
 		}
 		
+        /**
+         * Create hub 
+         * 
+         */        
 		private function createHub():void 
 		{
 			_scoreText = new FlxText(0,0,80,null,true);
@@ -122,7 +114,7 @@ package game
 		}
 		
 		/**
-		 * start bullet time 
+		 * Start bullet time 
 		 * @param	time
 		 */
 		public function startBulletTime(time:Number = .5):void
@@ -134,7 +126,7 @@ package game
 		}
 		
 		/**
-		 * pause game handler
+		 * Pause game handler
          * 
 		 */
 		private function pauseHandler():void 
@@ -147,8 +139,7 @@ package game
 		}
 		
         /**
-         * resume 
-         * 
+         * Resume 
          */        
 		private function resumeHandler():void
 		{
@@ -160,47 +151,55 @@ package game
 		}
 		
 		/**
-		 * update
+		 * Update
 		 */
 		override public function update():void 
 		{
-			_wind.x = _player.x + FlxG.width - 50;;
+			_wind.x = _player.x + FlxG.width - 10;
 			FlxG.worldBounds = new FlxRect((FlxG.camera.scroll.x), (FlxG.camera.scroll.y), FlxG.camera.width*2, FlxG.camera.height);
-			FlxG.camera.follow(_player);
-			FlxG.camera.deadzone = new FlxRect(20,50,30,60);
 			
+			
+            trace(_player.y);
+            if(_player.y<280)
+            {
+                FlxG.camera.follow(_player);
+                FlxG.camera.deadzone = new FlxRect(FlxG.width/6,FlxG.height/3*1,FlxG.width/6,FlxG.height/4*2);
+            }
+            else
+            {
+                FlxG.camera.active = false;
+            }
+            //player dead
+            if(_player.y > 400 && _player.health>0)
+            {
+                _player.hurt(1);
+            }
+            
 			//update score
 			_scoreText.text = "Score:"+String(FlxG.score);
 			_scoreText.x = FlxG.width-_scoreText.width;
             
             //draw tile maps
-            trace(this,(_curTile.x + _curTile.width - _player.x),FlxG.width);
             if (_curTile.x + _curTile.width - _player.x<FlxG.width) 
             {
                 _preTile = _curTile;
-                try
-                {
-                    var lb:LevelBase = (_tileMgr.getTile() as LevelBase);
-                    _curTile = lb.map;
-                    _curTile.x = _preTile.x + _preTile.width;
-                    
-                    lb.init();
-                    _coins.add(lb.stars);
-                    _eminies.add(lb.enemies);
-                    _tiles.add(_curTile);
-                }
-                catch (e:Error) 
-                {
-                }
+                var lb:LandAbstract = _tileMgr.getTile();
+				_curTile = lb.map;
+				_curTile.x = _preTile.x + _preTile.width;
+				_curTile.y = _preTile.y;
+				
+				lb.initOthers();
+				_coins.add(lb.rewards);
+				_eminies.add(lb.enemies);
+				_tiles.add(_curTile);
             }
             
             if (_preTile)
             {
-                //trace("play and tile:"+(_player.x - _preTile.x)+" pre width:"+_preTile.width);
                 if ((_player.x - _preTile.x) > (_preTile.width+180))
                 {
-                    _tiles.remove(_preTile);
-                    _preTile = null;
+                    //_tiles.remove(_preTile);
+                    //_preTile = null;
                 }
                 
             }
@@ -208,16 +207,13 @@ package game
 			//collide
             FlxG.collide(_tiles, _eminies);
 			FlxG.collide(_tiles, _player);
-            FlxG.collide(_eminies, _player);
+            FlxG.collide(_player,_eminies,playerEnemiesCollide);
 			FlxG.collide(_tiles, _bigRock);
+            FlxG.collide(_tiles,Resource.bullets,bulletsHitTiles);
 			
 			FlxG.overlap(_player, _coins, getCoin);
 			
-			//player dead
-			if(_player.y > 320 && _player.health>0)
-			{
-				_player.hurt(1);
-			}
+			
 			
 			//test bullet time
 			if(FlxG.keys.T && false == _bulletTimeStart)
@@ -245,16 +241,34 @@ package game
 			}
 			super.update();
 		}
-		
+        
+        private function bulletsHitTiles(obj:FlxObject,obj2:FlxObject):void
+        {
+            // TODO Auto Generated method stub
+            if(obj2 is Bullet)
+            {
+                (obj2 as Bullet).hurt(1);
+            }
+        }
+        
 		/**
-		 * player collide with enemies
+		 * Player collide with enemies
 		 * 
 		 * @param	obj
 		 * @param	obj2
 		 */
 		private function playerEnemiesCollide(obj:FlxObject,obj2:FlxObject):void
 		{
-			trace(obj,obj2);
+            trace(obj,obj2);
+			var player:Player = obj as Player;
+            var enimy:Enemy = obj2 as Enemy;
+            
+            enimy.hurt(1);
+            if(player.y>enimy.y)
+            {
+                trace("player hit enemy");
+                
+            }
 		}
 		
 		/**
@@ -276,7 +290,7 @@ package game
 		}
 		
 		/**
-		 * destroy
+		 * Destroy
 		 */
 		override public function destroy():void
 		{
@@ -294,10 +308,10 @@ package game
 		 */
 		private function initWindEmitter():FlxEmitter
 		{
-			var emitter:FlxEmitter = new FlxEmitter(160, 30, 100);
-			emitter.setXSpeed(-100, -50);
+			var emitter:FlxEmitter = new FlxEmitter(160, 30, 1);
+			emitter.setXSpeed(-60, -50);
 			emitter.setYSpeed(0, 100);
-			emitter.bounce = .8;
+			emitter.bounce = .01;
 			
 			emitter.gravity = 20;
 			var whitePixel:FlxParticle;
@@ -312,7 +326,7 @@ package game
 				whitePixel.visible = false;
 				emitter.add(whitePixel);
 			}
-			emitter.start(false, 1.6, 0.2);
+			emitter.start(false, 3, 0.1);
 			return emitter;
 		}
 	}

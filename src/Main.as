@@ -25,6 +25,12 @@ package
 			Multitouch.inputMode = MultitouchInputMode.TOUCH_POINT;
 			
 			// entry point
+			var rect:Sprite = new Sprite();
+			rect.graphics.beginFill(0, 0.5);
+			rect.graphics.drawRect(0, 0, 100, 100);
+			rect.graphics.endFill();
+			addChild(rect);
+			
 		}
 		
 		private function deactivate(e:Event):void 

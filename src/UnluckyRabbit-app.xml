@@ -73,7 +73,7 @@
     <fullScreen>true</fullScreen>
     <!-- The render mode for the app (either auto, cpu, or gpu). Optional. Mobile only. Default auto -->
     <!-- 是否使用gpu渲染 -->
-    <renderMode>gpu</renderMode>
+    <renderMode>cpu</renderMode>
     <!-- Whether or not to pan when a soft keyboard is raised or lowered (either "pan" or "none").  Optional.  Defaults "pan." -->
     <!-- 是否使用软键盘 -->
     <!-- <softKeyboardBehavior></softKeyboardBehavior> -->

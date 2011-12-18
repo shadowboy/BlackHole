@@ -53,7 +53,6 @@ package game.tiles
 			_map.setTileProperties(17, FlxObject.NONE);
 			_map.setTileProperties(58, FlxObject.NONE);
 			_map.setTileProperties(77, FlxObject.NONE);
-			add(_map);
 		}
 
 		public function get width():int 

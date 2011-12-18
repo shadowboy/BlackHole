@@ -1,12 +1,8 @@
 package game.tiles 
 {
-	import game.decales.Coin;
-	import game.decales.RocketCoin;
-	
 	import org.flixel.FlxGroup;
 	import org.flixel.FlxObject;
 	import org.flixel.FlxTilemap;
-	import org.flixel.system.FlxTile;
 	
 	/**
 	 * ...
@@ -24,10 +20,6 @@ package game.tiles
 		[Embed(source = "../../assets/textures/tiles/trees.png")] 
 		public var treeTilesPNG:Class;
 		
-		[Embed(source = "../../assets/levels/mapCSV_Level1_Map.csv", mimeType = "application/octet-stream")] 
-		public var mapCVS:Class;
-        [Embed(source = "../../assets/levels/mapCSV_Level1_Map2.csv", mimeType = "application/octet-stream")] 
-        public var map2CVS:Class;
 		[Embed(source = "../../assets/textures/tiles/tiles.png")] 
 		public var mapTilesPNG:Class;
 		
@@ -68,17 +60,19 @@ package game.tiles
             
             _tileList = new FlxGroup();
             
-            
-            
-            var bt:LevelBase = new LevelBase();
-            var bt2:LevelBase = new LevelBase();
-            var bt3:LevelBase = new LevelBase();
+            var bt:Level1Land1 = new Level1Land1();
+            var bt1:Level1Land1 = new Level1Land1();
+            var bt2:Level1Land2 = new Level1Land2();
+            var bt3:Level1Land1 = new Level1Land1();
             
             //addTile(mapCVS);
             //addTile(map2CVS);
             _tileList.add(bt);
+            _tileList.add(bt1);
             _tileList.add(bt2);
             _tileList.add(bt3);
+            _tileList.add(bt2);
+            
 		}
         
         public function get sky():FlxTilemap 
@@ -116,7 +110,7 @@ package game.tiles
          * @return 
          * 
          */        
-        public function getTile():LevelBase
+        public function getTile():LandAbstract
         {
             if (_curIndex >= _tileList.length-1)
             {
@@ -126,7 +120,7 @@ package game.tiles
             {
                 _curIndex++;
             }
-            return _tileList.members[_curIndex] as LevelBase;
+            return _tileList.members[_curIndex] as LandAbstract;
         }
 	}
 }

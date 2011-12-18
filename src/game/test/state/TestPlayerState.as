@@ -1,11 +1,8 @@
-package game.test
+package game.test.state
 {
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import org.flixel.FlxEmitter;
-	import org.flixel.FlxParticle;
-	import org.flixel.FlxPoint;
 	
 	import game.PauseState;
 	import game.Registry;
@@ -14,17 +11,21 @@ package game.test
 	import game.tiles.LandAbstract;
 	
 	import org.flixel.FlxButton;
+	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxParticle;
+	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
 	import org.flixel.FlxState;
 	import org.flixel.FlxText;
+	import org.flixel.FlxBasic;
 	
 	/**
 	 * ...
 	 * @author GameCloudStudio
 	 */
-	public class TestEmitterLikeBlood extends FlxState 
+	public class TestPlayerState extends FlxState 
 	{
 		private var _emitter:FlxEmitter;
 		private var _emitters:FlxGroup;
@@ -33,17 +34,20 @@ package game.test
 		private var _floor:FlxSprite;
 		private var _wall:FlxSprite;
 		private var _curEmitterIdx:int = 0;
+		private var _monster:Monster;
 		
 		/**
 		 * 
 		 */
-		public function TestEmitterLikeBlood() 
+		public function TestPlayerState() 
 		{
 			super();
 			FlxG.mouse.show();
 			
 			initWall();
-			initEmitter();
+            
+            _monster = new Monster();
+            add(_monster);
 		}
 		
 		/**
@@ -74,83 +78,14 @@ package game.test
 				box.makeGraphic(5, 5, 0xffffcc00);
 				box.visible = _floor.solid = true;
 				box.immovable = true;
-				_collisionGroup.add(box);
+				//_collisionGroup.add(box);
 			}
 			
 		}
-		
-		/**
-		 * init emitter
-		 */
-		private function initEmitter():void
-		{
-			_emitters = new FlxGroup();
-			var len:int = 5;
-			for (var i:int = 0; i < len; i++) 
-			{
-				_emitters.add(initBloodEmitter());
-			}
-		}
-		
-		/**
-		 * get emitter
-		 * @return
-		 */
-		private function getEmitter():FlxEmitter
-		{
-			if (_curEmitterIdx >= _emitters.length-1)
-            {
-                _curEmitterIdx = 0;
-            }
-            else
-            {
-                _curEmitterIdx++;
-            }
-            return _emitters.members[_curEmitterIdx] as FlxEmitter;
-		}
-		
-		/**
-		 * init blood emitter
-		 */
-		private function initBloodEmitter():FlxEmitter
-		{
-			var emitter:FlxEmitter = new FlxEmitter(160, 30, 10);
-			emitter.setXSpeed(-50, 50);
-			emitter.setYSpeed(0, 100);
-			emitter.bounce = .02;
-			emitter.lifespan
-			emitter.gravity = 30;
-			
-			var whitePixel:FlxParticle;
-			for (var i:int = 0; i < emitter.maxSize; i++) 
-			{
-				whitePixel = new FlxParticle();
-				whitePixel.makeGraphic(2, 2, 0xFFFF0000);
-				whitePixel.visible = false; //Make sure the particle doesn't show up at (0, 0)
-				emitter.add(whitePixel);
-				
-				whitePixel = new FlxParticle();
-				whitePixel.makeGraphic(1, 1, 0xFFFF0000);
-				whitePixel.visible = false;
-				emitter.add(whitePixel);
-			}
-			return emitter;
-		}
-		
 		override public function update():void 
 		{
-			if (FlxG.mouse.justPressed())
-			{
-				var p:FlxPoint = FlxG.mouse.getScreenPosition(); 
-				
-				_emitter = getEmitter();
-				_emitter.x = p.x;
-				_emitter.y = p.y;
-				_emitter.start(true, 3, 0.2);
-				this.add(_emitter);
-			}
+            FlxG.collide(_monster,_collisionGroup);
 			super.update();
-			FlxG.collide(_emitters, _collisionGroup);
 		}
 	}
 }

@@ -4,7 +4,7 @@ package game.test
 	import flash.display.Sprite;
 	import game.PauseState;
 	import game.Resource;
-	import game.tiles.LevelBase;
+	import game.tiles.LandAbstract;
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
@@ -65,8 +65,8 @@ package game.test
 			tm3.loadMap(new mapCSV, mapTilesPNG, 16, 16);
 			//tm3.setTile(2, 2, 4);
 			
-			var tm4:LevelBase = new LevelBase();
-			
+			var tm4:FlxTilemap = new FlxTilemap();
+			tm4.loadMap(new mapCSV, mapTilesPNG, 16, 16);
 			
 			_tileList = new FlxGroup();
 			
@@ -100,9 +100,6 @@ package game.test
 		{
 			FlxG.camera.follow(_player);
 			_player.velocity.x = 200;
-			//trace(_player.x);
-			//trace("camera x:" + FlxG.camera.x);
-			//trace("tilemap x:" + _tilemap.x);
 			
 			if (_curTile.x + _curTile.width - _player.x<FlxG.width) 
             {
@@ -126,15 +123,11 @@ package game.test
 				add(_curTile);
 			}
 			
-			if (_preTile)
+			if (_curTileIndex>2 && _tileList.members[_curTileIndex-2]!=null)
 			{
-				//trace("play and tile:"+(_player.x - _preTile.x)+" pre width:"+_preTile.width);
-				if ((_player.x - _preTile.x) > (_preTile.width+180))
-				{
-					remove(_preTile);
-					_preTile = null;
-					trace("remove current item screen");
-				}
+				trace("remove current item screen");
+				//remove(_tileList.members[_curTileIndex - 2]);
+				//_tileList.members[_curTileIndex - 2] = null
 				
 			}
 			super.update();

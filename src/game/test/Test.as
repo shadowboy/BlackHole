@@ -7,7 +7,7 @@ package game.test
 	import game.Registry;
 	import game.Resource;
 	import game.decales.Coin;
-	import game.tiles.LevelBase;
+	import game.tiles.LandAbstract;
 	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
@@ -49,7 +49,7 @@ package game.test
             }
             Registry.stars = _stars;
 			
-			var t:LevelBase = new LevelBase();
+			var t:LandAbstract = new LandAbstract();
             t.x = 100;
             t.y = 80;
             t.init()

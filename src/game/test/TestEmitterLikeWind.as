@@ -10,7 +10,7 @@ package game.test
 	import game.Registry;
 	import game.Resource;
 	import game.decales.Coin;
-	import game.tiles.LevelBase;
+	import game.tiles.LandAbstract;
 	
 	import org.flixel.FlxButton;
 	import org.flixel.FlxG;
