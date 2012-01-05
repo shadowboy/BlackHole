@@ -2,8 +2,8 @@ package
 {
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
-	import flash.display.StageAspectRatio;
-	import flash.display.StageOrientation;
+	//import flash.display.StageAspectRatio;
+	//import flash.display.StageOrientation;
 	import flash.display.StageScaleMode;
 	
 	import game.MenuState;
@@ -19,7 +19,7 @@ package
     * 
 	* @Author Andy Cao
 	*/
-	[SWF(width="960", height="640", backgroundColor="#ffffff" , frameRate="60")]
+	[SWF(width="480", height="320", backgroundColor="#ffffff" , frameRate="60")]
 	//[Frame(factoryClass="Preloader")]
 	
 	/**
@@ -35,9 +35,9 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
-			stage.setAspectRatio(StageAspectRatio.LANDSCAPE);
-			stage.setOrientation(StageOrientation.ROTATED_RIGHT);
-			stage.autoOrients = false;
+			//stage.setAspectRatio(StageAspectRatio.LANDSCAPE);
+			//stage.setOrientation(StageOrientation.ROTATED_RIGHT);
+			//stage.autoOrients = false;
 			
 			var w:int = 240;
 			var h:int = 160;
@@ -49,9 +49,9 @@ package
 				h = 160;
 				scale = 2;
                 
-                w = 512;
-                h = 384;
-                scale = 2;
+                //w = 512;
+                //h = 384;
+                //scale = 2;
 			}
 			else
 			{
@@ -76,7 +76,7 @@ package
 			}
             
             
-			super(w, h, MenuState, scale);
+			super(w, h, TestEnemies, scale);
             FlxG.bgColor = 0xffffffff;
 			FlxG.mouse.show();
 			FlxG.debug = true;

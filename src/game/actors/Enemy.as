@@ -1,5 +1,6 @@
 package game.actors
 {
+	import game.components.MoveComponent;
 	import org.flixel.FlxBasic;
 	import org.flixel.FlxEmitter;
 	import org.flixel.FlxG;
@@ -34,6 +35,7 @@ package game.actors
 		private var isDying:Boolean;
 		private var _emitter:Object;
 		private var _map:FlxTilemap;
+		private var _moveComponent:MoveComponent;
 		
 		/**
 		 *  
@@ -58,6 +60,8 @@ package game.actors
             
             health =1;
             this.velocity.x = 30;
+			
+			
 		}
 		
 		/**
@@ -76,6 +80,7 @@ package game.actors
         public function set map(value:FlxTilemap):void
         {
             _map = value;
+			_moveComponent = new MoveComponent(this, _map);
         }
 		
 		/**
@@ -84,45 +89,9 @@ package game.actors
 		public override function update():void
 		{
             super.update();
-            //acceleration.x = PLAYER_RUN_SPEED;
             
-            var tx:int = Math.round((x-_map.x) / 16);
-            var ty:int = Math.round((y-_map.y) / 16);
-            
-//            trace("ty:"+ty);
-//            trace("ty-1:",_map.getTile(tx+1,ty-1));
-//            trace("ty:",_map.getTile(tx+1,ty));
-//            trace("ty+1:",_map.getTile(tx+1,ty+1));
-//            
-            if (facing == FlxObject.LEFT)
-            {
-                if (_map.getTile(tx-1,ty)>0)
-                {
-                    //如果前方有障碍就转头
-                    turnAround();
-                }
-                else if(_map.getTile(tx-1,ty+1)<=0 && isTouching(FlxObject.FLOOR))
-                {
-                    //如果在地面行走的时候发现前方左下角为空时回头
-                    turnAround(); 
-                }
-                    
-            }
-            else
-            {
-                if (_map.getTile(tx+1, ty) >0)
-                {
-                    turnAround();
-                }
-                else if(_map.getTile(tx+1,ty+1)<=0 && isTouching(FlxObject.FLOOR))
-                {
-                    turnAround();
-                }
-                
-                
-            }
-           
-            
+			_moveComponent.moveOnGround();
+			
             if (int(Math.random() * 30) == 2 && this.velocity.y == 0 )
 			{
 				//this.velocity.y = JUMP_ACCELERATION;
@@ -143,19 +112,6 @@ package game.actors
             
 		}
 		
-        private function turnAround():void
-        {
-            if (facing == FlxObject.RIGHT)
-            {
-                facing = FlxObject.LEFT;
-                velocity.x = -30;
-            }
-            else
-            {
-                facing = FlxObject.RIGHT;
-                velocity.x = 30;
-            }
-        }
         
         /**
          * Be hurt
